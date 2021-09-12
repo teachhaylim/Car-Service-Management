@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 // Pages
 import AdminLayout from "layouts/AdminLayout";
 import MainLayout from "layouts/MainLayout";
-import Dashboard from "views/Overview/Dashboard";
+import Dashboard from "views/Overview";
 import NotFound from "views/NotFound";
 import UserIndex from "views/User";
 import AppointmentIndex from "views/Appointments";
@@ -11,6 +11,7 @@ import ServiceIndex from "views/Services";
 import ShopIndex from "views/Shops";
 import CategoriesIndex from "views/Categories";
 import RatingIndex from "views/Rating";
+import AuthenticationIndex from "views/Authentication";
 
 const routes = [
     {
@@ -36,6 +37,10 @@ const routes = [
             { path: "*", element: <Navigate to="/404" /> }
         ]
     },
+    {
+        path: "/signin",
+        element: <AuthenticationIndex />
+    }
 ];
 
 export default routes;

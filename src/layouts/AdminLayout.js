@@ -8,7 +8,7 @@ import basicConfig from 'utils/basicConfig';
 import AdminFooter from 'components/AdminFooter';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PageNavigation from 'components/CustomComponents/RouteNavigation';
+import { PageNavigation } from 'components/CustomComponents/PageNavigation';
 
 const useStyles = makeStyles((theme) => ({
     adminLayout: {

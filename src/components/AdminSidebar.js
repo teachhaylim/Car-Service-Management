@@ -3,11 +3,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import basicConfig from 'utils/basicConfig';
 import { generalList } from 'utils/basicConfig';
-import Navitem from './CustomComponents/Navitem';
 import logo from "assets/logo/logo_1.png";
 import { superAdminList } from 'utils/basicConfig';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Navitem } from './CustomComponents/Navitem';
 
 const useStyles = makeStyles((theme) => ({
     drawerPaper: {
