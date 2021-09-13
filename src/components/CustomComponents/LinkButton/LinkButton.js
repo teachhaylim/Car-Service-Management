@@ -15,7 +15,7 @@ const AuthButton = styled(Typography)(({ theme, color }) => {
 });
 
 AuthButton.propTypes = {
-    color: PropTypes.string.isRequired,
+    color: PropTypes.string,
 }
 
 export default AuthButton;

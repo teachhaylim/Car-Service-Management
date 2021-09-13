@@ -4,6 +4,7 @@ import GlobalStyles from 'components/GlobalStyles';
 import { useRoutes } from 'react-router-dom';
 import theme from 'utils/theme';
 import routes from "./routes";
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const App = () => {
   const routing = useRoutes(routes);
@@ -12,7 +13,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <CssBaseline />
-      {routing}
+      <PerfectScrollbar>
+        {routing}
+      </PerfectScrollbar>
     </ThemeProvider>
   );
 };

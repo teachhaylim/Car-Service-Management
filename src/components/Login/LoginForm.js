@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Stack, TextField } from '@material-ui/core';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { LinkButton } from '../LinkButton';
+import { LinkButton } from '../CustomComponents/LinkButton';
 
 const validationSchema = yup.object({
     email: yup
@@ -34,6 +34,7 @@ const LoginForm = () => {
                     fullWidth
                     name="email"
                     label="Email"
+                    margin="dense"
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     error={formik.touched.email && Boolean(formik.errors.email)}
@@ -45,6 +46,7 @@ const LoginForm = () => {
                     name="password"
                     label="Password"
                     type="password"
+                    margin="dense"
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={formik.touched.password && Boolean(formik.errors.password)}

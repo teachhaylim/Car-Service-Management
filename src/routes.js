@@ -11,7 +11,8 @@ import ServiceIndex from "views/Services";
 import ShopIndex from "views/Shops";
 import CategoriesIndex from "views/Categories";
 import RatingIndex from "views/Rating";
-import AuthenticationIndex from "views/Authentication";
+import LoginView from "views/Login";
+import RegisterView from "views/Register";
 
 const routes = [
     {
@@ -33,14 +34,15 @@ const routes = [
         element: <MainLayout />,
         children: [
             { path: "404", element: <NotFound /> },
+            { path: "/register", element: <RegisterView /> },
             { path: "/", element: <Navigate to="/app/dashboard" /> },
             { path: "*", element: <Navigate to="/404" /> }
         ]
     },
     {
-        path: "/signin",
-        element: <AuthenticationIndex />
-    }
+        path: "/login",
+        element: <LoginView />
+    },
 ];
 
 export default routes;

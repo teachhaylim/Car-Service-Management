@@ -3,14 +3,26 @@ import { Outlet } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import MainNavbar from 'components/MainNavbar';
 import MainFooter from 'components/MainFooter';
+import { Box, styled } from '@material-ui/system';
+
+const CustomBox = styled(Box)(() => {
+    return {
+        height: "calc(100vh - 88px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    }
+})
 
 const MainLayout = () => {
     return (
         <>
-            <MainNavbar />
+            <Container disableGutters maxWidth="" sx={{ height: "100vh", backgroundColor: "#e0e0e0" }}>
+                <MainNavbar />
 
-            <Container maxWidth="xl">
-                <Outlet />
+                <CustomBox>
+                    <Outlet />
+                </CustomBox>
 
                 <MainFooter />
             </Container>
