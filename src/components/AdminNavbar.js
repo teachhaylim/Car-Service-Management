@@ -7,7 +7,8 @@ import Cookies from 'universal-cookie';
 import basicConfig from 'utils/basicConfig';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
-
+import {Link as RouterLink} from "react-router-dom";
+ 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -118,7 +119,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <IconButton edge="end" color="inherit" aria-label="menu">
+                    <IconButton component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
                         <ExitToApp />
                     </IconButton>
                 </Toolbar>

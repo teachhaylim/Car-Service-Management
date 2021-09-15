@@ -1,34 +1,12 @@
 import React from 'react';
-import { Button, Stack, TextField } from '@material-ui/core';
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { LinkButton } from '../CustomComponents/LinkButton';
+import { IconButton, InputAdornment, Stack, TextField } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
-const validationSchema = yup.object({
-    email: yup
-        .string('Enter your email')
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string('Enter your password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
-});
-
-const LoginForm = () => {
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 1));
-        },
-    });
+const LoginForm = ({ formik }) => {
+    const [showPassword, setShowPassword] = React.useState(false);
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <>
             <Stack spacing={2}>
                 <TextField
                     fullWidth
@@ -45,29 +23,29 @@ const LoginForm = () => {
                     fullWidth
                     name="password"
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     margin="dense"
+                    InputProps={{
+                        endAdornment: (
+                            < InputAdornment position="end" >
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    onMouseDown={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <Visibility /> : < VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
                 />
             </Stack>
-
-            <Stack direction="row" alignItems="center" justifyContent="end" sx={{ mt: 2 }}>
-                {/* <FormGroup>
-                    <FormControlLabel control={<Checkbox defaultChecked />} label="Remember Password"></FormControlLabel>
-                </FormGroup> */}
-
-                <LinkButton>
-                    Forgot password?
-                </LinkButton>
-            </Stack>
-
-            <Stack sx={{ mt: 2 }}>
-                <Button color="secondary" variant="contained" fullWidth type="submit"> Submit </Button>
-            </Stack>
-        </form>
+        </>
     )
 }
 

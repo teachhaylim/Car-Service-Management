@@ -52,7 +52,7 @@ const RegisterView = () => {
     });
 
     return (
-        <Paper sx={{ p: 4, minWidth: "50%", borderRadius: "8px" }} elevation={6}>
+        <Paper sx={{ p: 4, minWidth: "40%", borderRadius: "8px" }} elevation={6}>
             <form onSubmit={formik.handleSubmit}>
                 <Typography align="left" variant="h5" gutterBottom>
                     Create a new account

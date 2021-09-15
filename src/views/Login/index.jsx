@@ -1,45 +1,77 @@
 import React from 'react';
 import { LoginForm } from 'components/Login';
-import { Grid, Container, Stack, Typography, Link } from '@material-ui/core';
+import { Paper, Button, Stack, Typography, Link } from '@material-ui/core';
 import { Link as RouterLink } from "react-router-dom";
-import { styled } from '@material-ui/styles';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useNavigate } from 'react-router';
+import { shallowEqual, useSelector } from 'react-redux';
 
-const ImageView = styled("img")(({ theme }) => {
-    return {
-        height: "100%",
-        width: "100%",
-        objectFit: "cover",
-    }
+const validationSchema = Yup.object({
+    email: Yup
+        .string('Enter your email')
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: Yup
+        .string('Enter your password')
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
 });
 
 const LoginView = () => {
-    const imgUrl = "https://images.unsplash.com/photo-1529539795054-3c162aab037a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80";
+    const history = useNavigate();
+    const user = useSelector((state) => state.user, shallowEqual);
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            if (values.email === "admin@example.com" && values.password === "admin123") {
+                history("/");
+            }
+            else {
+                alert("Incorrect email or password");
+            }
+        },
+    });
 
     return (
         <>
-            <Grid container justifyContent="center" alignItems="center" sx={{ height: "100vh" }}>
-                <Grid item xs={12} sm={6} md={6} lg={7} xl={7} sx={{ height: "100%" }}>
-                    <ImageView src={imgUrl} alt="login" />
-                </Grid>
+            <Paper sx={{ p: 4, minWidth: "40%", borderRadius: "8px" }} elevation={6}>
+                <form onSubmit={formik.handleSubmit}>
+                    <Typography align="left" variant="h5">
+                        Welcome back! {user.name}
+                    </Typography>
 
-                <Grid item xs={12} sm={6} md={6} lg={5} xl={5}>
-                    <Container maxWidth="xl">
-                        <Stack sx={{ mb: 2 }}>
-                            <Typography variant="h4" gutterBottom> Let's get started </Typography>
+                    <Typography align="left" variant="subtitle2" gutterBottom>
+                        Let's get started
+                    </Typography>
 
-                            <Stack direction="row" alignItems="center">
-                                <Typography>Don't have an account?</Typography>
+                    <LoginForm formik={formik} />
 
-                                <Link sx={{ ml: 1 }} component={RouterLink} to="/register" underline="none" variant="subtitle2">
-                                    Create a new account
-                                </Link>
-                            </Stack>
+                    <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                            <Typography sx={{ mr: 0.5 }}>
+                                Don't have an account?
+                            </Typography>
+
+                            <Link component={RouterLink} to="/register" underline="none" variant="subtitle2">
+                                Register
+                            </Link>
                         </Stack>
 
-                        <LoginForm />
-                    </Container>
-                </Grid>
-            </Grid>
+                        <Link component={RouterLink} to="#" underline="none" variant="subtitle2">
+                            Forget password?
+                        </Link>
+                    </Stack>
+
+                    <Button variant="outlined" fullWidth sx={{ mt: 2 }} type="submit">
+                        Login
+                    </Button>
+                </form>
+            </Paper>
         </>
     )
 }

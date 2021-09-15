@@ -34,14 +34,11 @@ const routes = [
         element: <MainLayout />,
         children: [
             { path: "404", element: <NotFound /> },
+            { path: "/login", element: <LoginView /> },
             { path: "/register", element: <RegisterView /> },
             { path: "/", element: <Navigate to="/app/dashboard" /> },
             { path: "*", element: <Navigate to="/404" /> }
         ]
-    },
-    {
-        path: "/login",
-        element: <LoginView />
     },
 ];
 
