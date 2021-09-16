@@ -14,5 +14,4 @@ export const meta = {
     ALREADY_EXIST: 4101,
     OBJECT_MUST_BE_ARRAY: 5001,
     INVALID_DATA: 5002,
-}
-
+};

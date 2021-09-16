@@ -5,7 +5,10 @@ import { Link as RouterLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from 'react-router';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Login } from 'api/auth.api';
+import { SetToken } from 'store';
+import { SetUserInfo } from 'store';
 
 const validationSchema = Yup.object({
     email: Yup
@@ -20,7 +23,7 @@ const validationSchema = Yup.object({
 
 const LoginView = () => {
     const history = useNavigate();
-    const user = useSelector((state) => state.user, shallowEqual);
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -28,12 +31,17 @@ const LoginView = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            if (values.email === "admin@example.com" && values.password === "admin123") {
-                history("/");
-            }
-            else {
-                alert("Incorrect email or password");
-            }
+            Login({email: values.email, password: values.password})
+            .then(res => {
+                if(res.meta === 200){
+                    dispatch(SetToken(res.token));
+                    dispatch(SetUserInfo(res.user));
+                    history("/");
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
         },
     });
 
@@ -42,7 +50,7 @@ const LoginView = () => {
             <Paper sx={{ p: 4, minWidth: "40%", borderRadius: "8px" }} elevation={6}>
                 <form onSubmit={formik.handleSubmit}>
                     <Typography align="left" variant="h5">
-                        Welcome back! {user.name}
+                        Welcome back!
                     </Typography>
 
                     <Typography align="left" variant="subtitle2" gutterBottom>

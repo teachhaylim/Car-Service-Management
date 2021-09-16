@@ -19,8 +19,8 @@ export const superAdminList = [
 
 const basicConfig = {
     drawerSize: 240,
-    api_url: "http://localhost:5000/api/v1",
-    file_url: "http://localhost:5000/file/"
+    apiUrl: "http://localhost:5000/api/v1",
+    fileUrl: "http://localhost:5000/file/"
 };
 
 export default basicConfig;

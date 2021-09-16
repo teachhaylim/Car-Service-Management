@@ -25,54 +25,31 @@ export const RemoveToken = () => ({
     type: REMOVE_TOKEN,
 });
 
+//Store Section
+const initialState = {
+    user: {},
+    shop: {},
+    token: "",
+};
+
 //Reducer Section
-const UserReducer = (state = {}, action) => {
+const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER_INFO:
-            return action.user;
-        default:
-            return state;
-    };
-};
-
-const ShopReducer = (state = {}, action) => {
-    switch (action.type) {
+            return { ...state, user: action.user};
         case SET_SHOP_INFO:
-            return action.shop;
-        default:
-            return state;
-    };
-};
-
-const TokenReducer = (state = "", action) => {
-    switch(action.type){
+            return { ...state, shop: action.shop };
         case SET_TOKEN:
-            return "Token set";
+            return { ...state, token: action.token };
         case REMOVE_TOKEN:
-            return "Token removed";
-        default: 
+            return { ...state, token: "" };
+        default:
             return state;
     }
 }
 
-//Reducers Config
-const reducers = combineReducers({
-    user: UserReducer,
-    shop: ShopReducer,
-    token: TokenReducer,
-})
-
-//Store Section
-const initialState = {
-    user: {
-        name: "teachhay",
-    },
-    shop: {},
-    token: "",
-}
-
 export default createStore(
-    reducers,
+    rootReducer,
     initialState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

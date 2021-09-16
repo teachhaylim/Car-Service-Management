@@ -8,6 +8,8 @@ import basicConfig from 'utils/basicConfig';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
 import {Link as RouterLink} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { RemoveToken } from 'store';
  
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,14 +50,19 @@ const AdminNavbar = ({ handleMobileOpen }) => {
     const classes = useStyles();
     const [langMenu, setlangMenu] = React.useState(null);
     const cookies = new Cookies();
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(RemoveToken());
+    };
 
     const handleLangOnClose = () => {
         setlangMenu(null);
-    }
+    };
 
     const handleLangMenuClick = (e) => {
         setlangMenu(e.currentTarget);
-    }
+    };
 
     const handleLangeChange = (value) => {
         setlangMenu(null);
@@ -65,7 +72,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
         date.setDate(date.getDate() + 7);
 
         cookies.set('lang', value, { expires: date });
-    }
+    };
 
     return (
         <div className={classes.root}>
@@ -119,7 +126,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <IconButton component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
+                    <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
                         <ExitToApp />
                     </IconButton>
                 </Toolbar>

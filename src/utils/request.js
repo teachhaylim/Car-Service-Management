@@ -14,19 +14,20 @@
  * - others
  */
 
-import axios from 'axios'; //FIXME package missing
-import serverConfig from './basicConfig';
-import { meta } from '@/utils/enum'; //FIXME wrong import
+import axios from 'axios';
+import { meta } from 'utils/enum';
+import store from 'store';
+import basicConfig from './basicConfig';
 
 const service = axios.create({
-    baseURL: serverConfig.api_url,
+    baseURL: basicConfig.apiUrl,
     timeout: 15000
 });
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImRvYiI6bnVsbCwiZ2VuZGVyIjoiIiwicGhvbmVudW1iZXIiOiIiLCJhZGRyZXNzIjpbXSwiYXZhdGFyIjoiaHR0cHM6Ly93d3cud29ybGRmdXR1cmVjb3VuY2lsLm9yZy93cC1jb250ZW50L3VwbG9hZHMvMjAyMC8wNi9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzEyODAtMS5wbmciLCJpc19hY3RpdmUiOnRydWUsImxvZ2luX2lwIjoiOjoxIiwiY3JlYXRlZF9kYXRlIjoiMjAyMS0wNy0wOFQxMzoxODo0Mi4yMjVaIiwiaXNfZ29vZ2xlIjpmYWxzZSwiaXNfZmFjZWJvb2siOmZhbHNlLCJsYXN0X2xvZ2luIjoiMjAyMS0wNy0wOFQxMzoxOToxOS4yOTNaIiwiaXNfY3VzdG9tZXIiOnRydWUsInBhc3N3b3JkIjoiJDJiJDEwJDVIby5sY1UwdnhNQzdEdmxPU0dHZHU5T25reDZDT0xQMGt1R0Jwa0VPcWNqWXJsYy9ScWZlIiwiX2lkIjoiNjBlNmZiMzJiZWIxNDEyNDQ4OGFhMTRmIiwidXNlcm5hbWUiOiJoZWxlbiIsImVtYWlsIjoiaGVsZW5AZ21haWwuY29tIiwibGFzdG5hbWUiOiJEYWxlIiwiZmlyc3RuYW1lIjoiSGVsZW4ifSwiaWF0IjoxNjI1NzUwMzU5LCJleHAiOjE2MjY2MTQzNTl9.bRYNxjLMPJMxG_Zw87c5S0CwfVU3BvPcIvuZzI1oMMc";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTM0ODUyNmUwNTM4ODY1YWM1ZjIwYjYiLCJpYXQiOjE2MzE3MTY0NjZ9.LbMNWTViUIvvGPpsf8R4OfG8vkJXVDqCTLQ0Nh0sC5w";
 
 service.interceptors.request.use(config => {
-    config.headers['Authorization'] = token;
+    config.headers['Authorization'] = store.getState().token || token;
     config.headers['Content-Type'] = 'application/json';
 
     if (config.method === 'post') {
@@ -43,7 +44,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
     const res = response.data;
 
-    if (res.meta == meta.TOKENEXPIRE) { //FIXME React uses === to check comparison
+    if (res.meta === meta.TOKENEXPIRE) { 
         alert("Token Expire, Please Login Again");
     }
     else {
