@@ -1,4 +1,4 @@
-import { combineReducers, createStore } from "redux";
+import { createStore } from "redux";
 
 const SET_USER_INFO = "SET_USER_INFO";
 const SET_SHOP_INFO = "SET_SHOP_INFO";

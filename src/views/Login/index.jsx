@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { Login } from 'api/auth.api';
 import { SetToken } from 'store';
 import { SetUserInfo } from 'store';
+import { toast } from 'react-toastify';
 
 const validationSchema = Yup.object({
     email: Yup
@@ -40,7 +41,8 @@ const LoginView = () => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                formik.resetForm();
+                toast.error(err.message);
             })
         },
     });

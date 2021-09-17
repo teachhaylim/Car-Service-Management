@@ -1,4 +1,7 @@
 import { AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@material-ui/icons";
+import { v4 as uuidv4 } from 'uuid';
+import { createAvatar } from '@dicebear/avatars';
+import * as style from '@dicebear/avatars-identicon-sprites';
 
 export const generalList = [
     { alternateTitle: "alt_overview", title: "overview", href: "dashboard", icon: <Dashboard />, parent: "general", hidden: false },
@@ -17,10 +20,25 @@ export const superAdminList = [
     { alternateTitle: "alt_rating", title: "rating", href: "rating", icon: <Star />, parent: "management", hidden: false },
 ];
 
+export const generateDiceBearAvatar = (key = uuidv4()) => {
+    const avatar = createAvatar(style, {
+        seed: key,
+    });
+    
+    return avatar;
+};
+
+export const getDiceBearAvatar = (key) => {
+    if(!key) return "";
+
+    return `${basicConfig.diceBearAvatar}${key}.svg`;
+};
+
 const basicConfig = {
     drawerSize: 240,
     apiUrl: "http://localhost:5000/api/v1",
-    fileUrl: "http://localhost:5000/file/"
+    fileUrl: "http://localhost:5000/file/",
+    diceBearAvatar: "https://avatars.dicebear.com/api/identicon/",
 };
 
 export default basicConfig;

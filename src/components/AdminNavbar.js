@@ -1,5 +1,5 @@
-import React from 'react';
-import { Typography, IconButton, Hidden, Toolbar, AppBar, MenuItem, Grid, Popover } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Typography, IconButton, Hidden, Toolbar, AppBar, MenuItem, Grid, Popover, Avatar } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import Flag from 'react-flagkit';
 import i18n from "i18next";
@@ -7,10 +7,12 @@ import Cookies from 'universal-cookie';
 import basicConfig from 'utils/basicConfig';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
-import {Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { RemoveToken } from 'store';
- 
+import store, { RemoveToken } from 'store';
+import { getDiceBearAvatar } from 'utils/basicConfig';
+import { styled } from '@material-ui/system';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -41,6 +43,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const StyledAvatar = styled(Avatar)(() => {
+    return {
+        marginRight: 8,
+        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.5)",
+    }
+});
+
 const langItems = [
     { country: "US", title: "English", value: "en" },
     { country: "KH", title: "ភាសាខ្មែរ", value: "kh" },
@@ -48,9 +57,11 @@ const langItems = [
 
 const AdminNavbar = ({ handleMobileOpen }) => {
     const classes = useStyles();
-    const [langMenu, setlangMenu] = React.useState(null);
+    const [langMenu, setlangMenu] = useState(null);
+    const [profileMenu, setProfileMenu] = useState(null);
     const cookies = new Cookies();
     const dispatch = useDispatch();
+    const user = store.getState().user;
 
     const handleLogout = () => {
         dispatch(RemoveToken());
@@ -63,6 +74,14 @@ const AdminNavbar = ({ handleMobileOpen }) => {
     const handleLangMenuClick = (e) => {
         setlangMenu(e.currentTarget);
     };
+
+    const handleProfileMenuClick = (e) => {
+        setProfileMenu(e.currentTarget);
+    }
+
+    const handleProfileMenuOnClose = (e) => {
+        setProfileMenu(null);
+    }
 
     const handleLangeChange = (value) => {
         setlangMenu(null);
@@ -88,7 +107,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         Admin Navbar
                     </Typography>
 
-                    <IconButton onClick={handleLangMenuClick}>
+                    <IconButton sx={{ mr: 1 }} onClick={handleLangMenuClick}>
                         {
                             i18n.language === "en" ? <Flag country="US" /> : <Flag country="KH" />
                         }
@@ -126,9 +145,49 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
+                    <StyledAvatar src={getDiceBearAvatar(store.getState().user?.id)} onClick={handleProfileMenuClick} />
+
+                    <Popover
+                        elevation={6}
+                        anchorEl={profileMenu}
+                        open={!!profileMenu}
+                        onClose={handleProfileMenuOnClose}
+                        disableScrollLock={true}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                    >
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item>
+                                <Typography variant="h6" className={classes.title}>
+                                    {user.id ? user.firstName + " " + user.lastName : ""}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+
+                        <MenuItem className={classes.menuItem} component={RouterLink} to="/login" onClick={handleLogout} edge="end" color="inherit" aria-label="menu">
+                            <Grid container spacing={2} alignItems="center">
+                                <Grid item>
+                                    <IconButton>
+                                        <ExitToApp />
+                                    </IconButton>
+                                </Grid>
+
+                                <Grid item>
+                                    Logout
+                                </Grid>
+                            </Grid>
+                        </MenuItem>
+                    </Popover>
+
+                    {/* <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
                         <ExitToApp />
-                    </IconButton>
+                    </IconButton> */}
                 </Toolbar>
             </AppBar>
         </div>
