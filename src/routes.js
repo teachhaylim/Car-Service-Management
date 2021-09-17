@@ -18,7 +18,7 @@ import RegisterView from "views/Register";
 const routes = (isLogin) => [
     {
         path: "app",
-        element: isLogin ? <AdminLayout /> : < Navigate to = "/login" />,
+        element: isLogin ? <AdminLayout /> : < Navigate to= "/unauthorized" />,
         children: [
             { path: "dashboard", element: <Dashboard /> },
             { path: "users", element: <UserIndex /> },
@@ -27,21 +27,21 @@ const routes = (isLogin) => [
             { path: "shops", element: <ShopIndex /> },
             { path: "categories", element: <CategoriesIndex /> },
             { path: "rating", element: <RatingIndex /> },
-            { path: "*", element: <Navigate to="/404" /> }
+            { path: "*", element: <Navigate to="/notfound" /> }
         ]
     },
     {
         path: "/",
         element: <MainLayout />,
         children: [
-            { path: "/notfound", element: <NotFound /> },
-            { path: "/unauthorized", element: <Unauthorized /> },
             { path: "/login", element: <LoginView /> },
             { path: "/register", element: <RegisterView /> },
             { path: "/", element: <Navigate to="/app/dashboard" /> },
-            { path: "*", element: <Navigate to="/404" /> }
+            { path: "*", element: <Navigate to="/notfound" /> }
         ]
     },
+    { path: "/notfound", element: <NotFound /> },
+    { path: "/unauthorized", element: <Unauthorized /> },
 ];
 
 export default routes;

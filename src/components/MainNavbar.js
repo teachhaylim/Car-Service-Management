@@ -21,7 +21,7 @@ const MainNavbar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" color="transparent">
+            <AppBar position="static" color="primary" elevation={0}>
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
                         Main Navbar
