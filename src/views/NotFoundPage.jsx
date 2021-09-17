@@ -84,7 +84,7 @@ const NotFound = () => {
                 eyes on the page you've been searching for
             </StyleSubtitle>
 
-            <StyledButton to="/login">Pick new door</StyledButton>
+            <StyledButton to="/">Pick new door</StyledButton>
         </StyledContainer>
     )
 }

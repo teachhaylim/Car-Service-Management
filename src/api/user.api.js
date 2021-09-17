@@ -27,3 +27,8 @@ export const DeleteUser = (id) => service({
     url: `/user/${id}`,
     method: "delete",
 });
+
+export const GetUserInfo = () => service({
+    url: "/user/info",
+    method: "get",
+})

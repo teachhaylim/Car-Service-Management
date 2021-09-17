@@ -24,12 +24,12 @@ export const generateDiceBearAvatar = (key = uuidv4()) => {
     const avatar = createAvatar(style, {
         seed: key,
     });
-    
+
     return avatar;
 };
 
 export const getDiceBearAvatar = (key) => {
-    if(!key) return "";
+    if (!key) return "";
 
     return `${basicConfig.diceBearAvatar}${key}.svg`;
 };
