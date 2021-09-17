@@ -61,10 +61,12 @@ const AdminNavbar = ({ handleMobileOpen }) => {
     const [profileMenu, setProfileMenu] = useState(null);
     const cookies = new Cookies();
     const dispatch = useDispatch();
+    // eslint-disable-next-line
     const user = store.getState().user;
 
     const handleLogout = () => {
         dispatch(RemoveToken());
+        cookies.remove("XTOK");
     };
 
     const handleLangOnClose = () => {
@@ -162,13 +164,14 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                             horizontal: 'center',
                         }}
                     >
-                        <Grid container spacing={2} alignItems="center">
+                        {/* //TODO fix profile styling */}
+                        {/* <Grid container spacing={2} alignItems="center">
                             <Grid item>
                                 <Typography variant="h6" className={classes.title}>
                                     {user.id ? user.firstName + " " + user.lastName : ""}
                                 </Typography>
                             </Grid>
-                        </Grid>
+                        </Grid> */}
 
                         <MenuItem className={classes.menuItem} component={RouterLink} to="/login" onClick={handleLogout} edge="end" color="inherit" aria-label="menu">
                             <Grid container spacing={2} alignItems="center">

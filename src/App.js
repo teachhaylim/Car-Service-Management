@@ -11,26 +11,26 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const routing = useRoutes(routes);
+  const routing = useRoutes(routes(!!store.getState().token));
 
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <GlobalStyles />
         <CssBaseline />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <PerfectScrollbar>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
           {routing}
         </PerfectScrollbar>
       </Provider>

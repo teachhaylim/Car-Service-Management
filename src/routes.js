@@ -14,10 +14,10 @@ import RatingIndex from "views/Rating";
 import LoginView from "views/Login";
 import RegisterView from "views/Register";
 
-const routes = [
+const routes = (isLogin) => [
     {
         path: "app",
-        element: <AdminLayout />,
+        element: isLogin ? <AdminLayout /> : < Navigate to = "/login" />,
         children: [
             { path: "dashboard", element: <Dashboard /> },
             { path: "users", element: <UserIndex /> },

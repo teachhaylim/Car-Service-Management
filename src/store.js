@@ -1,4 +1,5 @@
 import { createStore } from "redux";
+import Cookies from "universal-cookie";
 
 const SET_USER_INFO = "SET_USER_INFO";
 const SET_SHOP_INFO = "SET_SHOP_INFO";
@@ -29,7 +30,7 @@ export const RemoveToken = () => ({
 const initialState = {
     user: {},
     shop: {},
-    token: "",
+    token: new Cookies().get("XTOK"),
 };
 
 //Reducer Section

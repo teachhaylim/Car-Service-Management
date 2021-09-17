@@ -10,6 +10,7 @@ import { Login } from 'api/auth.api';
 import { SetToken } from 'store';
 import { SetUserInfo } from 'store';
 import { toast } from 'react-toastify';
+import Cookies from 'universal-cookie/es6';
 
 const validationSchema = Yup.object({
     email: Yup
@@ -35,9 +36,14 @@ const LoginView = () => {
             Login({email: values.email, password: values.password})
             .then(res => {
                 if(res.meta === 200){
+                    const cookies = new Cookies();
+                    cookies.set('XTOK', res.token);
+
                     dispatch(SetToken(res.token));
                     dispatch(SetUserInfo(res.user));
                     history("/");
+                    
+                    formik.resetForm();
                 }
             })
             .catch(err => {
