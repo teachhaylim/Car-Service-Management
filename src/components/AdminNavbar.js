@@ -9,9 +9,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import store, { RemoveToken } from 'store';
+import store from 'store';
 import { getDiceBearAvatar } from 'utils/basicConfig';
 import { styled } from '@material-ui/system';
+import { SetLogout } from 'store';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,7 +66,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
     const user = store.getState().user;
 
     const handleLogout = () => {
-        dispatch(RemoveToken());
+        dispatch(SetLogout());
         cookies.remove("XTOK");
     };
 

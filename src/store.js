@@ -8,6 +8,7 @@ const SET_TOKEN = "SET_TOKEN";
 const REMOVE_TOKEN = "REMOVE_TOKEN";
 const SET_IS_LOGIN = "SET_IS_LOGIN";
 const SET_ROLE = "SET_ROLE";
+const SET_LOGOUT = "SET_LOGOUT";
 
 //Store Section
 const initialState = {
@@ -48,6 +49,15 @@ export const SetIsLogin = (isLogin) => ({
     isLogin: isLogin,
 });
 
+export const SetLogout = () => ({
+    type: SET_LOGOUT,
+    user: {},
+    shop: {},
+    token: "",
+    isLogin: false,
+    role: 0,
+})
+
 //Reducer Section
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -63,6 +73,8 @@ const rootReducer = (state = initialState, action) => {
             return { ...state, role: action.role };
         case SET_IS_LOGIN:
             return { ...state, isLogin: action.isLogin };
+        case SET_LOGOUT:
+            return { ...action };
         default:
             return state;
     }

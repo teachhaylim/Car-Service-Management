@@ -4,7 +4,8 @@ import { Navigate } from "react-router-dom";
 import AdminLayout from "layouts/AdminLayout";
 import MainLayout from "layouts/MainLayout";
 import Dashboard from "views/Overview";
-import NotFound from "views/NotFound";
+import NotFound from "views/NotFoundPage";
+import Unauthorized from "views/UnauthorizedPage";
 import UserIndex from "views/User";
 import AppointmentIndex from "views/Appointments";
 import ServiceIndex from "views/Services";
@@ -33,7 +34,8 @@ const routes = (isLogin) => [
         path: "/",
         element: <MainLayout />,
         children: [
-            { path: "404", element: <NotFound /> },
+            { path: "/notfound", element: <NotFound /> },
+            { path: "/unauthorized", element: <Unauthorized /> },
             { path: "/login", element: <LoginView /> },
             { path: "/register", element: <RegisterView /> },
             { path: "/", element: <Navigate to="/app/dashboard" /> },
