@@ -98,7 +98,7 @@ const NotFound = () => {
                 eyes on the page you've been searching for
             </StyleSubtitle>
 
-            <StyledButton to={CheckRedirect(token, isLogin) ? "/" : "/login"}>Pick new door</StyledButton>
+            <StyledButton to={CheckRedirect(token, isLogin) ? "/" : "/login"}>Pick a new door</StyledButton>
         </StyledContainer>
     )
 }

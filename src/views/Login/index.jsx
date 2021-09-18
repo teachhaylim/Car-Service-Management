@@ -10,6 +10,7 @@ import { Login } from 'api/auth.api';
 import { SetUserInfo, SetToken, SetIsLogin, SetRole } from 'store';
 import { toast } from 'react-toastify';
 import Cookies from 'universal-cookie/es6';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object({
     email: Yup
@@ -25,6 +26,7 @@ const validationSchema = Yup.object({
 const LoginView = () => {
     const history = useNavigate();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -65,11 +67,11 @@ const LoginView = () => {
             <Paper sx={{ p: 4, minWidth: "40%", borderRadius: "8px" }} elevation={6}>
                 <form onSubmit={formik.handleSubmit}>
                     <Typography align="left" variant="h5">
-                        Welcome back!
+                        {t("welcomeBack")}
                     </Typography>
 
                     <Typography align="left" variant="subtitle2" gutterBottom>
-                        Let's get started
+                        {t("getStarted")}
                     </Typography>
 
                     <LoginForm formik={formik} />
@@ -77,21 +79,21 @@ const LoginView = () => {
                     <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
                         <Stack direction="row" alignItems="center" justifyContent="space-between">
                             <Typography sx={{ mr: 0.5 }}>
-                                Don't have an account?
+                                {t("dontHaveAccount")}
                             </Typography>
 
                             <Link component={RouterLink} to="/register" underline="none" variant="subtitle2">
-                                Register
+                                {t("register")}
                             </Link>
                         </Stack>
 
                         <Link component={RouterLink} to="#" underline="none" variant="subtitle2">
-                            Forget password?
+                            {t("forgotPassword")}
                         </Link>
                     </Stack>
 
                     <Button variant="outlined" fullWidth sx={{ mt: 2 }} type="submit">
-                        Login
+                        {t("login")}
                     </Button>
                 </form>
             </Paper>

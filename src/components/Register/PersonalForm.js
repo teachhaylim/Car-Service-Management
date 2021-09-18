@@ -1,7 +1,10 @@
 import React from 'react'
 import { Divider, Stack, TextField, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 const PersonalForm = ({ formik }) => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Divider textAlign="left" sx={{ my: 1 }}>
@@ -12,7 +15,7 @@ const PersonalForm = ({ formik }) => {
                 <TextField
                     name="firstname"
                     variant="standard"
-                    label="First name"
+                    label={t("firstName")}
                     margin="dense"
                     value={formik.values.firstname}
                     onChange={formik.handleChange}
@@ -23,7 +26,7 @@ const PersonalForm = ({ formik }) => {
                 <TextField
                     name="lastname"
                     variant="standard"
-                    label="Last name"
+                    label={t("lastName")}
                     margin="dense"
                     value={formik.values.lastname}
                     onChange={formik.handleChange}
@@ -34,7 +37,7 @@ const PersonalForm = ({ formik }) => {
                 <TextField
                     name="email"
                     variant="standard"
-                    label="Email"
+                    label={t("email")}
                     margin="dense"
                     value={formik.values.email}
                     onChange={formik.handleChange}
@@ -47,7 +50,7 @@ const PersonalForm = ({ formik }) => {
                 <TextField
                     name="password"
                     variant="standard"
-                    label="Password"
+                    label={t("password")}
                     margin="dense"
                     sx={{ mr: 2 }}
                     fullWidth
@@ -60,7 +63,7 @@ const PersonalForm = ({ formik }) => {
                 <TextField
                     name="passwordConfirmation"
                     variant="standard"
-                    label="Confirm Password"
+                    label={t("confirmPassword")}
                     margin="dense"
                     sx={{ ml: 2 }}
                     fullWidth

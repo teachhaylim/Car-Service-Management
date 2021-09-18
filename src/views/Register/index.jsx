@@ -4,6 +4,7 @@ import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object({
     firstname: Yup
@@ -33,6 +34,7 @@ const validationSchema = Yup.object({
 });
 
 const RegisterView = () => {
+    const { t } = useTranslation();
     const formik = useFormik({
         initialValues: {
             firstname: "",
@@ -55,7 +57,7 @@ const RegisterView = () => {
         <Paper sx={{ p: 4, minWidth: "40%", borderRadius: "8px" }} elevation={6}>
             <form onSubmit={formik.handleSubmit}>
                 <Typography align="left" variant="h5" gutterBottom>
-                    Create a new account
+                    {t("createNewAccount")}
                 </Typography>
 
                 <PersonalForm formik={formik} />
@@ -65,16 +67,16 @@ const RegisterView = () => {
                 <Stack direction="row" justifyContent="space-between" sx={{ mt: 3 }}>
                     <Stack direction="row" alignItems="center" justifyContent="space-between">
                         <Typography sx={{ mr: 0.5 }}>
-                            Already have an account?
+                            {t("alreadyHaveAccount")}
                         </Typography>
 
                         <Link component={RouterLink} to="/login" underline="none" variant="subtitle2">
-                            Login
+                            {t("login")}
                         </Link>
                     </Stack>
 
                     <Button variant="outlined" sx={{ width: "250px" }} type="submit">
-                        Register
+                        {t("register")}
                     </Button>
                 </Stack>
             </form>

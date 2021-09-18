@@ -10,7 +10,7 @@ export const CreateUser = (data) => service({
     url: "/user",
     method: "post",
     data: data,
-})
+});
 
 export const GetUser = (id) => service({
     url: `/user/${id}`,

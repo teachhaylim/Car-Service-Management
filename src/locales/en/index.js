@@ -1,5 +1,9 @@
+import en_user from "./en.user";
+
 const en_lang = {
     translation: {
+        ...en_user,
+
         //Sidebar
         dashboard: "Dashboard",
         overview: "Overview",
@@ -28,6 +32,23 @@ const en_lang = {
 
         // General
         app: "App",
+        login: "Login",
+        register: "Register",
+        personalInfo: "Personal Info",
+        shopInfo: "Shop Info",
+        dontHaveAccount: "Dont have an account?",
+        alreadyHaveAccount: "Already have an account?",
+        forgotPassword: "Forgot password?",
+        welcomeBack: "Welcome back!",
+        getStarted: "Let's get started",
+        createNewAccount: "Create a new account",
+        firstName: "First name",
+        lastName: "Last name",
+        email: "Email",
+        password: "Password",
+        confirmPassword: "Confirm password",
+        shopName: "Shop name",
+        category: "Category",
         // End General
     }
 };

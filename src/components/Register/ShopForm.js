@@ -1,5 +1,6 @@
 import React from 'react';
 import { Divider, MenuItem, Stack, TextField, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 const categories = [
     { label: "1", value: "1" },
@@ -8,18 +9,21 @@ const categories = [
     { label: "4", value: "4" },
 ]
 
+//TODO fetch category
 const ShopForm = ({ formik }) => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Divider textAlign="left" sx={{ mt: 2 }}>
-                <Typography variant="body1">Shop Info</Typography>
+                <Typography variant="body1">{t("shopInfo")}</Typography>
             </Divider>
 
             <Stack>
                 <TextField
                     name="shopName"
                     variant="standard"
-                    label="Shop name"
+                    label={t("shopName")}
                     margin="dense"
                     value={formik.values.shopName}
                     onChange={formik.handleChange}
@@ -31,7 +35,7 @@ const ShopForm = ({ formik }) => {
                     name="category"
                     select
                     variant="standard"
-                    label="Category"
+                    label={t("category")}
                     margin="dense"
                     value={formik.values.category}
                     onChange={formik.handleChange}

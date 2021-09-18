@@ -69,7 +69,7 @@ const UnauthorizedPage = () => {
             </StyledTitle>
 
             <StyleSubtitle>
-                The page are trying to access is not publically available
+                The page that you are trying to access is not publically available
             </StyleSubtitle>
 
             <StyleSubtitle>

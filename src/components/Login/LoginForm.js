@@ -1,8 +1,10 @@
 import React from 'react';
 import { IconButton, InputAdornment, Stack, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = ({ formik }) => {
+    const { t } = useTranslation();
     const [showPassword, setShowPassword] = React.useState(false);
 
     return (
@@ -11,7 +13,7 @@ const LoginForm = ({ formik }) => {
                 <TextField
                     fullWidth
                     name="email"
-                    label="Email"
+                    label={t("email")}
                     margin="dense"
                     value={formik.values.email}
                     onChange={formik.handleChange}
@@ -22,7 +24,7 @@ const LoginForm = ({ formik }) => {
                 <TextField
                     fullWidth
                     name="password"
-                    label="Password"
+                    label={t("password")}
                     type={showPassword ? "text" : "password"}
                     margin="dense"
                     InputProps={{
