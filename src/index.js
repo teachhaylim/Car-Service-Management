@@ -5,6 +5,7 @@ import App from './App';
 import "./assets/styles/index.scss";
 import './i18n';
 import 'react-perfect-scrollbar/dist/css/styles.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render((
   <BrowserRouter>

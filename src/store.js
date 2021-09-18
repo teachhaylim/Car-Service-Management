@@ -56,7 +56,7 @@ export const SetLogout = () => ({
     token: "",
     isLogin: false,
     role: 0,
-})
+});
 
 //Reducer Section
 const rootReducer = (state = initialState, action) => {

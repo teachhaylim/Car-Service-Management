@@ -7,8 +7,7 @@ import * as Yup from "yup";
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Login } from 'api/auth.api';
-import { SetToken } from 'store';
-import { SetUserInfo } from 'store';
+import { SetUserInfo, SetToken, SetIsLogin, SetRole } from 'store';
 import { toast } from 'react-toastify';
 import Cookies from 'universal-cookie/es6';
 
@@ -33,23 +32,31 @@ const LoginView = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            Login({email: values.email, password: values.password})
-            .then(res => {
-                if(res.meta === 200){
-                    const cookies = new Cookies();
-                    cookies.set('XTOK', res.token);
+            Login({ email: values.email, password: values.password })
+                .then(res => {
+                    if (res.meta === 200) {
+                        if (res.user.type === 0) {
+                            formik.resetForm();
+                            return toast.error("Unauthorized account, You don't have permission to access");
+                        }
 
-                    dispatch(SetToken(res.token));
-                    dispatch(SetUserInfo(res.user));
-                    history("/");
-                    
+                        const cookies = new Cookies();
+                        cookies.set('XTOK', res.token);
+
+                        //TODO get shop info
+                        dispatch(SetToken(res.token));
+                        dispatch(SetUserInfo(res.user));
+                        dispatch(SetIsLogin(true));
+                        dispatch(SetRole(res.user.type));
+
+                        history("/");
+                        formik.resetForm();
+                    }
+                })
+                .catch(err => {
                     formik.resetForm();
-                }
-            })
-            .catch(err => {
-                formik.resetForm();
-                toast.error(err.message);
-            })
+                    toast.error(err.message);
+                })
         },
     });
 

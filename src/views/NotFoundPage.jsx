@@ -84,6 +84,7 @@ const NotFound = () => {
                 eyes on the page you've been searching for
             </StyleSubtitle>
 
+            {/* //TODO check permission then redirect to correct route */}
             <StyledButton to="/">Pick new door</StyledButton>
         </StyledContainer>
     )

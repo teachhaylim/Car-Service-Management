@@ -1,26 +1,12 @@
-/**
- * TODO
- *  config pre-defined request here
- * 
- * it will contain destination, payload from other routes as params,
- * destination contain config from basicConfig, api_url + param (destination)
- * 
- * @param destination - check default just in case
- * @param payload
- * 
- * others logic
- * - return "data" from response by server back
- * - check token (jwt) expired
- * - others
- */
-
 import axios from 'axios';
 import { meta } from 'utils/enum';
 import store from 'store';
 import basicConfig from './basicConfig';
 
+console.log(basicConfig);
+
 const service = axios.create({
-    baseURL: basicConfig.apiUrl,
+    baseURL: "localhost:5000/api/v1",
     timeout: 15000
 });
 
@@ -44,7 +30,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
     const res = response.data;
 
-    if (res.meta === meta.TOKENEXPIRE) { 
+    if (res.meta === meta.TOKENEXPIRE) {
         alert("Token Expire, Please Login Again");
     }
     else {

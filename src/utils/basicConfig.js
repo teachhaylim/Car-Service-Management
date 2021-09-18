@@ -2,6 +2,9 @@ import { AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit }
 import { v4 as uuidv4 } from 'uuid';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-identicon-sprites';
+import store, { SetIsLogin, SetRole, SetUserInfo } from 'store';
+import { toast } from 'react-toastify';
+import { GetUserInfo } from 'api/user.api';
 
 export const generalList = [
     { alternateTitle: "alt_overview", title: "overview", href: "dashboard", icon: <Dashboard />, parent: "general", hidden: false },
@@ -32,6 +35,37 @@ export const getDiceBearAvatar = (key) => {
     if (!key) return "";
 
     return `${basicConfig.diceBearAvatar}${key}.svg`;
+};
+
+export const CheckPermission = () => {
+    if (!store.getState().token) {
+        return false;
+    }
+
+    if (store.getState().token && !store.getState().isLogin) {
+        return GetUserInfo()
+            .then(res => {
+                if (res.meta === 200) {
+                    store.dispatch(SetUserInfo(res.data));
+                    store.dispatch(SetIsLogin(true));
+                    store.dispatch(SetRole(res.data.type));
+
+                    //TODO get shop info
+
+                    return true;
+                }
+
+                return false;
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error(err.message);
+
+                return false;
+            });
+    }
+
+    return true;
 };
 
 const basicConfig = {

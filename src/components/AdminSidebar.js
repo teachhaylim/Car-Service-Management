@@ -8,6 +8,8 @@ import { superAdminList } from 'utils/basicConfig';
 import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Navitem } from './CustomComponents/Navitem';
+import { adminList } from 'utils/basicConfig';
+import store from 'store';
 
 const useStyles = makeStyles((theme) => ({
     drawerPaper: {
@@ -47,6 +49,19 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.primary_dark,
     },
 }));
+
+const GenerateRouteBasedOnRole = (role) => {
+    switch (role) {
+        // case 0:
+        //     return [];
+        case 1:
+            return adminList;
+        case 2:
+            return superAdminList;
+        default:
+            return [];
+    }
+}
 
 const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
     const classes = useStyles();
@@ -96,7 +111,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
 
                 <List sx={{ padding: 0, margin: 0 }}>
                     {
-                        superAdminList.map((item, index) => (
+                        GenerateRouteBasedOnRole(store.getState().role).map((item, index) => (
                             <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
                         ))
                     }

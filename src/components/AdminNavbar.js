@@ -10,9 +10,10 @@ import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import store from 'store';
-import { getDiceBearAvatar } from 'utils/basicConfig';
 import { styled } from '@material-ui/system';
 import { SetLogout } from 'store';
+// eslint-disable-next-line
+import { getDiceBearAvatar } from 'utils/basicConfig';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+// eslint-disable-next-line
 const StyledAvatar = styled(Avatar)(() => {
     return {
         marginRight: 8,
@@ -59,7 +61,7 @@ const langItems = [
 const AdminNavbar = ({ handleMobileOpen }) => {
     const classes = useStyles();
     const [langMenu, setlangMenu] = useState(null);
-    const [profileMenu, setProfileMenu] = useState(null);
+    // const [profileMenu, setProfileMenu] = useState(null);
     const cookies = new Cookies();
     const dispatch = useDispatch();
     // eslint-disable-next-line
@@ -78,13 +80,13 @@ const AdminNavbar = ({ handleMobileOpen }) => {
         setlangMenu(e.currentTarget);
     };
 
-    const handleProfileMenuClick = (e) => {
-        setProfileMenu(e.currentTarget);
-    }
+    // const handleProfileMenuClick = (e) => {
+    //     setProfileMenu(e.currentTarget);
+    // }
 
-    const handleProfileMenuOnClose = (e) => {
-        setProfileMenu(null);
-    }
+    // const handleProfileMenuOnClose = (e) => {
+    //     setProfileMenu(null);
+    // }
 
     const handleLangeChange = (value) => {
         setlangMenu(null);
@@ -148,7 +150,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <StyledAvatar src={getDiceBearAvatar(store.getState().user?.id)} onClick={handleProfileMenuClick} />
+                    {/* <StyledAvatar src={getDiceBearAvatar(store.getState().user?.id)} onClick={handleProfileMenuClick} />
 
                     <Popover
                         elevation={6}
@@ -165,14 +167,6 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                             horizontal: 'center',
                         }}
                     >
-                        {/* //TODO fix profile styling */}
-                        {/* <Grid container spacing={2} alignItems="center">
-                            <Grid item>
-                                <Typography variant="h6" className={classes.title}>
-                                    {user.id ? user.firstName + " " + user.lastName : ""}
-                                </Typography>
-                            </Grid>
-                        </Grid> */}
 
                         <MenuItem className={classes.menuItem} component={RouterLink} to="/login" onClick={handleLogout} edge="end" color="inherit" aria-label="menu">
                             <Grid container spacing={2} alignItems="center">
@@ -187,11 +181,11 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                                 </Grid>
                             </Grid>
                         </MenuItem>
-                    </Popover>
+                    </Popover> */}
 
-                    {/* <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
+                    <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
                         <ExitToApp />
-                    </IconButton> */}
+                    </IconButton>
                 </Toolbar>
             </AppBar>
         </div>
