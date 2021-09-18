@@ -31,4 +31,4 @@ export const DeleteUser = (id) => service({
 export const GetUserInfo = () => service({
     url: "/user/info",
     method: "get",
-})
+});

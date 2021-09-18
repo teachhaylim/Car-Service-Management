@@ -1,4 +1,4 @@
-import { Hidden, Drawer, List, Typography, Box, Divider } from '@material-ui/core';
+import { Hidden, Drawer, List, Typography, Box, Divider, Avatar } from '@material-ui/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import basicConfig from 'utils/basicConfig';
@@ -9,11 +9,16 @@ import { makeStyles } from '@material-ui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Navitem } from './CustomComponents/Navitem';
 import { adminList } from 'utils/basicConfig';
-import store from 'store';
+import { shallowEqual, useSelector } from 'react-redux';
+import { styled } from '@material-ui/system';
+import { getDiceBearAvatar } from 'utils/basicConfig';
+import { getRole } from 'utils/basicConfig';
 
 const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         width: basicConfig.drawerSize,
+        display: "flex",
+        justifyContent: "space-between",
     },
     toolbar: {
         height: 64,
@@ -52,19 +57,37 @@ const useStyles = makeStyles((theme) => ({
 
 const GenerateRouteBasedOnRole = (role) => {
     switch (role) {
-        // case 0:
-        //     return [];
         case 1:
             return adminList;
         case 2:
             return superAdminList;
         default:
             return [];
+    };
+};
+
+const ProfileCard = styled("div")(({ theme }) => {
+    return {
+        backgroundColor: theme.palette.primary.light,
+        margin: "16px",
+        borderRadius: 6,
+        boxShadow: "0 4px 6px 2px rgba(0, 0, 0, 0.4)",
+        display: "flex",
+        color: "white",
+    };
+});
+
+const ProfileAvatar = styled(Avatar)(({ theme }) => {
+    return {
+        boxShadow: "0 0 0 4px rgba(255, 255, 255, 0.7)",
+        backgroundColor: 'white',
     }
-}
+})
 
 const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
     const classes = useStyles();
+    const role = useSelector(store => store.role, shallowEqual);
+    const user = useSelector(store => store.user, shallowEqual);
     const container = window !== undefined ? () => window().document.body : undefined;
     const { t } = useTranslation();
 
@@ -88,7 +111,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                         </div>
 
                         <Typography variant="h6" className={classes.title}>
-                            ZenoTech
+                            {basicConfig.appName}
                         </Typography>
                     </div>
                 </div>
@@ -111,14 +134,32 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
 
                 <List sx={{ padding: 0, margin: 0 }}>
                     {
-                        GenerateRouteBasedOnRole(store.getState().role).map((item, index) => (
+                        GenerateRouteBasedOnRole(role).map((item, index) => (
                             <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
                         ))
                     }
                 </List>
             </>
         )
-    }
+    };
+
+    const ProfileContent = () => {
+        return (
+            <ProfileCard>
+                <Box sx={{ p: 1.5, display: "flex", alignItems: "center" }}>
+                    <ProfileAvatar src={getDiceBearAvatar(user?.id)} />
+                </Box>
+                <Box sx={{ pt: 1.5, pl: 0, pr: 1.5, pb: 1.5, width: "100%" }}>
+                    <Box sx={{ textTransform: "uppercase", fontWeight: "bold", letterSpacing: 1.4 }}>
+                        {user?.firstName}
+                    </Box>
+                    <Box sx={{ textTransform: "capitalize", fontSize: 14, fontWeight: "medium", letterSpacing: 1.4 }}>
+                        {getRole(role)}
+                    </Box>
+                </Box>
+            </ProfileCard>
+        )
+    };
 
     return (
         <>
@@ -132,7 +173,11 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                     onClose={handleMobileOpen}
                     ModalProps={{ keepMounted: true }}
                 >
-                    {<DrawerContent />}
+                    <PerfectScrollbar>
+                        {<DrawerContent />}
+                    </PerfectScrollbar>
+
+                    <ProfileContent />
                 </Drawer>
             </Hidden>
 
@@ -148,6 +193,8 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                     <PerfectScrollbar>
                         {<DrawerContent />}
                     </PerfectScrollbar>
+
+                    <ProfileContent />
                 </Drawer>
             </Hidden>
         </>

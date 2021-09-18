@@ -4,6 +4,7 @@ import { createTheme, colors } from '@material-ui/core';
 const theme = createTheme(
     {
         palette: {
+            mode: 'light',
             background: {
                 default: '#F4F6F8',
                 paper: colors.common.white,
@@ -28,6 +29,7 @@ const theme = createTheme(
                 secondary_light: "#a4a4a4",
                 secondary_dark: "#494949",
             },
+            isDark: false,
         },
     },
     // kmKm,

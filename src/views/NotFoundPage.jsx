@@ -2,6 +2,9 @@ import { styled } from '@material-ui/system'
 import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
 import img from "assets/404.png";
+import { shallowEqual, useSelector } from 'react-redux';
+
+// const isDark = false;
 
 const StyledContainer = styled("div")(({ theme }) => {
     return {
@@ -11,7 +14,7 @@ const StyledContainer = styled("div")(({ theme }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "-webkit-radial-gradient(#212121, #000000)",
+        background: theme.palette.isDark ? "-webkit-radial-gradient(#212121, #000000)" : "",
     }
 });
 
@@ -24,18 +27,18 @@ const StyledTitle = styled("div")(({ theme }) => {
         cursor: 'default',
         WebkitTextFillColor: "transparent",
         textAlign: "center",
-        color: "white",
+        // color: "white",
         textTransform: 'uppercase',
     }
 });
 
-const StyleSubtitle = styled("div")((theme) => {
+const StyleSubtitle = styled("div")(({ theme }) => {
     return {
         fontSize: "1.5rem",
         fontWeight: "semibold",
         cursor: 'default',
         textAlign: "center",
-        color: "white",
+        color: theme.palette.isDark ? "white" : "black",
     }
 });
 
@@ -43,7 +46,7 @@ const StyledButton = styled(RouterLink)(({ theme }) => {
     return {
         margin: "30px 0",
         background: "none",
-        color: 'white',
+        color: theme.palette.isDark ? "white" : "black",
         fontSize: 25,
         padding: 12,
         borderRadius: 4,
@@ -59,18 +62,29 @@ const StyledButton = styled(RouterLink)(({ theme }) => {
             boxShadow: "0 5px 15px rgba(72, 72, 72, 0.5)",
             background: theme.palette.secondary.light,
             transform: "scale(1.08, 1.08)",
-            color: 'black',
+            color: theme.palette.isDark ? "black" : "white",
         },
         "&:active": {
             transition: "0.08s all",
             boxShadow: "none",
             transform: "scale(0.9, 0.9)",
-            color: 'white',
+            color: theme.palette.isDark ? "black" : "white",
         }
     }
 });
 
+const CheckRedirect = (token, isLogin) => {
+    if (!token) return false;
+
+    if (token && !isLogin) return false;
+
+    return true;
+}
+
 const NotFound = () => {
+    const token = useSelector(store => store.token, shallowEqual);
+    const isLogin = useSelector(store => store.isLogin, shallowEqual);
+
     return (
         <StyledContainer>
             <img src={img} alt="" />
@@ -84,8 +98,7 @@ const NotFound = () => {
                 eyes on the page you've been searching for
             </StyleSubtitle>
 
-            {/* //TODO check permission then redirect to correct route */}
-            <StyledButton to="/">Pick new door</StyledButton>
+            <StyledButton to={CheckRedirect(token, isLogin) ? "/" : "/login"}>Pick new door</StyledButton>
         </StyledContainer>
     )
 }

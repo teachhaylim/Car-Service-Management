@@ -6,9 +6,13 @@ import "./assets/styles/index.scss";
 import './i18n';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+import store from 'store';
 
 ReactDOM.render((
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 ), document.getElementById('root'));
