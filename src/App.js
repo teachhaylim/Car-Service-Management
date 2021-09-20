@@ -9,6 +9,9 @@ import { GetUserInfo } from 'api/user.api';
 import { useSelector, shallowEqual } from 'react-redux';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import basicConfig from 'utils/basicConfig';
+
+document.title = basicConfig.appName + " - Management";
 
 const CheckPermission = (token, isLogin) => {
   if (!token) {
@@ -44,7 +47,6 @@ const CheckPermission = (token, isLogin) => {
 const App = () => {
   const token = useSelector(state => state.token, shallowEqual);
   const isLogin = useSelector(state => state.isLogin, shallowEqual);
-
   const routing = useRoutes(routes(CheckPermission(token, isLogin)));
 
   return (

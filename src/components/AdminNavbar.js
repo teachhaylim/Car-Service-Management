@@ -8,11 +8,9 @@ import basicConfig from 'utils/basicConfig';
 import MenuIcon from '@mui/icons-material/Menu';
 import { makeStyles } from '@mui/styles';
 import { Link as RouterLink } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import store from 'store';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/system';
 import { SetLogout } from 'store';
-// eslint-disable-next-line
 import { getDiceBearAvatar } from 'utils/basicConfig';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// eslint-disable-next-line
 const StyledAvatar = styled(Avatar)(() => {
     return {
         marginRight: 8,
@@ -61,11 +58,10 @@ const langItems = [
 const AdminNavbar = ({ handleMobileOpen }) => {
     const classes = useStyles();
     const [langMenu, setlangMenu] = useState(null);
-    // const [profileMenu, setProfileMenu] = useState(null);
+    const [profileMenu, setProfileMenu] = useState(null);
     const cookies = new Cookies();
     const dispatch = useDispatch();
-    // eslint-disable-next-line
-    const user = store.getState().user;
+    const user = useSelector(store => store.user, shallowEqual);
 
     const handleLogout = () => {
         dispatch(SetLogout());
@@ -80,13 +76,13 @@ const AdminNavbar = ({ handleMobileOpen }) => {
         setlangMenu(e.currentTarget);
     };
 
-    // const handleProfileMenuClick = (e) => {
-    //     setProfileMenu(e.currentTarget);
-    // }
+    const handleProfileMenuClick = (e) => {
+        setProfileMenu(e.currentTarget);
+    }
 
-    // const handleProfileMenuOnClose = (e) => {
-    //     setProfileMenu(null);
-    // }
+    const handleProfileMenuOnClose = (e) => {
+        setProfileMenu(null);
+    }
 
     const handleLangeChange = (value) => {
         setlangMenu(null);
@@ -154,7 +150,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    {/* <StyledAvatar src={getDiceBearAvatar(store.getState().user?.id)} onClick={handleProfileMenuClick} />
+                    <StyledAvatar src={getDiceBearAvatar(user.id)} onClick={handleProfileMenuClick} />
 
                     <Popover
                         elevation={6}
@@ -185,9 +181,9 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                                 </Grid>
                             </Grid>
                         </MenuItem>
-                    </Popover> */}
+                    </Popover>
 
-                    <IconButton
+                    {/* <IconButton
                         onClick={handleLogout}
                         component={RouterLink}
                         to="/login"
@@ -196,7 +192,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         aria-label="menu"
                         size="large">
                         <ExitToApp />
-                    </IconButton>
+                    </IconButton> */}
                 </Toolbar>
             </AppBar>
         </div>

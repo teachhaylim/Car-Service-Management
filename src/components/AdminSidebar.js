@@ -143,6 +143,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
         )
     };
 
+    // eslint-disable-next-line
     const ProfileContent = () => {
         return (
             <ProfileCard>
@@ -176,7 +177,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                     {<DrawerContent />}
                 </PerfectScrollbar>
 
-                <ProfileContent />
+                {/* <ProfileContent /> */}
             </Drawer>
         </Hidden>
 
@@ -193,7 +194,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                     {<DrawerContent />}
                 </PerfectScrollbar>
 
-                <ProfileContent />
+                {/* <ProfileContent /> */}
             </Drawer>
         </Hidden>
     </>;

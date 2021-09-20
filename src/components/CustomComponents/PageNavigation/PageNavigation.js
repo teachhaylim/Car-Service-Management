@@ -12,11 +12,12 @@ const StyledLink = styled(Typography)(({ theme }) => {
         color: "black",
         '&:hover, &:focus': {
             color: theme.palette.secondary.dark,
-            textDecoration: "underline",
+            // textDecoration: "underline",
         },
     };
 });
 
+// eslint-disable-next-line
 const StyledTypography = styled(Typography)(({ theme }) => {
     return {
         cursor: "default",
@@ -36,11 +37,11 @@ export default function PageNavigation() {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%" }} mt={0} mb={1.5}>
-            <Box mb={0}>
+            {/* <Box mb={0}>
                 <StyledTypography >
                     {t(current?.alternateTitle)}
                 </StyledTypography>
-            </Box>
+            </Box> */}
 
             <Breadcrumbs aria-label="breadcrumb" separator="/">
                 <RouterLink to="/" sx={{}}>
@@ -49,14 +50,12 @@ export default function PageNavigation() {
                     </StyledLink>
                 </RouterLink>
 
-                <RouterLink to="/" sx={{}}>
-                    <StyledLink>
-                        {t(current?.parent)}
-                    </StyledLink>
-                </RouterLink>
+                {/* <Typography color="text.primary" sx={{ cursor: "default" }}>
+                    {t(current.parent)}
+                </Typography> */}
 
                 <Typography color="text.primary" sx={{ cursor: "default" }}>
-                    {t(current?.title)}
+                    {t(current.title)}
                 </Typography>
             </Breadcrumbs>
         </Box>
