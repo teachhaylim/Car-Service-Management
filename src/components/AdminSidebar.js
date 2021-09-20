@@ -181,7 +181,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
         </Hidden>
 
         {/* Desktop Section */}
-        <Hidden lgDown implementation="css">
+        <Hidden xlDown implementation="css">
             <Drawer
                 variant="permanent"
                 open

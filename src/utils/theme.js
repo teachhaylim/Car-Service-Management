@@ -1,7 +1,8 @@
 import { createTheme, colors } from '@mui/material';
+import { adaptV4Theme } from '@mui/material/styles';
 // import kmKm from 'locales/default';
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
     palette: {
         mode: 'light',
         background: {
@@ -30,7 +31,7 @@ const theme = createTheme({
         },
         isDark: false,
     },
-}
+})
 );
 
 export default theme;
