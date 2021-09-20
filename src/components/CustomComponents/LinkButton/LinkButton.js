@@ -1,5 +1,5 @@
-import { Typography } from '@material-ui/core';
-import { styled } from '@material-ui/styles';
+import { Typography } from '@mui/material';
+import { styled } from '@mui/styles';
 import PropTypes from 'prop-types';
 
 const AuthButton = styled(Typography)(({ theme, color }) => {

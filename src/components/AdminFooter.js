@@ -1,8 +1,8 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 import React from 'react'
 import basicConfig from 'utils/basicConfig';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
     appName: {

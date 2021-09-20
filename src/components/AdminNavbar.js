@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Typography, IconButton, Hidden, Toolbar, AppBar, MenuItem, Grid, Popover, Avatar } from '@material-ui/core';
-import { ExitToApp } from '@material-ui/icons';
+import { Typography, IconButton, Hidden, Toolbar, AppBar, MenuItem, Grid, Popover, Avatar } from '@mui/material';
+import { ExitToApp } from '@mui/icons-material';
 import Flag from 'react-flagkit';
 import i18n from "i18next";
 import Cookies from 'universal-cookie';
 import basicConfig from 'utils/basicConfig';
-import MenuIcon from '@material-ui/icons/Menu';
-import { makeStyles } from '@material-ui/styles';
+import MenuIcon from '@mui/icons-material/Menu';
+import { makeStyles } from '@mui/styles';
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import store from 'store';
-import { styled } from '@material-ui/system';
+import { styled } from '@mui/system';
 import { SetLogout } from 'store';
 // eslint-disable-next-line
 import { getDiceBearAvatar } from 'utils/basicConfig';
@@ -103,7 +103,11 @@ const AdminNavbar = ({ handleMobileOpen }) => {
             <AppBar position="fixed" className={classes.appBar} color="inherit">
                 <Toolbar>
                     <Hidden mdUp>
-                        <IconButton edge="start" className={classes.menuButton} onClick={handleMobileOpen}>
+                        <IconButton
+                            edge="start"
+                            className={classes.menuButton}
+                            onClick={handleMobileOpen}
+                            size="large">
                             <MenuIcon />
                         </IconButton>
                     </Hidden>
@@ -112,7 +116,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         Admin Navbar
                     </Typography>
 
-                    <IconButton sx={{ mr: 1 }} onClick={handleLangMenuClick}>
+                    <IconButton sx={{ mr: 1 }} onClick={handleLangMenuClick} size="large">
                         {
                             i18n.language === "en" ? <Flag country="US" /> : <Flag country="KH" />
                         }
@@ -183,7 +187,14 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         </MenuItem>
                     </Popover> */}
 
-                    <IconButton onClick={handleLogout} component={RouterLink} to="/login" edge="end" color="inherit" aria-label="menu">
+                    <IconButton
+                        onClick={handleLogout}
+                        component={RouterLink}
+                        to="/login"
+                        edge="end"
+                        color="inherit"
+                        aria-label="menu"
+                        size="large">
                         <ExitToApp />
                     </IconButton>
                 </Toolbar>

@@ -1,4 +1,4 @@
-import { AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@material-ui/icons";
+import { AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@mui/icons-material";
 import { v4 as uuidv4 } from 'uuid';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-identicon-sprites';

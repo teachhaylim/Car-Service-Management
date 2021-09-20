@@ -1,4 +1,4 @@
-import { styled } from '@material-ui/system'
+import { styled } from '@mui/system'
 import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
 import img from "assets/404.png";

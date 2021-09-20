@@ -1,12 +1,12 @@
 import React from 'react';
 import AdminNavbar from 'components/AdminNavbar';
 import { Outlet } from 'react-router-dom';
-import { Container, Toolbar } from '@material-ui/core';
+import { Container, Toolbar } from '@mui/material';
 import AdminSidebar from 'components/AdminSidebar';
 import { useState } from 'react';
 import basicConfig from 'utils/basicConfig';
 import AdminFooter from 'components/AdminFooter';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { PageNavigation } from 'components/CustomComponents/PageNavigation';
 

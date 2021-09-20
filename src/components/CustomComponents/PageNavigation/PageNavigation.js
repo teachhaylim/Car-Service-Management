@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import * as React from 'react';
-import { Box, Breadcrumbs, Typography } from '@material-ui/core';
+import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { generalList, superAdminList } from 'utils/basicConfig';
 import { useTranslation } from 'react-i18next';
-import HomeIcon from '@material-ui/icons/Home';
-import { styled } from '@material-ui/core/styles';
+import HomeIcon from '@mui/icons-material/Home';
+import { styled } from '@mui/material/styles';
 
 const StyledLink = styled(Typography)(({ theme }) => {
     return {

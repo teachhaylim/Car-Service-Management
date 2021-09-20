@@ -5,7 +5,7 @@ import {
     useLocation
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Box, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 const Navitem = ({ title, href, icon }) => {
     const location = useLocation();

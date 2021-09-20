@@ -1,5 +1,3 @@
-
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'components/GlobalStyles';
 import { useRoutes } from 'react-router-dom';
 import theme from 'utils/theme';
@@ -9,6 +7,8 @@ import store, { SetIsLogin, SetRole, SetUserInfo } from 'store';
 import { toast, ToastContainer } from 'react-toastify';
 import { GetUserInfo } from 'api/user.api';
 import { useSelector, shallowEqual } from 'react-redux';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 
 const CheckPermission = (token, isLogin) => {
   if (!token) {
@@ -48,25 +48,27 @@ const App = () => {
   const routing = useRoutes(routes(CheckPermission(token, isLogin)));
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <CssBaseline />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-      <PerfectScrollbar>
-        {routing}
-      </PerfectScrollbar>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <CssBaseline />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+        <PerfectScrollbar>
+          {routing}
+        </PerfectScrollbar>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

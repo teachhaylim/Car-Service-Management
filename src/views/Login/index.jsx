@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoginForm } from 'components/Login';
-import { Paper, Button, Stack, Typography, Link } from '@material-ui/core';
+import { Paper, Button, Stack, Typography, Link } from '@mui/material';
 import { Link as RouterLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";

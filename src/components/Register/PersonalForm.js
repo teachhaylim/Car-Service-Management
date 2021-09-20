@@ -1,5 +1,5 @@
 import React from 'react'
-import { Divider, Stack, TextField, Typography } from '@material-ui/core';
+import { Divider, Stack, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 const PersonalForm = ({ formik }) => {

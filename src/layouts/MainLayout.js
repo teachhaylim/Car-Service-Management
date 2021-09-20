@@ -1,9 +1,9 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 import MainNavbar from 'components/MainNavbar';
 import MainFooter from 'components/MainFooter';
-import { Box, styled } from '@material-ui/system';
+import { Box, styled } from '@mui/system';
 
 const CustomBox = styled(Box)(() => {
     return {

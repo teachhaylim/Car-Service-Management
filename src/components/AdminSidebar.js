@@ -1,16 +1,16 @@
-import { Hidden, Drawer, List, Typography, Box, Divider, Avatar } from '@material-ui/core';
+import { Hidden, Drawer, List, Typography, Box, Divider, Avatar } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import basicConfig from 'utils/basicConfig';
 import { generalList } from 'utils/basicConfig';
 import logo from "assets/logo/logo_1.png";
 import { superAdminList } from 'utils/basicConfig';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Navitem } from './CustomComponents/Navitem';
 import { adminList } from 'utils/basicConfig';
 import { shallowEqual, useSelector } from 'react-redux';
-import { styled } from '@material-ui/system';
+import { styled } from '@mui/system';
 import { getDiceBearAvatar } from 'utils/basicConfig';
 import { getRole } from 'utils/basicConfig';
 
@@ -161,44 +161,42 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
         )
     };
 
-    return (
-        <>
-            {/* Mobile Section */}
-            <Hidden smUp implementation="css">
-                <Drawer
-                    container={container}
-                    classes={{ paper: classes.drawerPaper }}
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={handleMobileOpen}
-                    ModalProps={{ keepMounted: true }}
-                >
-                    <PerfectScrollbar>
-                        {<DrawerContent />}
-                    </PerfectScrollbar>
+    return <>
+        {/* Mobile Section */}
+        <Hidden smUp implementation="css">
+            <Drawer
+                container={container}
+                classes={{ paper: classes.drawerPaper }}
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleMobileOpen}
+                ModalProps={{ keepMounted: true }}
+            >
+                <PerfectScrollbar>
+                    {<DrawerContent />}
+                </PerfectScrollbar>
 
-                    <ProfileContent />
-                </Drawer>
-            </Hidden>
+                <ProfileContent />
+            </Drawer>
+        </Hidden>
 
-            {/* Desktop Section */}
-            <Hidden mdDown implementation="css">
-                <Drawer
-                    variant="permanent"
-                    open
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <PerfectScrollbar>
-                        {<DrawerContent />}
-                    </PerfectScrollbar>
+        {/* Desktop Section */}
+        <Hidden lgDown implementation="css">
+            <Drawer
+                variant="permanent"
+                open
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <PerfectScrollbar>
+                    {<DrawerContent />}
+                </PerfectScrollbar>
 
-                    <ProfileContent />
-                </Drawer>
-            </Hidden>
-        </>
-    )
+                <ProfileContent />
+            </Drawer>
+        </Hidden>
+    </>;
 }
 
 export default AdminSidebar;

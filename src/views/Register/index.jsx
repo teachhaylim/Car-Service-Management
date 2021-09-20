@@ -1,4 +1,4 @@
-import { Button, Link, Paper, Stack, Typography } from '@material-ui/core';
+import { Button, Link, Paper, Stack, Typography } from '@mui/material';
 import { PersonalForm, ShopForm } from 'components/Register';
 import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
