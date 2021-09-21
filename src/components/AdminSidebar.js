@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         textTransform: "uppercase",
-        fontWeight: "bold",
-        letterSpacing: "2px",
+        letterSpacing: "1px",
         fontFamily: "Fredoka One, cursive !important",
     },
     header: {

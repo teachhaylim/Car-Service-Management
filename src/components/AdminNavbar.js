@@ -12,6 +12,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/system';
 import { SetLogout } from 'store';
 import { getDiceBearAvatar } from 'utils/basicConfig';
+import { langItems } from 'utils/basicConfig';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,14 +48,9 @@ const useStyles = makeStyles((theme) => ({
 const StyledAvatar = styled(Avatar)(() => {
     return {
         marginRight: 8,
-        boxShadow: "0 0 4px 0 rgba(0, 0, 0, 0.5)",
+        boxShadow: "0 3px 6px rgba(72, 72, 72, 0.5)",
     }
 });
-
-const langItems = [
-    { country: "US", title: "English", value: "en" },
-    { country: "KH", title: "ភាសាខ្មែរ", value: "kh" },
-];
 
 const AdminNavbar = ({ handleMobileOpen }) => {
     const classes = useStyles();
@@ -88,10 +85,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
         setlangMenu(null);
         i18n.changeLanguage(value);
 
-        const date = new Date();
-        date.setDate(date.getDate() + 7);
-
-        cookies.set('lang', value, { expires: date });
+        cookies.set('lang', value, { expires: moment().add(7, "days") });
     };
 
     return (

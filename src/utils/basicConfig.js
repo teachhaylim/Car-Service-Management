@@ -38,6 +38,11 @@ export const getDiceBearAvatar = (key) => {
 
 export const getRole = (id) => roles[id];
 
+export const langItems = [
+    { country: "US", title: "English", value: "en" },
+    { country: "KH", title: "ភាសាខ្មែរ", value: "kh" },
+];
+
 const basicConfig = {
     appName: "Cloud Tech",
     drawerSize: 250,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, ListItem } from '@mui/material';
+import { Box, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -9,35 +9,44 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.main,
         color: "white",
         padding: 12,
-        transition: "0.3s ease-in-out",
+        transition: "0.25s all",
         outline: 0,
         overflow: 'hidden',
         cursor: 'pointer',
         borderRadius: theme.borderRadius,
         "&:hover": {
-            boxShadow: "0 3px 8px rgba(72, 72, 72, 0.4)",
+            boxShadow: "0 3px 7px rgba(72, 72, 72, 0.5)",
             backgroundColor: theme.palette.secondary.main,
         },
-        "& .text": {
-            marginLeft: 12,
+        "& .MuiSvgIcon-root": {
+            color: "white",
         },
+        // "& .MuiTypography-root": {
+        //     fontWeight: 300,
+        // },
     },
     inactive: {
         color: "black",
         padding: 12,
-        transition: "0.3s ease-in-out",
+        transition: "0.25s all",
         outline: 0,
         overflow: 'hidden',
         cursor: 'pointer',
         borderRadius: theme.borderRadius,
-        "&:hover": {
-            boxShadow: "0 3px 8px rgba(72, 72, 72, 0.4)",
-            backgroundColor: theme.palette.secondary.light,
-            color: "white",
+        "& .MuiSvgIcon-root": {
+            color: "black",
         },
-        "& .text": {
-            marginLeft: 12,
-        }
+        // "& .MuiTypography-root": {
+        //     fontWeight: 300,
+        // },
+        "&:hover": {
+            boxShadow: "0 3px 7px rgba(72, 72, 72, 0.3)",
+            color: "black",
+            "& .MuiSvgIcon-root": {
+                color: "black",
+                transition: "0.3s all",
+            },
+        },
     }
 }));
 
@@ -50,10 +59,10 @@ const Navitem = ({ title, href, icon }) => {
     }, location.pathname) : false;
 
     return (
-        <Box mx={2} my={1}>
+        <Box mx={2} my={1.5}>
             <ListItem className={active ? classes.active : classes.inactive} component={RouterLink} to={href}>
-                <div>{icon}</div>
-                <div className="text">{title}</div>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText>{title}</ListItemText>
             </ListItem>
         </Box>
     )
