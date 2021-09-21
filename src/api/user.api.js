@@ -1,6 +1,6 @@
 import service from "utils/request";
 
-export const QueryUsers = (data = {}) => service({
+export const QueryUsers = (data) => service({
     url: "/user",
     method: "get",
     params: data,

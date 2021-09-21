@@ -85,7 +85,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
         setlangMenu(null);
         i18n.changeLanguage(value);
 
-        cookies.set('lang', value, { expires: moment().add(7, "days") });
+        cookies.set('lang', value, { expires: moment().add(7, "days").toDate() });
     };
 
     return (
