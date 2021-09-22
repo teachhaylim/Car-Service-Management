@@ -50,6 +50,7 @@ const StyledButton = styled(RouterLink)(({ theme }) => {
         "&:hover": {
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.5)",
             background: theme.palette.secondary.light,
+            border: `1px solid ${theme.palette.secondary.light}`,
             color: "white",
             transform: "scale(1.05, 1.05)",
         },

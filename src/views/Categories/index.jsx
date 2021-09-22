@@ -15,26 +15,28 @@ const columns = [
 const CategoriesIndex = () => {
     //eslint-disable-next-line
     const [datas, setDatas] = useState([]);
-    const [filter, setFilter] = useState({ limit: 10, sortBy: "", page: 0 });
+    const [filter, setFilter] = useState({ limit: 10, sortBy: "name:desc", page: 0 });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(
         () => {
-            QueryCategory(filter)
-                .then(res => {
-                    if (res.meta === 200) {
-                        setDatas(res.results);
-                        setFilter({ limit: res.limit, page: res.page, sortBy: "" });
-                        setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
+            setTimeout(() => {
+                QueryCategory(filter)
+                    .then(res => {
+                        if (res.meta === 200) {
+                            setDatas(res.results);
+                            setFilter({ limit: res.limit, page: res.page, sortBy: "" });
+                            setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
+                            setIsLoading(false);
+                        }
+                    })
+                    .catch(err => {
+                        toast.error(err.message);
                         setIsLoading(false);
-                    }
-                })
-                .catch(err => {
-                    toast.error(err.message);
-                    setIsLoading(false);
-                    console.log(err);
-                })
+                        console.log(err);
+                    })
+            }, 3000);
 
             return () => {
                 setDatas([]);
