@@ -2,17 +2,26 @@
 import * as React from 'react';
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { generalList, superAdminList } from 'utils/basicConfig';
-import { useTranslation } from 'react-i18next';
-import HomeIcon from '@mui/icons-material/Home';
+import { HomeRounded } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 const StyledLink = styled(Typography)(({ theme }) => {
     return {
-        color: "black",
+        color: theme.palette.secondary.contrastText,
         '&:hover, &:focus': {
-            color: theme.palette.secondary.dark,
-            // textDecoration: "underline",
+            color: theme.palette.secondary.main,
+        },
+    };
+
+});
+const StyledTypographyLink = styled(Typography)(({ theme }) => {
+    return {
+        color: theme.palette.secondary.contrastText,
+        textTransform: "capitalize",
+        fontWeight: "bold",
+        letterSpacing: 1.2,
+        '&:hover, &:focus': {
+            color: theme.palette.secondary.main,
         },
     };
 });
@@ -21,42 +30,47 @@ const StyledLink = styled(Typography)(({ theme }) => {
 const StyledTypography = styled(Typography)(({ theme }) => {
     return {
         cursor: "default",
-        fontSize: 22,
+        textTransform: "capitalize",
+        fontWeight: "bold",
         letterSpacing: 1.2,
-        fontFamily: "Fredoka One, cursive !important",
-        // '&:hover, &:focus': {
-        //     color: theme.palette.secondary.dark,
-        // },
     };
 });
 
 export default function PageNavigation() {
     const pathnames = useLocation().pathname.split('/').filter((x) => x);
-    const current = [...generalList, ...superAdminList].filter(p => p.href === pathnames[1])[0];
-    const { t } = useTranslation();
+
+    console.log(useLocation());
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%" }} mt={0} mb={1.5}>
-            {/* <Box mb={0}>
-                <StyledTypography >
-                    {t(current?.alternateTitle)}
-                </StyledTypography>
-            </Box> */}
-
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%" }} mb={1.5}>
             <Breadcrumbs aria-label="breadcrumb" separator="/">
-                <RouterLink to="/" sx={{}}>
-                    <StyledLink>
-                        <HomeIcon sx={{ display: 'flex', alignItems: 'center', marginBottom: 0.5 }} fontSize="small" />
-                    </StyledLink>
-                </RouterLink>
+                {
+                    pathnames.map((item, key) => {
+                        if (item === "app") {
+                            return (
+                                <RouterLink to="/" sx={{}}>
+                                    <StyledLink>
+                                        <HomeRounded sx={{ display: 'flex', alignItems: 'center', marginBottom: 0.5 }} />
+                                    </StyledLink>
+                                </RouterLink>
+                            )
+                        }
 
-                {/* <Typography color="text.primary" sx={{ cursor: "default" }}>
-                    {t(current.parent)}
-                </Typography> */}
+                        if (key === pathnames.length - 1) {
+                            return (
+                                <StyledTypography>
+                                    {item}
+                                </StyledTypography>
+                            )
+                        }
 
-                <Typography color="text.primary" sx={{ cursor: "default" }}>
-                    {t(current.title)}
-                </Typography>
+                        return (
+                            <StyledTypographyLink component={RouterLink} to={item}>
+                                {item}
+                            </StyledTypographyLink>
+                        )
+                    })
+                }
             </Breadcrumbs>
         </Box>
     );

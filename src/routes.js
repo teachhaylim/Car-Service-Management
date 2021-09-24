@@ -10,22 +10,31 @@ import UserIndex from "views/User";
 import AppointmentIndex from "views/Appointments";
 import ServiceIndex from "views/Services";
 import ShopIndex from "views/Shops";
-import CategoriesIndex from "views/Categories";
+import CategoryIndex from "views/Category";
 import RatingIndex from "views/Rating";
 import LoginView from "views/Login";
 import RegisterView from "views/Register";
+import CategoryEdit from "views/Category/CategoryEdit";
 
+//REWORK make dynamic list for routing and sidebar menu 
 const routes = (isLogin) => [
     {
         path: "app",
-        element: isLogin ? <AdminLayout /> : < Navigate to= "/unauthorized" />,
+        element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
         children: [
             { path: "dashboard", element: <Dashboard /> },
             { path: "users", element: <UserIndex /> },
             { path: "appointments", element: <AppointmentIndex /> },
             { path: "services", element: <ServiceIndex /> },
             { path: "shops", element: <ShopIndex /> },
-            { path: "categories", element: <CategoriesIndex /> },
+            {
+                path: "category",
+                name: "CategoryIndex",
+                children: [
+                    { path: "/", name: "Category", meta: { name: 1 }, element: <CategoryIndex /> },
+                    { path: "edit", name: "Edit", element: <CategoryEdit /> },
+                ]
+            },
             { path: "rating", element: <RatingIndex /> },
             { path: "*", element: <Navigate to="/notfound" /> }
         ]
