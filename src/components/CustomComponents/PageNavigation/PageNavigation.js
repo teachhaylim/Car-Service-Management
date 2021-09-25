@@ -39,8 +39,6 @@ const StyledTypography = styled(Typography)(({ theme }) => {
 export default function PageNavigation() {
     const pathnames = useLocation().pathname.split('/').filter((x) => x);
 
-    console.log(useLocation());
-
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', width: "100%" }} mb={1.5}>
             <Breadcrumbs aria-label="breadcrumb" separator="/">
@@ -48,7 +46,7 @@ export default function PageNavigation() {
                     pathnames.map((item, key) => {
                         if (item === "app") {
                             return (
-                                <RouterLink to="/" sx={{}}>
+                                <RouterLink to="/" sx={{}} key={key}>
                                     <StyledLink>
                                         <HomeRounded sx={{ display: 'flex', alignItems: 'center', marginBottom: 0.5 }} />
                                     </StyledLink>
@@ -58,14 +56,14 @@ export default function PageNavigation() {
 
                         if (key === pathnames.length - 1) {
                             return (
-                                <StyledTypography>
+                                <StyledTypography key={key}>
                                     {item}
                                 </StyledTypography>
                             )
                         }
 
                         return (
-                            <StyledTypographyLink component={RouterLink} to={item}>
+                            <StyledTypographyLink  key={key}component={RouterLink} to={item}>
                                 {item}
                             </StyledTypographyLink>
                         )
