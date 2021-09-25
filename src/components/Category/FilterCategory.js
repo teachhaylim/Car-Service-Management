@@ -5,7 +5,7 @@ import { FilterAlt, FilterList } from '@mui/icons-material';
 //TODO create at, update at filter
 const FilterCategory = ({ handleFilter }) => {
     const [filterMenu, setFilterMenu] = useState(null);
-    const [filter, setFilter] = useState({ name: 0 });
+    const [filter, setFilter] = useState({ name: 0, createAt: 0, updateAt: 0 });
     const [isFilter, setIsFilter] = useState(false);
 
     const handleLangOnClose = () => {
@@ -17,7 +17,9 @@ const FilterCategory = ({ handleFilter }) => {
     };
 
     const handleFilterChange = (e) => {
-        setFilter({ name: Number(e.target.value) });
+        console.log(e.target.name);
+
+        // setFilter({ name: Number(e.target.value) });
     }
 
     const handleFilterConfirm = () => {
@@ -63,7 +65,23 @@ const FilterCategory = ({ handleFilter }) => {
                     <Grid item>
                         <FormControl>
                             <FormLabel>Category name</FormLabel>
-                            <RadioGroup row value={filter.name} onChange={handleFilterChange}>
+                            <RadioGroup row name="name" value={filter.name} onChange={handleFilterChange}>
+                                <FormControlLabel value={1} control={<Radio />} label="Ascending" />
+                                <FormControlLabel value={-1} control={<Radio />} label="Descending" />
+                            </RadioGroup>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Create at</FormLabel>
+                            <RadioGroup row name="createAt" value={filter.createAt} onChange={handleFilterChange}>
+                                <FormControlLabel value={1} control={<Radio />} label="Ascending" />
+                                <FormControlLabel value={-1} control={<Radio />} label="Descending" />
+                            </RadioGroup>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Update at</FormLabel>
+                            <RadioGroup row name="updateAt" value={filter.updateAt} onChange={handleFilterChange}>
                                 <FormControlLabel value={1} control={<Radio />} label="Ascending" />
                                 <FormControlLabel value={-1} control={<Radio />} label="Descending" />
                             </RadioGroup>
