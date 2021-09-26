@@ -1,8 +1,10 @@
+import en_category from "./en.category";
 import en_user from "./en.user";
 
 const en_lang = {
     translation: {
         ...en_user,
+        ...en_category,
 
         //Sidebar
         dashboard: "Dashboard",
@@ -30,7 +32,6 @@ const en_lang = {
         alt_shops: "Shops",
         //End Alternate Title
 
-        // General
         app: "App",
         login: "Login",
         register: "Register",
@@ -49,7 +50,25 @@ const en_lang = {
         confirmPassword: "Confirm password",
         shopName: "Shop name",
         category: "Category",
-        // End General
+        confirmDelete: "Confirm Delete",
+        confirmDeleteText: "Are you sure you want to delete this",
+        confirmDeletePlaceholder: "Are you sure want to delete",
+        confirmBtn: "Confirm",
+        cancelBtn: "Cancel",
+        addBtn: "Add",
+        search: "Search",
+        asc: "Ascending",
+        desc: "Descending",
+        filterOption: "Filter Options",
+        createAt: "Create at",
+        updateAt: "Update at",
+        applyFilter: "Apply filter",
+        resetFilter: "Reset filter",
+        id: "Id",
+        remark: "Remark",
+        actions: "Actions",
+        missingId: "Missing Id",
+        submitBtn: "Submit",
     }
 };
 

@@ -1,27 +1,55 @@
-import { Add, Search, Clear } from '@mui/icons-material';
-import { IconButton, Card, CardContent, Grid, TextField, Button, Stack, Typography } from '@mui/material';
+import { Add, Search } from '@mui/icons-material';
+import { IconButton, Card, CardContent, Grid, Button, Stack, Typography } from '@mui/material';
+import { DeleteCategory } from 'api/category.api';
 import { QueryCategory } from 'api/category.api';
-import { CategoryTable } from 'components/Category';
-import { FilterCategory } from 'components/Category';
+import { CategoryTable, FilterCategory } from 'components/Category';
+import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
+import { SearchInput } from 'components/CustomComponents/SearchInput';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
-//TODO search
 const CategoriesIndex = () => {
     const [datas, setDatas] = useState([]);
-    const [filter, setFilter] = useState({ limit: 10, page: 0, sortBy: {} });
+    const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [showSearch, setShowSearch] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const [deleteObject, setDeleteObject] = useState({});
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const FetchData = () => {
+        QueryCategory(filter)
+            .then(res => {
+                if (res.meta === 200) {
+                    setDatas(res.results);
+                    setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
+                    setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
+                    setIsLoading(false);
+                }
+            })
+            .catch(err => {
+                toast.error(err.message);
+                setIsLoading(false);
+                console.log(err);
+            });
+    };
 
     const handleEdit = (value) => {
-        console.log("Edit", value);
+        const state = {
+            object: value,
+            isEdit: true,
+        }
+
+        navigate("edit", { state });
     };
 
     const handleDelete = (value) => {
-        console.log("Delete", value);
+        setIsDelete(true);
+        setDeleteObject(value);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -43,53 +71,47 @@ const CategoriesIndex = () => {
     };
 
     const handleAddCategory = () => {
-        navigate("edit")
+        const state = {
+            object: {},
+            isEdit: false,
+        }
+
+        navigate("edit", { state });
+    };
+
+    const handleSearch = (value) => {
+        setFilter({ ...filter, name: value });
+    };
+
+    const handleDeleteConfirm = (value) => {
+        DeleteCategory(value.id)
+            .then(res => {
+                if (res.meta === 200) {
+                    setIsDelete(false);
+                    FetchData();
+
+                    return toast.success("Category deleted successfully");
+                }
+            })
+            .catch(err => {
+                setIsDelete(false);
+                console.log(err);
+                toast.error(err.message);
+            })
     }
 
     useEffect(
         () => {
             setTimeout(() => {
-                QueryCategory(filter)
-                    .then(res => {
-                        if (res.meta === 200) {
-                            setDatas(res.results);
-                            setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy });
-                            setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
-                            setIsLoading(false);
-                        }
-                    })
-                    .catch(err => {
-                        toast.error(err.message);
-                        setIsLoading(false);
-                        console.log(err);
-                    });
-            }, 1500);
+                FetchData();
+            }, 1000);
 
             return () => {
                 setDatas([]);
                 setIsLoading(true);
             }
         },
-        [filter.page, filter.limit, filter.sortBy]
-    );
-
-    const TextContent = () => (
-        <TextField
-            label="Search"
-            size="small"
-            InputProps={{
-                endAdornment: <IconButton size="small" onClick={handleShowSearch}><Clear fontSize="small" /></IconButton>
-            }}
-            sx={{
-                width: 500,
-            }}
-        />
-    );
-
-    const TextInput = () => (
-        <Typography variant="h6">
-            Category List
-        </Typography>
+        [filter.page, filter.limit, filter.sortBy, filter.name]
     );
 
     return (
@@ -98,7 +120,7 @@ const CategoriesIndex = () => {
                 <CardContent>
                     <Grid item container justifyContent="space-between" alignItems="center">
                         <Stack spacing={2}>
-                            {!showSearch ? <TextInput /> : <TextContent />}
+                            {showSearch ? <SearchInput title={"Search category name"} func={handleSearch} /> : <Typography variant="h6"> {t("categoryList")} </Typography>}
                         </Stack>
 
                         <Grid item>
@@ -109,14 +131,31 @@ const CategoriesIndex = () => {
 
                                 <FilterCategory handleFilter={handleFilterConfirm} />
 
-                                <Button variant="contained" startIcon={<Add />} onClick={handleAddCategory}> Add </Button>
+                                <Button variant="contained" startIcon={<Add />} onClick={handleAddCategory}> {t("addBtn")} </Button>
                             </Stack>
                         </Grid>
                     </Grid>
 
-                    <CategoryTable isLoading={isLoading} filter={filter} tableFilter={tableFilter} datas={datas} handleEdit={handleEdit} handleDelete={handleDelete} handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage} />
+                    <CategoryTable
+                        isLoading={isLoading}
+                        filter={filter}
+                        tableFilter={tableFilter}
+                        datas={datas}
+                        handleEdit={handleEdit}
+                        handleDelete={handleDelete}
+                        handleChangePage={handleChangePage}
+                        handleChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
                 </CardContent>
             </Card>
+
+            <DeleteDialog
+                bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.name}`}
+                isOpen={isDelete}
+                onClose={() => setIsDelete(false)}
+                onConfirm={handleDeleteConfirm}
+                object={deleteObject}
+            />
         </div>
     )
 }

@@ -31,7 +31,7 @@ const routes = (isLogin) => [
                 path: "category",
                 name: "CategoryIndex",
                 children: [
-                    { path: "/", name: "Category", meta: { name: 1 }, element: <CategoryIndex /> },
+                    { path: "/", name: "Category", element: <CategoryIndex /> },
                     { path: "edit", name: "Edit", element: <CategoryEdit /> },
                 ]
             },

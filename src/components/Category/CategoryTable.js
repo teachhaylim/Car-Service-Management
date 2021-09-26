@@ -2,16 +2,18 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Skeleton, CircularProgress, TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, LinearProgress, Grid, Typography } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 const header = [
-    { field: 'id', headerName: 'Id', width: 50 },
-    { field: 'name', headerName: 'Category Name', width: 150 },
-    { field: 'remark', headerName: 'Remark', width: 150 },
-    { field: 'actions', headerName: 'Actions', width: 80 },
+    { field: 'id', headerName: 'id', width: 50 },
+    { field: 'name', headerName: 'categoryName', width: 150 },
+    { field: 'remark', headerName: 'remark', width: 150 },
+    { field: 'actions', headerName: 'actions', width: 80 },
 ];
 
-//TODO add translation, adjust column width
+//TODO adjust column width
 const CategoryTable = ({ isLoading, filter, tableFilter, datas, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
+    const { t } = useTranslation();
     const LinearLoading = () => (
         <TableRow sx={{ height: 50 }}>
             <TableCell align="center" colSpan={4}>
@@ -56,7 +58,7 @@ const CategoryTable = ({ isLoading, filter, tableFilter, datas, handleEdit, hand
                         <TableRow>
                             {
                                 header.map((item, key) => (
-                                    <TableCell key={key} sx={{ width: item.width }}>{item.headerName}</TableCell>
+                                    <TableCell key={key} sx={{ width: item.width }}>{t(item.headerName)}</TableCell>
                                 ))
                             }
                         </TableRow>

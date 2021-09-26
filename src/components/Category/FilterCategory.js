@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { Badge, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Popover, Radio, RadioGroup, Typography } from "@mui/material";
 import { FilterAlt, FilterList } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
-//TODO create at, update at filter
 const FilterCategory = ({ handleFilter }) => {
     const [filterMenu, setFilterMenu] = useState(null);
     const [filter, setFilter] = useState({ name: 0, createAt: 0, updateAt: 0 });
     const [isFilter, setIsFilter] = useState(false);
+    const { t } = useTranslation();
 
     const handleLangOnClose = () => {
         setFilterMenu(null);
     };
 
-    const handleLangMenuClick = (e) => {
+    const handleFilterMenu = (e) => {
         setFilterMenu(e.currentTarget);
     };
 
     const handleFilterChange = (e) => {
-        console.log(e.target.name);
-
-        // setFilter({ name: Number(e.target.value) });
+        setFilter({ ...filter, [e.target.name]: Number(e.target.value) });
     }
 
     const handleFilterConfirm = () => {
@@ -30,14 +29,14 @@ const FilterCategory = ({ handleFilter }) => {
 
     const handleFilterReset = () => {
         handleFilter({});
-        setFilter({ name: 0 });
+        setFilter({ name: 0, createAt: 0, updateAt: 0 });
         setFilterMenu(null);
         setIsFilter(false);
     }
 
     return (
         <>
-            <IconButton color={isFilter ? "secondary" : "default"} onClick={handleLangMenuClick}>
+            <IconButton color={isFilter ? "secondary" : "default"} onClick={handleFilterMenu}>
                 <Badge color="secondary" variant="dot" invisible={!isFilter}>
                     {isFilter ? <FilterAlt /> : <FilterList />}
                 </Badge>
@@ -59,42 +58,46 @@ const FilterCategory = ({ handleFilter }) => {
             >
                 <Grid item sx={{ padding: 2 }}>
                     <Grid item sx={{ mb: 0 }}>
-                        <Typography variant="h6">Filter Option</Typography>
+                        <Typography variant="h6">{t("filterOption")}</Typography>
                     </Grid>
 
-                    <Grid item>
+                    <Grid item sx={{ my: 1 }}>
                         <FormControl>
-                            <FormLabel>Category name</FormLabel>
-                            <RadioGroup row name="name" value={filter.name} onChange={handleFilterChange}>
-                                <FormControlLabel value={1} control={<Radio />} label="Ascending" />
-                                <FormControlLabel value={-1} control={<Radio />} label="Descending" />
+                            <FormLabel>{t("categoryName")}</FormLabel>
+                            <RadioGroup row name={t("categoryName")} value={filter.name} onChange={handleFilterChange}>
+                                <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
+                                <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
                         </FormControl>
+                    </Grid>
 
+                    <Grid item sx={{ my: 1 }}>
                         <FormControl>
-                            <FormLabel>Create at</FormLabel>
-                            <RadioGroup row name="createAt" value={filter.createAt} onChange={handleFilterChange}>
-                                <FormControlLabel value={1} control={<Radio />} label="Ascending" />
-                                <FormControlLabel value={-1} control={<Radio />} label="Descending" />
+                            <FormLabel>{t("createAt")}</FormLabel>
+                            <RadioGroup row name={t("createAt")} value={filter.createAt} onChange={handleFilterChange}>
+                                <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
+                                <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
                         </FormControl>
+                    </Grid>
 
+                    <Grid item sx={{ my: 1 }}>
                         <FormControl>
-                            <FormLabel>Update at</FormLabel>
-                            <RadioGroup row name="updateAt" value={filter.updateAt} onChange={handleFilterChange}>
-                                <FormControlLabel value={1} control={<Radio />} label="Ascending" />
-                                <FormControlLabel value={-1} control={<Radio />} label="Descending" />
+                            <FormLabel>{t("updateAt")}</FormLabel>
+                            <RadioGroup row name={t("updateAt")} value={filter.updateAt} onChange={handleFilterChange}>
+                                <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
+                                <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
                         </FormControl>
                     </Grid>
 
                     <Grid container justifyContent="space-between">
-                        <Button variant="outlined" color="error" size="small" onClick={handleFilterReset}>
-                            Reset Filter
+                        <Button variant="contained" size="small" onClick={handleFilterConfirm}>
+                            {t("applyFilter")}
                         </Button>
 
-                        <Button variant="contained" size="small" onClick={handleFilterConfirm}>
-                            Apply Filter
+                        <Button variant="outlined" color="error" size="small" onClick={handleFilterReset}>
+                            {t("resetFilter")}
                         </Button>
                     </Grid>
                 </Grid>

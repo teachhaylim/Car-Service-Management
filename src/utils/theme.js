@@ -11,14 +11,14 @@ const theme = createTheme(
             },
             primary: {
                 main: "#651fff",
-                light: "#a255ff",
-                dark: "#0100ca",
+                light: "#7c4dff",
+                dark: "#6200ea",
                 contrastText: '#ffffff',
             },
             secondary: {
                 main: "#512da8",
-                light: "#8559da",
-                dark: "#140078",
+                light: "#5e35b1",
+                dark: "#4527a0",
                 contrastText: "#000000",
             },
             text: {
