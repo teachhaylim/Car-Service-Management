@@ -1,4 +1,4 @@
-import { AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@mui/icons-material";
+import { AccountBox, AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@mui/icons-material";
 import { v4 as uuidv4 } from 'uuid';
 import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-identicon-sprites';
@@ -7,16 +7,16 @@ const roles = ["user", "admin", "super admin"];
 
 export const generalList = [
     { alternateTitle: "alt_overview", title: "overview", href: "dashboard", icon: <Dashboard />, parent: "general", hidden: false },
+    { alternateTitle: "alt_profile", title: "profile", href: "profile", icon: <AccountBox />, parent: "general", hidden: false },
 ];
 
 export const adminList = [
     { alternateTitle: "alt_appointments", title: "appointments", href: "appointments", icon: <AddToQueue />, parent: "management", hidden: false },
     { alternateTitle: "alt_services", title: "services", href: "services", icon: <VerticalSplit />, parent: "management", hidden: false },
+    { alternateTitle: "alt_shops", title: "shops", href: "shops", icon: <Store />, parent: "management", hidden: false },
 ];
 
 export const superAdminList = [
-    ...adminList,
-    { alternateTitle: "alt_shops", title: "shops", href: "shops", icon: <Store />, parent: "management", hidden: false },
     { alternateTitle: "alt_users", title: "users", href: "users", icon: <People />, parent: "management", hidden: false },
     { alternateTitle: "alt_categories", title: "categories", href: "category", icon: <TableChart />, parent: "management", hidden: false },
     { alternateTitle: "alt_rating", title: "rating", href: "rating", icon: <Star />, parent: "management", hidden: false },

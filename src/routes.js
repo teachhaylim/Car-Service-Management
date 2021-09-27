@@ -18,7 +18,6 @@ import CategoryEdit from "views/Category/CategoryEdit";
 
 const adminRoutes = [
     { path: "users", element: <UserIndex /> },
-    { path: "shops", element: <ShopIndex /> },
     {
         path: "category",
         name: "CategoryIndex",
@@ -33,6 +32,7 @@ const adminRoutes = [
 const generalRoutes = [
     { path: "appointments", element: <AppointmentIndex /> },
     { path: "services", element: <ServiceIndex /> },
+    { path: "shops", element: <ShopIndex /> }, //TODO dynamic shop page
 ];
 
 const routes = (isLogin = false, role = 0) => {
@@ -41,7 +41,8 @@ const routes = (isLogin = false, role = 0) => {
             path: "app",
             element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
             children: [
-                { path: "dashboard", element: <Dashboard /> },
+                { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
+                { path: "profile", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
                 { path: "*", element: <Navigate to="/notfound" /> },
             ]
         },

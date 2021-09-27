@@ -54,17 +54,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const GenerateRouteBasedOnRole = (role) => {
-    switch (role) {
-        case 1:
-            return adminList;
-        case 2:
-            return superAdminList;
-        default:
-            return [];
-    };
-};
-
 const ProfileCard = styled("div")(({ theme }) => {
     return {
         backgroundColor: theme.palette.primary.light,
@@ -103,6 +92,7 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
     const DrawerContent = () => {
         return (
             <>
+                {/* //TODO change to use MUI */}
                 <div className={classes.toolbar}>
                     <div className={classes.header}>
                         <div className={classes.headerImgContainer}>
@@ -133,7 +123,19 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
 
                 <List sx={{ padding: 0, margin: 0 }}>
                     {
-                        GenerateRouteBasedOnRole(role).map((item, index) => (
+                        adminList.map((item, index) => (
+                            <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
+                        ))
+                    }
+                </List>
+
+                <Divider />
+
+                <SectionTitle title="operation" />
+
+                <List sx={{ padding: 0, margin: 0 }}>
+                    {
+                        superAdminList.map((item, index) => (
                             <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
                         ))
                     }
