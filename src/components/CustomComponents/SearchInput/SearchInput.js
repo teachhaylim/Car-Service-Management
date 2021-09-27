@@ -43,7 +43,7 @@ const SearchInput = ({ func, title }) => {
 
 SearchInput.propTypes = {
     func: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
 }
 
 export default SearchInput;

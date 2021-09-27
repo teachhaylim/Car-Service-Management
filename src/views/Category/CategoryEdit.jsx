@@ -30,20 +30,18 @@ const CategoryEdit = () => {
         onSubmit: (values) => {
             formik.resetForm();
 
-            if (!category.id) {
-                toast.warn(t("missingId"));
-                return navigate("/app/category");
-            }
-
             if (isEdit) {
+                if (!category.id) {
+                    toast.warn(t("missingId"));
+                    return navigate("/app/category");
+                }
+
                 UpdateCategory(category.id, values)
                     .then((res) => {
                         if (res.meta === 200) {
                             toast.success("Category updated successfully");
                             return navigate("/app/category");
                         }
-
-                        console.log(res);
                     })
                     .catch(err => {
                         toast.error(err.message);
@@ -54,12 +52,10 @@ const CategoryEdit = () => {
 
             CreateCategory(values)
                 .then((res) => {
-                    if (res.meta === 200) {
+                    if (res.meta === 201) {
                         toast.success("Category added successfully");
                         return navigate("/app/category");
                     }
-
-                    console.log(res);
                 })
                 .catch(err => {
                     toast.error(err.message);

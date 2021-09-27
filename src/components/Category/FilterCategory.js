@@ -64,7 +64,7 @@ const FilterCategory = ({ handleFilter }) => {
                     <Grid item sx={{ my: 1 }}>
                         <FormControl>
                             <FormLabel>{t("categoryName")}</FormLabel>
-                            <RadioGroup row name={t("categoryName")} value={filter.name} onChange={handleFilterChange}>
+                            <RadioGroup row name="name" value={filter.name} onChange={handleFilterChange}>
                                 <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
                                 <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
@@ -74,7 +74,7 @@ const FilterCategory = ({ handleFilter }) => {
                     <Grid item sx={{ my: 1 }}>
                         <FormControl>
                             <FormLabel>{t("createAt")}</FormLabel>
-                            <RadioGroup row name={t("createAt")} value={filter.createAt} onChange={handleFilterChange}>
+                            <RadioGroup row name="createAt" value={filter.createAt} onChange={handleFilterChange}>
                                 <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
                                 <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
@@ -84,7 +84,7 @@ const FilterCategory = ({ handleFilter }) => {
                     <Grid item sx={{ my: 1 }}>
                         <FormControl>
                             <FormLabel>{t("updateAt")}</FormLabel>
-                            <RadioGroup row name={t("updateAt")} value={filter.updateAt} onChange={handleFilterChange}>
+                            <RadioGroup row name="updateAt" value={filter.updateAt} onChange={handleFilterChange}>
                                 <FormControlLabel value={1} control={<Radio />} label={t("asc")} />
                                 <FormControlLabel value={-1} control={<Radio />} label={t("desc")} />
                             </RadioGroup>
