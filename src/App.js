@@ -42,12 +42,13 @@ const CheckPermission = (token, isLogin) => {
   }
 
   return true;
-}
+};
 
 const App = () => {
   const token = useSelector(state => state.token, shallowEqual);
   const isLogin = useSelector(state => state.isLogin, shallowEqual);
-  const routing = useRoutes(routes(CheckPermission(token, isLogin)));
+  const role = useSelector(state => state.role, shallowEqual);
+  const routing = useRoutes(routes(CheckPermission(token, isLogin), role));
 
   return (
     <StyledEngineProvider injectFirst>

@@ -119,12 +119,12 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         onClose={handleLangOnClose}
                         disableScrollLock={true}
                         anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
+                            vertical: 'top',
+                            horizontal: 'right',
                         }}
                         transformOrigin={{
                             vertical: 'top',
-                            horizontal: 'center',
+                            horizontal: 'right',
                         }}
                     >
                         {
