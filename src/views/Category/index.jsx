@@ -1,7 +1,6 @@
 import { Add, Search } from '@mui/icons-material';
 import { IconButton, Card, CardContent, Grid, Button, Stack, Typography } from '@mui/material';
-import { DeleteCategory } from 'api/category.api';
-import { QueryCategory } from 'api/category.api';
+import { DeleteCategory, QueryCategory } from 'api/category.api';
 import { CategoryTable, FilterCategory } from 'components/Category';
 import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
@@ -115,7 +114,7 @@ const CategoriesIndex = () => {
     );
 
     return (
-        <div>
+        <>
             <Card>
                 <CardContent>
                     <Grid item container justifyContent="space-between" alignItems="center">
@@ -156,7 +155,7 @@ const CategoriesIndex = () => {
                 onConfirm={handleDeleteConfirm}
                 object={deleteObject}
             />
-        </div>
+        </>
     )
 }
 

@@ -14,6 +14,7 @@ const header = [
 //TODO adjust column width
 const CategoryTable = ({ isLoading, filter, tableFilter, datas, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
+
     const LinearLoading = () => (
         <TableRow sx={{ height: 50 }}>
             <TableCell align="center" colSpan={4}>
