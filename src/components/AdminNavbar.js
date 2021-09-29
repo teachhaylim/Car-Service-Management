@@ -11,7 +11,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/system';
 import { SetLogout } from 'store';
-import { getDiceBearAvatar } from 'utils/basicConfig';
+import { getDiceBearAvatar } from 'utils/generalFunc';
 import { langItems } from 'utils/basicConfig';
 import moment from 'moment';
 
@@ -144,7 +144,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <StyledAvatar src={getDiceBearAvatar(user.id)} onClick={handleProfileMenuClick} />
+                    <StyledAvatar src={`${basicConfig.fileUrl}${user.profilePic}`} onClick={handleProfileMenuClick} />
 
                     <Popover
                         elevation={6}

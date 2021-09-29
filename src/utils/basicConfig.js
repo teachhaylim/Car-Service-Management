@@ -1,9 +1,6 @@
 import { AccountBox, AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@mui/icons-material";
-import { v4 as uuidv4 } from 'uuid';
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/avatars-identicon-sprites';
 
-const roles = ["user", "admin", "super admin"];
+export const roles = ["user", "admin", "super admin"];
 
 export const generalList = [
     { alternateTitle: "alt_overview", title: "overview", href: "dashboard", icon: <Dashboard />, parent: "general", hidden: false },
@@ -22,22 +19,6 @@ export const superAdminList = [
     { alternateTitle: "alt_rating", title: "rating", href: "rating", icon: <Star />, parent: "management", hidden: false },
 ];
 
-export const generateDiceBearAvatar = (key = uuidv4()) => {
-    const avatar = createAvatar(style, {
-        seed: key,
-    });
-
-    return avatar;
-};
-
-export const getDiceBearAvatar = (key) => {
-    if (!key) return "";
-
-    return `${basicConfig.diceBearAvatar}${key}.svg`;
-};
-
-export const getRole = (id) => roles[id];
-
 export const langItems = [
     { country: "US", title: "English", value: "en" },
     { country: "KH", title: "ភាសាខ្មែរ", value: "kh" },
@@ -46,7 +27,8 @@ export const langItems = [
 const basicConfig = {
     appName: "Cloud Tech",
     drawerSize: 250,
-    apiUrl: "http://localhost:5000/api/v1",
+    apiUrl: "http://localhost:5000/api/v1/",
+    authUrl: "http://localhost:5000/auth/",
     fileUrl: "http://localhost:5000/file/",
     diceBearAvatar: "https://avatars.dicebear.com/api/identicon/",
 };

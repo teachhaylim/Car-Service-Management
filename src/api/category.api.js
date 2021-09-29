@@ -1,29 +1,29 @@
-import service from "utils/request";
+import ApiRequest from "utils/api.request";
 
-export const QueryCategory = (data) => service({
-    url: "/category",
+export const QueryCategory = (data) => ApiRequest({
+    url: "category",
     method: "get",
     params: data,
 });
 
-export const CreateCategory = (data) => service({
-    url: "/category",
+export const CreateCategory = (data) => ApiRequest({
+    url: "category",
     method: "post",
     data: data,
 });
 
-export const GetCategory = (id) => service({
-    url: `/category/${id}`,
+export const GetCategory = (id) => ApiRequest({
+    url: `category/${id}`,
     method: "get",
 });
 
-export const UpdateCategory = (id, data) => service({
-    url: `/category/${id}`,
+export const UpdateCategory = (id, data) => ApiRequest({
+    url: `category/${id}`,
     method: "patch",
     data: data,
 });
 
-export const DeleteCategory = (id) => service({
-    url: `/category/${id}`,
+export const DeleteCategory = (id) => ApiRequest({
+    url: `category/${id}`,
     method: "delete",
 });

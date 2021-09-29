@@ -11,8 +11,7 @@ import { Navitem } from './CustomComponents/Navitem';
 import { adminList } from 'utils/basicConfig';
 import { shallowEqual, useSelector } from 'react-redux';
 import { styled } from '@mui/system';
-import { getDiceBearAvatar } from 'utils/basicConfig';
-import { getRole } from 'utils/basicConfig';
+import { getDiceBearAvatar, getRole } from 'utils/generalFunc';
 
 const useStyles = makeStyles((theme) => ({
     drawerPaper: {

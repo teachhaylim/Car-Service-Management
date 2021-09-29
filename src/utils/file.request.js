@@ -3,18 +3,18 @@ import { meta } from 'utils/enum';
 import store from 'store';
 import basicConfig from './basicConfig';
 
-const service = axios.create({
-    baseURL: basicConfig.apiUrl,
+const FileRequest = axios.create({
+    baseURL: basicConfig.fileUrl,
     timeout: 15000
 });
 
-service.interceptors.request.use(config => {
+FileRequest.interceptors.request.use(config => {
     config.headers['Authorization'] = store.getState().token;
-    config.headers['Content-Type'] = 'application/json';
+    config.headers['Content-Type'] = 'multipart/form-data';
 
-    if (config.method === 'post') {
-        config.data = JSON.stringify(config.data);
-    }
+    // if (config.method === 'post') {
+    //     config.data = JSON.stringify(config.data);
+    // }
 
     return config
 },
@@ -23,7 +23,7 @@ service.interceptors.request.use(config => {
     }
 );
 
-service.interceptors.response.use(response => {
+FileRequest.interceptors.response.use(response => {
     const res = response.data;
 
     if (res.meta === meta.TOKENEXPIRE) {
@@ -38,6 +38,4 @@ service.interceptors.response.use(response => {
     }
 );
 
-//TODO service for handling file upload and get file
-
-export default service;
+export default FileRequest;
