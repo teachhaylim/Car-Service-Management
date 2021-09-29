@@ -28,11 +28,11 @@ const ShopTable = ({ isLoading, data, onEdit, onDelete, onPageChange, onRowPerPa
                     <TableBody>
                         {
                             data.map((item, key) => (
-                                <TableRow>
-                                    <TableCell key={key}>{item.headerName}</TableCell>
-                                    <TableCell key={key}>{item.headerName}</TableCell>
-                                    <TableCell key={key}>{item.headerName}</TableCell>
-                                    <TableCell key={key}>{item.headerName}</TableCell>
+                                <TableRow key={key}>
+                                    <TableCell>{item.headerName}</TableCell>
+                                    <TableCell>{item.headerName}</TableCell>
+                                    <TableCell>{item.headerName}</TableCell>
+                                    <TableCell>{item.headerName}</TableCell>
                                     <TableCell>
                                         <IconButton onClick={() => onEdit(item)} color="success"><Edit /></IconButton>
                                         <IconButton onClick={() => onDelete(item)} color="error"><Delete /></IconButton>

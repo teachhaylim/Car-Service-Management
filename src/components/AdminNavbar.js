@@ -144,7 +144,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <StyledAvatar src={`${basicConfig.fileUrl}${user.profilePic}`} onClick={handleProfileMenuClick} />
+                    <StyledAvatar variant="rounded" src={`${basicConfig.fileUrl}${user.profilePic}`} onClick={handleProfileMenuClick} />
 
                     <Popover
                         elevation={6}
@@ -153,15 +153,14 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         onClose={handleProfileMenuOnClose}
                         disableScrollLock={true}
                         anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
+                            vertical: 'top',
+                            horizontal: 'right',
                         }}
                         transformOrigin={{
                             vertical: 'top',
-                            horizontal: 'center',
+                            horizontal: 'right',
                         }}
                     >
-
                         <MenuItem className={classes.menuItem} component={RouterLink} to="/login" onClick={handleLogout} edge="end" color="inherit" aria-label="menu">
                             <Grid container spacing={2} alignItems="center">
                                 <Grid item>
