@@ -9,12 +9,13 @@ import Unauthorized from "views/UnauthorizedPage";
 import UserIndex from "views/User";
 import AppointmentIndex from "views/Appointments";
 import ServiceIndex from "views/Services";
-import ShopIndex from "views/Shops";
+import ShopIndex from "views/Shop";
 import CategoryIndex from "views/Category";
 import RatingIndex from "views/Rating";
 import LoginView from "views/Login";
 import RegisterView from "views/Register";
 import CategoryEdit from "views/Category/CategoryEdit";
+import ShopEdit from "views/Shop/ShopEdit";
 
 const adminRoutes = [
     { path: "users", element: <UserIndex /> },
@@ -32,7 +33,14 @@ const adminRoutes = [
 const generalRoutes = [
     { path: "appointments", element: <AppointmentIndex /> },
     { path: "services", element: <ServiceIndex /> },
-    { path: "shops", element: <ShopIndex /> }, //TODO dynamic shop page
+    {
+        path: "shops",
+        name: "ShopIndex",
+        children: [
+            { path: "/", name: "Category", element: <ShopIndex /> },
+            { path: "edit", name: "Edit", element: <ShopEdit /> },
+        ]
+    }, //TODO dynamic shop page
 ];
 
 const routes = (isLogin = false, role = 0) => {

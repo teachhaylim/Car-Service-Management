@@ -63,7 +63,7 @@ const ShopIndex = () => {
         setShowSearch(!showSearch);
     };
 
-    const handleAddCategory = () => {
+    const handleAddShop = () => {
         const state = {
             object: {},
             isEdit: false,
@@ -97,7 +97,7 @@ const ShopIndex = () => {
 
                                 {/* <FilterCategory handleFilter={handleFilterConfirm} /> */}
 
-                                <Button variant="contained" startIcon={<Add />} onClick={handleAddCategory}> {t("addBtn")} </Button>
+                                <Button variant="contained" startIcon={<Add />} onClick={handleAddShop}> {t("addBtn")} </Button>
                             </Stack>
                         </Grid>
                     </Grid>

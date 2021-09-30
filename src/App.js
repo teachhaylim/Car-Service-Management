@@ -44,6 +44,7 @@ const CheckPermission = (token, isLogin) => {
   return true;
 };
 
+//REWORK route problem on reload
 const App = () => {
   const token = useSelector(state => state.token, shallowEqual);
   const isLogin = useSelector(state => state.isLogin, shallowEqual);
