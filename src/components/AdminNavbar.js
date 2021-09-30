@@ -144,7 +144,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                         }
                     </Popover>
 
-                    <StyledAvatar variant="rounded" src={`${basicConfig.fileUrl}${user.profilePic}`} onClick={handleProfileMenuClick} />
+                    <StyledAvatar variant="rounded" src={user.profilePic ? `${basicConfig.fileUrl}${user.profilePic}` : ""} onClick={handleProfileMenuClick} />
 
                     <Popover
                         elevation={6}

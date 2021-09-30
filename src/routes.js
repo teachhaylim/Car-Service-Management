@@ -68,10 +68,12 @@ const routes = (isLogin = false, role = 0) => {
         { path: "/unauthorized", element: <Unauthorized /> },
     ];
 
-    if (role === 1)
-        tempRoutes[0].children.push(...generalRoutes);
-    else if (role === 2)
-        tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
+    // if (role === 1)
+    //     tempRoutes[0].children.push(...generalRoutes);
+    // else if (role === 2)
+    //     tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
+
+    tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
 
     return tempRoutes;
 }
