@@ -10,7 +10,9 @@ const FileRequest = axios.create({
 
 FileRequest.interceptors.request.use(config => {
     config.headers['Authorization'] = store.getState().token;
-    config.headers['Content-Type'] = 'multipart/form-data';
+    config.headers["Accept"] = "multipart/form-data";
+
+    console.log(`config`, config)
 
     // if (config.method === 'post') {
     //     config.data = JSON.stringify(config.data);

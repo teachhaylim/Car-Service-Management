@@ -3,13 +3,13 @@ const { default: FileRequest } = require("utils/file.request");
 export const uploadFile = (file) => FileRequest({
     url: "upload",
     method: "post",
-    file: file,
+    data: file,
 });
 
 export const uploadFiles = (files) => FileRequest({
     url: "uploads",
     method: "post",
-    file: files,
+    data: files,
 });
 
 export const getFile = (filename) => FileRequest({

@@ -11,7 +11,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/system';
 import { SetLogout } from 'store';
-import { getDiceBearAvatar } from 'utils/generalFunc';
 import { langItems } from 'utils/basicConfig';
 import moment from 'moment';
 

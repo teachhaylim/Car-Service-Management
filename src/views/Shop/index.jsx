@@ -1,8 +1,12 @@
+// eslint-disable-next-line
 import { IconButton, TableContainer, Table, TableCell, TableBody, TableHead, TableRow, Card, CardContent, Grid, Button, Stack, Typography } from '@mui/material';
+// eslint-disable-next-line
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+// eslint-disable-next-line
 import { toast } from 'react-toastify';
+// eslint-disable-next-line
 import { Add, Search, Delete, Edit } from '@mui/icons-material';
 import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
@@ -17,8 +21,11 @@ const header = [
 ];
 
 const ShopIndex = () => {
+    // eslint-disable-next-line
     const [data, setData] = useState([]);
+    // eslint-disable-next-line
     const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
+    // eslint-disable-next-line
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [showSearch, setShowSearch] = useState(false);
@@ -27,6 +34,7 @@ const ShopIndex = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    // eslint-disable-next-line
     const FetchData = () => {
 
     };
@@ -55,6 +63,7 @@ const ShopIndex = () => {
         setIsLoading(true);
     };
 
+    // eslint-disable-next-line
     const handleFilterConfirm = (value) => {
         setFilter({ ...filter, sortBy: value });
     };
@@ -101,7 +110,7 @@ const ShopIndex = () => {
                             </Stack>
                         </Grid>
                     </Grid>
-        
+
                     <ShopTable
                         isLoading={isLoading}
                         filter={filter}

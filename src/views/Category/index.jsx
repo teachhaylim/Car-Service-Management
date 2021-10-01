@@ -20,6 +20,7 @@ const CategoriesIndex = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    // eslint-disable-next-line
     const FetchData = () => {
         QueryCategory(filter)
             .then(res => {
