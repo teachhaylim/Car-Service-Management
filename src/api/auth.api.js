@@ -6,6 +6,11 @@ export const Login = (data) => AuthRequest({
     data: data,
 });
 
+export const LoggedInfo = () => AuthRequest({
+    url: "info",
+    method: "get",
+});
+
 export const Register = (data) => AuthRequest({
     url: "login",
     method: "post",

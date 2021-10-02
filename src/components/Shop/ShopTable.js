@@ -9,8 +9,6 @@ const header = [
     { field: 'name', headerName: 'name', width: 150 },
     { field: 'description', headerName: 'description', width: 150 },
     { field: 'createdAt', headerName: 'createdAt', width: 150 },
-    { field: 'updatedAt', headerName: 'updatedAt', width: 150 },
-    { field: 'isActive', headerName: 'isActive', width: 80 },
     { field: 'actions', headerName: 'actions', width: 80 },
 ];
 
@@ -40,8 +38,6 @@ const ShopTable = ({ isLoading, data, onEdit, onDelete, onPageChange, onRowPerPa
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.description}</TableCell>
                                     <TableCell>{item.createdAt}</TableCell>
-                                    <TableCell>{item.updatedAt}</TableCell>
-                                    <TableCell>{item.isActive || ""}</TableCell>
                                     <TableCell>
                                         <IconButton onClick={() => onEdit(item)} color="success"><Edit /></IconButton>
                                         <IconButton onClick={() => onDelete(item)} color="error"><Delete /></IconButton>

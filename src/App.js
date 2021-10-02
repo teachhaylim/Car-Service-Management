@@ -5,11 +5,14 @@ import routes from "./routes";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import store, { SetIsLogin, SetRole, SetUserInfo } from 'store';
 import { toast, ToastContainer } from 'react-toastify';
-import { GetUserInfo } from 'api/user.api';
 import { useSelector, shallowEqual } from 'react-redux';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import basicConfig from 'utils/basicConfig';
+import { LoggedInfo } from 'api/auth.api';
+import { SetShopInfo } from 'store';
+import DateAdapter from '@mui/lab/AdapterMoment';
+import { LocalizationProvider } from '@mui/lab';
 
 document.title = basicConfig.appName + " - Management";
 
@@ -19,24 +22,17 @@ const CheckPermission = (token, isLogin) => {
   }
 
   if (token && !isLogin) {
-    return GetUserInfo()
+    return LoggedInfo()
       .then(res => {
         if (res.meta === 200) {
-          store.dispatch(SetUserInfo(res.data));
+          store.dispatch(SetUserInfo(res.user));
+          store.dispatch(SetShopInfo(res.shop));
           store.dispatch(SetIsLogin(true));
-          store.dispatch(SetRole(res.data.type));
-
-          //TODO get shop info
-
-          return true;
+          store.dispatch(SetRole(res.user.type));
         }
-
-        return false;
       })
       .catch(err => {
-        console.log(err);
         toast.error(err.message);
-
         return false;
       });
   }
@@ -54,6 +50,7 @@ const App = () => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={DateAdapter}>
         <GlobalStyles />
         <CssBaseline />
         <ToastContainer
@@ -71,6 +68,7 @@ const App = () => {
         <PerfectScrollbar>
           {routing}
         </PerfectScrollbar>
+        </LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

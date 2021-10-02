@@ -1,18 +1,19 @@
-import { Close, Save } from '@mui/icons-material';
-import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, FormHelperText } from '@mui/material';
+import { Edit, Save } from '@mui/icons-material';
+import { DesktopDatePicker } from '@mui/lab';
+import { Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
-import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
-// eslint-disable-next-line
-import { UpdateShop } from 'api/shop.api';
-import { CreateShop } from 'api/shop.api';
+import { UpdateUser } from 'api/user.api';
 import { SingleFileUpload } from 'components/CustomComponents/SingleFileUpload';
 import { getIn, useFormik } from 'formik';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { SetUserInfo } from 'store';
 import * as Yup from "yup";
+import {isEqual} from "lodash";
 
 const StyledPaper = styled(Paper)(({ theme }) => {
     return {
@@ -26,41 +27,49 @@ const StyledPaper = styled(Paper)(({ theme }) => {
 });
 
 const validateSchema = Yup.object({
-    name: Yup.string().required("Shop name is required"),
-    description: Yup.string(),
-    logo: Yup.string(),
-    categories: Yup.array().min(1, "Category is required"),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    phoneNumber: Yup.string().required("Phone number is required"),
+    dob: Yup.string().required("Date of Birth is required"),
+    email: Yup.string().required("Email is required"),
+    profilePic: Yup.string(),
     address: Yup.object().shape({
         house: Yup.string().required("House is required"),
         street: Yup.string().required("Street is required"),
         state: Yup.string().required("State is required"),
         city: Yup.string().required("City is required"),
         country: Yup.string().required("Country is required"),
-        zipcode: Yup.string().required("Zipcode is required"),
+        zipCode: Yup.string().required("Zipcode is required"),
     }),
 });
 
-const ShopEdit = () => {
-    const shop = useLocation().state.object;
-    const isEdit = useLocation().state.isEdit;
-    const [category, setCategory] = useState([]);
-    const [imageFile, setImageFile] = useState(shop.logo || {});
+const ProfileIndex = () => {
+    const userInfo = useSelector(store => store.user, shallowEqual);
+    const [imageFile, setImageFile] = useState(userInfo.profilePic || "");
+    const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
-    const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
-            name: shop.name || "",
-            description: shop.description || "",
-            logo: shop.logo || "",
-            categories: shop.categories || [],
+            id: userInfo.id || "",
+            firstName: userInfo.firstName || "",
+            lastName: userInfo.lastName || "",
+            phoneNumber: userInfo.phoneNumber || "",
+            dob: userInfo.dob || "",
+            email: userInfo.email || "",
+            password: userInfo.password || "",
+            profilePic: userInfo.profilePic || "",
+            sellCompany: userInfo.sellCompany || {},
+            type: userInfo.type || "", // 0 = user role (not allow access at all), 1 = admin (allow access related info), 2 = superadmin (God level access xd)
+            isActive: userInfo.isActive || true,
             address: {
-                house: shop.address?.house || "",
-                street: shop.address?.street || "",
-                state: shop.address?.state || "",
-                city: shop.address?.city || "",
-                country: shop.address?.country || "",
-                zipcode: shop.address?.zipcode || "",
+                id: userInfo.address?.id || "",
+                house: userInfo.address?.house || "",
+                street: userInfo.address?.street || "",
+                state: userInfo.address?.state || "",
+                city: userInfo.address?.city || "",
+                country: userInfo.address?.country || "",
+                zipCode: userInfo.address?.zipCode || "",
             },
         },
         validationSchema: validateSchema,
@@ -72,7 +81,7 @@ const ShopEdit = () => {
                 await uploadFile(file)
                     .then(res => {
                         if (res && res.meta === 201) {
-                            values.logo = res.file.filename;
+                            values.profilePic = res.file.filename;
                         }
                     })
                     .catch(err => {
@@ -80,143 +89,128 @@ const ShopEdit = () => {
                     });
             }
 
-            if (isEdit) {
-                values.address.id = shop.address.id;
-                console.log(shop.id, values);
-
-                // UpdateShop(shop.id, values)
-                //     .then(res => {
-                //         if (res && res.meta === 201) {
-                //             navigate("/app/shops");
-
-                //             return toast.success("Shop updated");
-                //         }
-                //     })
-                //     .catch(err => {
-                //         return toast.error(err.message);
-                //     })
-            }
-
-            CreateShop(values)
+            UpdateUser(userInfo.id, values)
                 .then(res => {
-                    if (res && res.meta === 201) {
-                        navigate("/app/shops");
+                    if(res.meta === 200){
+                        dispatch(SetUserInfo(res.data));
 
-                        return toast.success("Shop created");
+                        toast.success("User updated")
                     }
                 })
                 .catch(err => {
-                    return toast.error(err.message);
+                    console.log(err);
+                    toast.error(err.message);
                 })
         },
     });
 
-    const FetchCategory = () => {
-        QueryCategory({ limit: -1 })
-            .then(res => {
-                if (res.meta === 200) {
-                    const temp = res.results.map((item) => {
-                        return {
-                            title: item.name,
-                            value: item.id,
-                        }
-                    })
+    const handleClick = () => {
+        if (isEdit) {
+            formik.handleSubmit();
+            setIsEdit(false)
+            return;
+        }
 
-                    setCategory(temp);
-                }
-            })
-            .catch(err => {
-                toast.error(err.message);
-                console.log("Query Category Error", err);
-            })
+        formik.resetForm();
+        setIsEdit(true);
     };
-
-    const handleFileChange = (value) => {
-        setImageFile(value);
-    };
-
-    useEffect(() => {
-        FetchCategory();
-
-    }, []);
 
     return (
         <Card>
             <CardContent>
                 <Divider textAlign="left">
                     <Typography variant="h6">
-                        Shop Info
+                        Personal Profile
                     </Typography>
                 </Divider>
 
                 <Grid sx={{ mt: 0 }} item container spacing={2}>
-                    <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
-                        <StyledPaper elevation={0}>
-                            <SingleFileUpload file={imageFile} onChange={handleFileChange} />
-                        </StyledPaper>
-                    </Grid>
-
                     <Grid item xs={12} sm={6} md={7} lg={8} xl={9}>
                         <StyledPaper elevation={0}>
                             <Grid item container spacing={2}>
                                 <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop name</FormLabel>
+                                    <FormLabel>First name</FormLabel>
                                     <TextField
                                         fullWidth
-                                        margin="dense"
-                                        size="small"
                                         variant="outlined"
-                                        name="name"
-                                        value={formik.values.name}
+                                        name="firstName"
+                                        disabled={!isEdit}
+                                        value={formik.values.firstName}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.name && Boolean(formik.errors.name)}
-                                        helperText={formik.touched.name && t(formik.errors.name)}
+                                        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                                        helperText={formik.touched.firstName && t(formik.errors.firstName)}
                                     />
                                 </Grid>
 
                                 <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop category</FormLabel>
-                                    <Select
-                                        name="categories"
-                                        multiple
-                                        size="small"
-                                        defaultValue={formik.values.categories.map(p => ({ title: p.name, value: p.id }))}
-                                        sx={{ mt: 1, width: "100%" }}
-                                        value={formik.values.categories}
+                                    <FormLabel>Last name</FormLabel>
+                                    <TextField
+                                        fullWidth
+                                        variant="outlined"
+                                        name="lastName"
+                                        disabled={!isEdit}
+                                        value={formik.values.lastName}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.categories && Boolean(formik.errors.categories)}
-                                    >
-                                        {
-                                            category.map((item, key) => (
-                                                <MenuItem key={key} value={item.value}>{item.title}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                    <FormHelperText sx={{ color: "red" }}>{formik.touched.categories && t(formik.errors.categories)}</FormHelperText>
+                                        error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                                        helperText={formik.touched.lastName && t(formik.errors.lastName)}
+                                    />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <FormLabel>Description</FormLabel>
+                                <Grid item xs={12} lg={4}>
+                                    <FormLabel>Phone number</FormLabel>
                                     <TextField
-                                        multiline={true}
-                                        rows={8}
                                         fullWidth
-                                        size="small"
-                                        name="description"
-                                        value={formik.values.description}
+                                        variant="outlined"
+                                        name="phoneNumber"
+                                        disabled={!isEdit}
+                                        value={formik.values.phoneNumber}
                                         onChange={formik.handleChange}
-                                        error={formik.touched.description && Boolean(formik.errors.description)}
-                                        helperText={formik.touched.description && t(formik.errors.description)}
+                                        error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                        helperText={formik.touched.phoneNumber && t(formik.errors.phoneNumber)}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} lg={4}>
+                                    <FormLabel>Email</FormLabel>
+                                    <TextField
+                                        fullWidth
+                                        variant="outlined"
+                                        name="email"
+                                        disabled={!isEdit}
+                                        value={formik.values.email}
+                                        onChange={formik.handleChange}
+                                        error={formik.touched.email && Boolean(formik.errors.email)}
+                                        helperText={formik.touched.email && t(formik.errors.email)}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} lg={4}>
+                                    <FormLabel>Date of Birth</FormLabel>
+                                    <DesktopDatePicker
+                                        name="dob"
+                                        disableCloseOnSelect
+                                        disabled={!isEdit}
+                                        value={formik.values.dob}
+                                        onChange={(e) => { formik.setFieldValue("dob", e) }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                        error={formik.touched.dob && Boolean(formik.errors.dob)}
+                                        helperText={formik.touched.dob && t(formik.errors.dob)}
                                     />
                                 </Grid>
                             </Grid>
+                        </StyledPaper>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
+                        <StyledPaper elevation={0}>
+                            <SingleFileUpload file={imageFile} onChange={(value) => setImageFile(value)} isEdit={!isEdit} />
                         </StyledPaper>
                     </Grid>
                 </Grid>
 
                 <Divider sx={{ my: 2 }} textAlign="left">
                     <Typography variant="h6">
-                        Shop Address
+                        Personal Address
                     </Typography>
                 </Divider>
 
@@ -228,9 +222,8 @@ const ShopEdit = () => {
                                 <TextField
                                     rows={8}
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
                                     name="address.house"
+                                    disabled={!isEdit}
                                     value={formik.values.address.house}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.house') && Boolean(getIn(formik.errors, 'address.house'))}
@@ -242,9 +235,8 @@ const ShopEdit = () => {
                                 <FormLabel>Street</FormLabel>
                                 <TextField
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
                                     name="address.street"
+                                    disabled={!isEdit}
                                     value={formik.values.address.street}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.street') && Boolean(getIn(formik.errors, 'address.street'))}
@@ -256,9 +248,8 @@ const ShopEdit = () => {
                                 <FormLabel>State</FormLabel>
                                 <TextField
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
                                     name="address.state"
+                                    disabled={!isEdit}
                                     value={formik.values.address.state}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.state') && Boolean(getIn(formik.errors, 'address.state'))}
@@ -270,9 +261,8 @@ const ShopEdit = () => {
                                 <FormLabel>City</FormLabel>
                                 <TextField
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
                                     name="address.city"
+                                    disabled={!isEdit}
                                     value={formik.values.address.city}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.city') && Boolean(getIn(formik.errors, 'address.city'))}
@@ -284,9 +274,8 @@ const ShopEdit = () => {
                                 <FormLabel>Country</FormLabel>
                                 <TextField
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
                                     name="address.country"
+                                    disabled={!isEdit}
                                     value={formik.values.address.country}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.country') && Boolean(getIn(formik.errors, 'address.country'))}
@@ -298,13 +287,12 @@ const ShopEdit = () => {
                                 <FormLabel>Zipcode</FormLabel>
                                 <TextField
                                     fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.zipcode"
-                                    value={formik.values.address.zipcode}
+                                    name="address.zipCode"
+                                    disabled={!isEdit}
+                                    value={formik.values.address.zipCode}
                                     onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.zipcode') && Boolean(getIn(formik.errors, 'address.zipcode'))}
-                                    helperText={getIn(formik.touched, 'address.zipcode') && getIn(formik.errors, 'address.zipcode')}
+                                    error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}
+                                    helperText={getIn(formik.touched, 'address.zipCode') && getIn(formik.errors, 'address.zipCode')}
                                 />
                             </Grid>
                         </Grid>
@@ -313,12 +301,10 @@ const ShopEdit = () => {
             </CardContent>
 
             <CardActions>
-                <Button startIcon={<Save />} variant="contained" onClick={formik.handleSubmit}>{t("submitBtn")}</Button>
-
-                <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/shops")}>{t("cancelBtn")}</Button>
+                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="contained" onClick={handleClick}>{isEdit ? t("saveBtn") : "Edit"}</Button>
             </CardActions>
         </Card >
     )
 }
 
-export default ShopEdit;
+export default ProfileIndex;

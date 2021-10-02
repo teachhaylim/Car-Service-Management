@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
 const CategoriesIndex = () => {
-    const [datas, setDatas] = useState([]);
+    const [data, setData] = useState([]);
     const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
@@ -20,12 +20,12 @@ const CategoriesIndex = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const FetchData = () => {
         QueryCategory(filter)
             .then(res => {
                 if (res.meta === 200) {
-                    setDatas(res.results);
+                    setData(res.results);
                     setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
                     setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
                     setIsLoading(false);
@@ -107,7 +107,7 @@ const CategoriesIndex = () => {
             }, 1000);
 
             return () => {
-                setDatas([]);
+                setData([]);
                 setIsLoading(true);
             }
         },
@@ -140,7 +140,7 @@ const CategoriesIndex = () => {
                         isLoading={isLoading}
                         filter={filter}
                         tableFilter={tableFilter}
-                        datas={datas}
+                        datas={data}
                         handleEdit={handleEdit}
                         handleDelete={handleDelete}
                         handleChangePage={handleChangePage}

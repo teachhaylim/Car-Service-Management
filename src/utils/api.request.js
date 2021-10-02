@@ -11,6 +11,7 @@ const ApiRequest = axios.create({
 ApiRequest.interceptors.request.use(config => {
     config.headers['Authorization'] = store.getState().token;
     config.headers['Content-Type'] = 'application/json';
+    config.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, PUT, OPTIONS, PATCH";
 
     if (config.method === 'post') {
         config.data = JSON.stringify(config.data);
@@ -27,14 +28,14 @@ ApiRequest.interceptors.response.use(response => {
     const res = response.data;
 
     if (res.meta === meta.TOKENEXPIRE) {
-        alert("Token Expire, Please Login Again");
+        return alert("Token Expire, Please Login Again");
     }
-    else {
-        return res;
-    }
+
+    return res;
 },
     error => {
-        return Promise.reject(error.response.data)
+        console.log(error)
+        return error
     }
 );
 

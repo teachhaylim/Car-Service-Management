@@ -17,7 +17,7 @@ const StyledAvatar = styled(Avatar)(({ theme }) => {
     };
 });
 
-const SingleFileUpload = ({file, onChange}) => {
+const SingleFileUpload = ({file, onChange, isEdit}) => {
     const { t } = useTranslation();
     const inputRef= useRef(null);
 
@@ -33,7 +33,7 @@ const SingleFileUpload = ({file, onChange}) => {
                 </Grid>
 
                 <Grid item sx={{ height: "10%" }}>
-                    <Button onClick={() => inputRef.current.click()} color="primary" variant="outlined" startIcon={<Upload />}>
+                    <Button disabled={isEdit} onClick={() => inputRef.current.click()} color="primary" variant="outlined" startIcon={<Upload />}>
                         <Input inputRef={inputRef} onChange={handleUpload} style={{ display: "none" }} accept="image/*" type="file" />
                         {t("upload")}
                     </Button>
@@ -44,8 +44,9 @@ const SingleFileUpload = ({file, onChange}) => {
 };
 
 SingleFileUpload.propTypes = {
-    file: PropTypes.object.isRequired,
+    file: PropTypes.any.isRequired,
     onChange: PropTypes.func.isRequired,
+    isEdit: PropTypes.bool,
 };
 
 export default SingleFileUpload;

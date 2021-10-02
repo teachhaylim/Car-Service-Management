@@ -9,13 +9,16 @@ import Unauthorized from "views/UnauthorizedPage";
 import UserIndex from "views/User";
 import AppointmentIndex from "views/Appointments";
 import ServiceIndex from "views/Services";
-import ShopIndex from "views/Shop";
+import ShopAdmin from "views/Shop";
 import CategoryIndex from "views/Category";
 import RatingIndex from "views/Rating";
 import LoginView from "views/Login";
 import RegisterView from "views/Register";
 import CategoryEdit from "views/Category/CategoryEdit";
 import ShopEdit from "views/Shop/ShopEdit";
+import ShopPersonal from "views/Shop/ShopPersonal";
+import ProfileIndex from "views/Profile";
+import ServiceEdit from "views/Services/ServiceEdit";
 
 const adminRoutes = [
     { path: "users", element: <UserIndex /> },
@@ -30,17 +33,32 @@ const adminRoutes = [
     { path: "rating", element: <RatingIndex /> },
 ];
 
-const generalRoutes = [
-    { path: "appointments", element: <AppointmentIndex /> },
-    { path: "services", element: <ServiceIndex /> },
+const generalRoutes = (role) => [
+    {
+        path: "appointments",
+        name: "Appointment",
+        children: [
+            { path: "/", name: "Appointment", element: <AppointmentIndex />, },
+            { path: "edit", name: "Edit", element: <ServiceIndex /> },
+        ]
+    },
+    {
+        path: "services",
+        name: "Service",
+        children: [
+            { path: "/", name: "Service", element: <ServiceIndex /> },
+            { path: "edit", name: "Edit", element: <ServiceEdit /> },
+        ]
+    },
     {
         path: "shops",
-        name: "ShopIndex",
+        name: "Shop",
         children: [
-            { path: "/", name: "Category", element: <ShopIndex /> },
+            { path: "/", name: "Shop", element: role === 2 ? <ShopAdmin /> : < ShopPersonal /> },
             { path: "edit", name: "Edit", element: <ShopEdit /> },
         ]
-    }, //TODO dynamic shop page
+    },
+    //TODO dynamic shop page
 ];
 
 const routes = (isLogin = false, role = 0) => {
@@ -50,7 +68,7 @@ const routes = (isLogin = false, role = 0) => {
             element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
             children: [
                 { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
-                { path: "profile", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
+                { path: "profile", element: <ProfileIndex /> },
                 { path: "*", element: <Navigate to="/notfound" /> },
             ]
         },
@@ -68,12 +86,12 @@ const routes = (isLogin = false, role = 0) => {
         { path: "/unauthorized", element: <Unauthorized /> },
     ];
 
-    // if (role === 1)
-    //     tempRoutes[0].children.push(...generalRoutes);
-    // else if (role === 2)
-    //     tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
+    if (role === 1)
+        tempRoutes[0].children.push(...generalRoutes(role));
+    else if (role === 2)
+        tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
 
-    tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
+    // tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
 
     return tempRoutes;
 }

@@ -20,6 +20,8 @@ export const getDiceBearAvatar = (key) => {
 };
 
 export const checkFile = (file) => {
+    if(typeof file == "string" && !file) return ""; 
+
     if (typeof file == "string") return basicConfig.fileUrl + file;
 
     if (file instanceof File) return URL.createObjectURL(file);

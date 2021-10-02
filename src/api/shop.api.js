@@ -19,7 +19,7 @@ export const GetShop = (id) => ApiRequest({
 
 export const UpdateShop = (id, data) => ApiRequest({
     url: `shop/${id}`,
-    method: "patch",
+    method: "put",
     data: data,
 });
 

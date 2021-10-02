@@ -36,8 +36,6 @@ const ShopIndex = () => {
                     setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
                     setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
                     setIsLoading(false);
-
-                    console.log(`res.results`, res.results)
                 }
             })
     };

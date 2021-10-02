@@ -116,29 +116,43 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
                     }
                 </List>
 
-                <Divider />
+                {
+                    (role === 1 || role === 2) ? (
+                        <>
+                            <Divider />
 
-                <SectionTitle title="management" />
+                            <SectionTitle title="management" />
 
-                <List sx={{ padding: 0, margin: 0 }}>
-                    {
-                        adminList.map((item, index) => (
-                            <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
-                        ))
-                    }
-                </List>
+                            <List sx={{ padding: 0, margin: 0 }}>
+                                {
+                                    adminList.map((item, index) => (
+                                        <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
+                                    ))
+                                }
+                            </List>
 
-                <Divider />
+                            
+                        </>
+                    ) : null
+                }
 
-                <SectionTitle title="operation" />
+                {
+                    (role === 2) ? (
+                        <>
+                            <Divider />
 
-                <List sx={{ padding: 0, margin: 0 }}>
-                    {
-                        superAdminList.map((item, index) => (
-                            <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
-                        ))
-                    }
-                </List>
+                            <SectionTitle title="operation" />
+
+                            <List sx={{ padding: 0, margin: 0 }}>
+                                {
+                                    superAdminList.map((item, index) => (
+                                        <Navitem key={index} title={t(item.title)} icon={item.icon} href={item.href} />
+                                    ))
+                                }
+                            </List>
+                        </>
+                    ) : null
+                }
             </>
         )
     };

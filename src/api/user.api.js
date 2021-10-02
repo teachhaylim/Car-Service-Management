@@ -19,7 +19,7 @@ export const GetUser = (id) => ApiRequest({
 
 export const UpdateUser = (id, data) => ApiRequest({
     url: `user/${id}`,
-    method: "post",
+    method: "put",
     data: data,
 });
 

@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Login } from 'api/auth.api';
-import { SetUserInfo, SetToken, SetIsLogin, SetRole } from 'store';
+import { SetToken } from 'store';
 import { toast } from 'react-toastify';
 import Cookies from 'universal-cookie/es6';
 import { useTranslation } from 'react-i18next';
@@ -44,13 +44,7 @@ const LoginView = () => {
 
                         const cookies = new Cookies();
                         cookies.set('XTOK', res.token);
-
-                        //TODO get shop info
                         dispatch(SetToken(res.token));
-                        dispatch(SetUserInfo(res.user));
-                        dispatch(SetIsLogin(true));
-                        dispatch(SetRole(res.user.type));
-
                         history("/");
                         formik.resetForm();
                     }
