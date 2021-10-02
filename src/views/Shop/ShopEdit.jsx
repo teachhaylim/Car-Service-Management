@@ -1,12 +1,15 @@
-import { Close, Save, Upload } from '@mui/icons-material';
-import { Select, Avatar, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, FormHelperText, Input } from '@mui/material';
+import { Close, Save } from '@mui/icons-material';
+import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, FormHelperText } from '@mui/material';
 import { styled } from '@mui/styles';
 import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
+import { UpdateShop } from 'api/shop.api';
+import { CreateShop } from 'api/shop.api';
+import { SingleFileUpload } from 'components/SingleFileUpload';
 import { getIn, useFormik } from 'formik';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
 
@@ -18,17 +21,6 @@ const StyledPaper = styled(Paper)(({ theme }) => {
         padding: 16,
         height: "100%",
         width: "100%",
-    };
-});
-
-const StyledAvatar = styled(Avatar)(({ theme }) => {
-    return {
-        boxShadow: "0 0 6px 0 rgba(0, 0, 0, 0.2)",
-        borderRadius: theme.borderRadius,
-        "&:hover": {
-            transition: "0.2s all",
-            border: `1px solid ${theme.palette.secondary.main}`,
-        }
     };
 });
 
@@ -48,29 +40,72 @@ const validateSchema = Yup.object({
 });
 
 const ShopEdit = () => {
+    const shop = useLocation().state.object;
+    const isEdit = useLocation().state.isEdit;
     const [category, setCategory] = useState([]);
-    const fileUploadRef = useRef(null);
-    const [imageFile, setImageFile] = useState("");
+    const [imageFile, setImageFile] = useState(shop.logo || {});
     const { t } = useTranslation();
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
-            name: "",
-            description: "",
-            logo: "",
-            categories: [],
+            name: shop.name || "",
+            description: shop.description || "",
+            logo: shop.logo || "",
+            categories: shop.categories || [],
             address: {
-                house: "",
-                street: "",
-                state: "",
-                city: "",
-                country: "",
-                zipcode: "",
+                house: shop.address.house || "",
+                street: shop.address.street || "",
+                state: shop.address.state || "",
+                city: shop.address.city || "",
+                country: shop.address.country || "",
+                zipcode: shop.address.zipcode || "",
             },
         },
         validationSchema: validateSchema,
         onSubmit: async (values) => {
-            console.log(values);
+            if (imageFile instanceof File) {
+                const file = new FormData();
+                file.append('file', imageFile);
+
+                await uploadFile(file)
+                    .then(res => {
+                        if (res && res.meta === 201) {
+                            values.logo = res.file.filename;
+                        }
+                    })
+                    .catch(err => {
+                        toast.error(err.message)
+                    });
+            }
+
+            if (isEdit) {
+                values.address.id = shop.address.id;
+                console.log(shop.id, values);
+
+                // UpdateShop(shop.id, values)
+                //     .then(res => {
+                //         if (res && res.meta === 201) {
+                //             navigate("/app/shops");
+
+                //             return toast.success("Shop updated");
+                //         }
+                //     })
+                //     .catch(err => {
+                //         return toast.error(err.message);
+                //     })
+            }
+
+            CreateShop(values)
+                .then(res => {
+                    if (res && res.meta === 201) {
+                        navigate("/app/shops");
+
+                        return toast.success("Shop created");
+                    }
+                })
+                .catch(err => {
+                    return toast.error(err.message);
+                })
         },
     });
 
@@ -94,20 +129,8 @@ const ShopEdit = () => {
             })
     };
 
-    const Submit = () => {
-        const file = new FormData();
-        file.append("file", imageFile);
-
-        console.log(`file`, new FormData().append("file", imageFile))
-
-        uploadFile(file)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                toast.error(err.message);
-                console.log('err :>> ', err);
-            })
+    const handleFileChange = (value) => {
+        setImageFile(value);
     };
 
     useEffect(() => {
@@ -127,18 +150,7 @@ const ShopEdit = () => {
                 <Grid sx={{ mt: 0 }} item container spacing={2}>
                     <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
                         <StyledPaper elevation={0}>
-                            <Grid container direction="column" sx={{ height: "100%" }} alignItems="center" justifyContent="space-around">
-                                <Grid item sx={{ width: "80%", height: "80%" }}>
-                                    <StyledAvatar variant="rounded" sx={{ width: "100%", height: "100%", }} />
-                                </Grid>
-
-                                <Grid item sx={{ height: "10%" }}>
-                                    <Button onClick={() => fileUploadRef.current.click()} color="primary" component="span" variant="outlined" startIcon={<Upload />}>
-                                        <Input inputRef={fileUploadRef} onChange={(e) => setImageFile([...e.target.files])} style={{display: "none"}} accept="image/*" type="file" />
-                                        Upload
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                            <SingleFileUpload file={imageFile} onChange={handleFileChange} />
                         </StyledPaper>
                     </Grid>
 
@@ -166,6 +178,7 @@ const ShopEdit = () => {
                                         name="categories"
                                         multiple
                                         size="small"
+                                        defaultValue={formik.values.categories.map(p => ({ title: p.name, value: p.id }))}
                                         sx={{ mt: 1, width: "100%" }}
                                         value={formik.values.categories}
                                         onChange={formik.handleChange}
@@ -177,7 +190,7 @@ const ShopEdit = () => {
                                             ))
                                         }
                                     </Select>
-                                    <FormHelperText sx={{color: "red"}}>{formik.touched.categories && t(formik.errors.categories)}</FormHelperText>
+                                    <FormHelperText sx={{ color: "red" }}>{formik.touched.categories && t(formik.errors.categories)}</FormHelperText>
                                 </Grid>
 
                                 <Grid item xs={12}>
@@ -298,7 +311,7 @@ const ShopEdit = () => {
             </CardContent>
 
             <CardActions>
-                <Button startIcon={<Save />} variant="contained" onClick={Submit}>{t("submitBtn")}</Button>
+                <Button startIcon={<Save />} variant="contained" onClick={formik.handleSubmit}>{t("submitBtn")}</Button>
 
                 <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/shops")}>{t("cancelBtn")}</Button>
             </CardActions>

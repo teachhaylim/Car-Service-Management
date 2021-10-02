@@ -12,12 +12,6 @@ FileRequest.interceptors.request.use(config => {
     config.headers['Authorization'] = store.getState().token;
     config.headers["Accept"] = "multipart/form-data";
 
-    console.log(`config`, config)
-
-    // if (config.method === 'post') {
-    //     config.data = JSON.stringify(config.data);
-    // }
-
     return config
 },
     error => {

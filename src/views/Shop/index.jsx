@@ -11,14 +11,7 @@ import { Add, Search, Delete, Edit } from '@mui/icons-material';
 import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
 import { ShopTable } from 'components/Shop';
-
-const header = [
-    { field: 'id', headerName: 'id', width: 50 },
-    { field: 'logo', headerName: 'logo', width: 150 },
-    { field: 'shopName', headerName: 'shopName', width: 150 },
-    { field: 'isActive', headerName: 'isActive', width: 80 },
-    { field: 'actions', headerName: 'actions', width: 80 },
-];
+import { QueryShop } from 'api/shop.api';
 
 const ShopIndex = () => {
     // eslint-disable-next-line
@@ -36,7 +29,17 @@ const ShopIndex = () => {
 
     // eslint-disable-next-line
     const FetchData = () => {
+        QueryShop()
+            .then(res => {
+                if(res.meta === 200){
+                    setData(res.results);
+                    setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
+                    setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
+                    setIsLoading(false);
 
+                    console.log(`res.results`, res.results)
+                }
+            })
     };
 
     const handleEdit = (value) => {
@@ -87,7 +90,12 @@ const ShopIndex = () => {
 
     const handleDeleteConfirm = (value) => {
         console.log(value)
-    }
+    };
+    
+    useEffect(() => {
+        FetchData();
+        
+    }, []);
 
     return (
         <>
@@ -115,7 +123,7 @@ const ShopIndex = () => {
                         isLoading={isLoading}
                         filter={filter}
                         tableFilter={tableFilter}
-                        data={header}
+                        data={data}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onPageChange={handleChangePage}

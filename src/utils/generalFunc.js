@@ -3,7 +3,6 @@ import { createAvatar } from '@dicebear/avatars';
 import * as style from '@dicebear/avatars-identicon-sprites';
 import basicConfig, { roles } from './basicConfig';
 
-
 export const getRole = (id) => roles[id];
 
 export const generateDiceBearAvatar = (key = uuidv4()) => {
@@ -20,7 +19,10 @@ export const getDiceBearAvatar = (key) => {
     return `${basicConfig.diceBearAvatar}${key}.svg`;
 };
 
+export const checkFile = (file) => {
+    if (typeof file == "string") return basicConfig.fileUrl + file;
 
-export const getImage = (filename) => {
+    if (file instanceof File) return URL.createObjectURL(file);
 
-};
+    return "";
+}
