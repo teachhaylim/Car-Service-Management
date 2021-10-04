@@ -13,7 +13,6 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { SetUserInfo } from 'store';
 import * as Yup from "yup";
-import {isEqual} from "lodash";
 
 const StyledPaper = styled(Paper)(({ theme }) => {
     return {
