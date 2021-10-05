@@ -1,10 +1,12 @@
 import en_category from "./en.category";
+import en_service from "./en.services";
 import en_user from "./en.user";
 
 const en_lang = {
     translation: {
         ...en_user,
         ...en_category,
+        ...en_service,
 
         //Sidebar
         dashboard: "Dashboard",
@@ -71,6 +73,7 @@ const en_lang = {
         actions: "Actions",
         missingId: "Missing Id",
         submitBtn: "Submit",
+        price: "Price",
     }
 };
 

@@ -19,6 +19,7 @@ import ShopEdit from "views/Shop/ShopEdit";
 import ShopPersonal from "views/Shop/ShopPersonal";
 import ProfileIndex from "views/Profile";
 import ServiceEdit from "views/Services/ServiceEdit";
+import AppointmentEdit from "views/Appointments/AppointmentEdit";
 
 const adminRoutes = [
     { path: "users", element: <UserIndex /> },
@@ -39,7 +40,7 @@ const generalRoutes = (role) => [
         name: "Appointment",
         children: [
             { path: "/", name: "Appointment", element: <AppointmentIndex />, },
-            { path: "edit", name: "Edit", element: <ServiceIndex /> },
+            { path: "edit", name: "Edit", element: <AppointmentEdit /> },
         ]
     },
     {
@@ -70,6 +71,7 @@ const routes = (isLogin = false, role = 0) => {
                 { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
                 { path: "profile", element: <ProfileIndex /> },
                 { path: "*", element: <Navigate to="/notfound" /> },
+                ...generalRoutes(1),
             ]
         },
         {
@@ -86,12 +88,10 @@ const routes = (isLogin = false, role = 0) => {
         { path: "/unauthorized", element: <Unauthorized /> },
     ];
 
-    if (role === 1)
-        tempRoutes[0].children.push(...generalRoutes(role));
-    else if (role === 2)
-        tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
-
-    // tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
+    // if (role === 1)
+    //     tempRoutes[0].children.push(...generalRoutes(role));
+    // else if (role === 2)
+    //     tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
 
     return tempRoutes;
 }

@@ -7,14 +7,13 @@ import { LinearTableLoading } from 'components/CustomComponents/LinearTableLoadi
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
-    { field: 'name', headerName: 'serviceName', width: 150 },
-    { field: 'price', headerName: 'price', width: 150 },
-    { field: 'remark', headerName: 'remark', width: 150 },
+    { field: 'billTo', headerName: 'billTo', width: 150 },
+    { field: 'totalPrice', headerName: 'Total Price', width: 150 },
+    { field: 'status', headerName: 'Status', width: 150 },
     { field: 'actions', headerName: 'actions', width: 80 },
 ];
 
-//TODO adjust column width
-const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
+const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
 
     const EmptyData = () => (
@@ -35,7 +34,7 @@ const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handle
                         <TableRow>
                             {
                                 header.map((item, key) => (
-                                    <TableCell key={key} sx={{ width: item.width }}>{t(item.headerName)}</TableCell>
+                                    <TableCell key={key} width={item.width}>{t(item.headerName)}</TableCell>
                                 ))
                             }
                         </TableRow>
@@ -46,11 +45,15 @@ const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handle
                             isLoading ? <LinearTableLoading colSize={header.length} /> : !data.length ? <EmptyData /> : data.map((item, key) => (
                                 <TableRow key={key} hover={true} >
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
-                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{`${item.userId.firstName} ${item.userId.lastName}`}</TableCell>
                                     <TableCell>
-                                        <Chip color="primary" label={`$ ${item.price}`} />
+                                        $ {
+                                            item.services.reduce((pre, cur) => (
+                                                pre + (cur.qty * cur.item.price)
+                                            ), 0)
+                                        }
                                     </TableCell>
-                                    <TableCell>{item.remark}</TableCell>
+                                    <TableCell>{item.status[0].type}</TableCell>
                                     <TableCell>
                                         <IconButton onClick={() => handleEdit(item)} color="success"><Edit /></IconButton>
                                         <IconButton onClick={() => handleDelete(item)} color="error"><Delete /></IconButton>
@@ -83,7 +86,7 @@ const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handle
     )
 }
 
-ServiceTable.propTypes = {
+AppointmentTable.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     filter: PropTypes.object,
     tableFilter: PropTypes.object,
@@ -94,4 +97,4 @@ ServiceTable.propTypes = {
     handleChangeRowsPerPage: PropTypes.func.isRequired,
 };
 
-export default ServiceTable;
+export default AppointmentTable;

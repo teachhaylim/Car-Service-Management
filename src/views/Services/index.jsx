@@ -1,10 +1,13 @@
 import { Add, Search } from '@mui/icons-material'
 import { Button, Card, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { DeleteService } from 'api/service.api'
 import { QueryService } from 'api/service.api'
+import { DeleteDialog } from 'components/CustomComponents/DeleteDialog'
 import { SearchInput } from 'components/CustomComponents/SearchInput'
 import { ServiceTable } from 'components/Services'
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { shallowEqual, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify';
 
@@ -12,6 +15,8 @@ const ServiceIndex = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [showSearch, setShowSearch] = useState(false);
+    const role = useSelector(store => store.role, shallowEqual);
+    const shopInfo = useSelector(store => store.shop, shallowEqual);
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState({ limit: 10, page: 0, sortBy: {} });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
@@ -20,11 +25,13 @@ const ServiceIndex = () => {
     const [deleteObject, setDeleteObject] = useState({});
 
     const FetchData = () => {
+        if (role === 1) filter.sellCompany = shopInfo.id;
+
         QueryService(filter)
             .then(res => {
                 if (res.meta === 200) {
                     setData(res.results);
-                    setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
+                    setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy });
                     setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
                     setIsLoading(false);
                 }
@@ -46,11 +53,7 @@ const ServiceIndex = () => {
         setIsLoading(true);
     };
 
-    const handleFilterConfirm = (value) => {
-        setFilter({ ...filter, sortBy: value });
-    };
-
-    const handleAddShop = () => {
+    const handleAddService = () => {
         const state = {
             object: {},
             isEdit: false,
@@ -82,20 +85,20 @@ const ServiceIndex = () => {
     }
 
     const handleDeleteConfirm = (value) => {
-        // DeleteCategory(value.id)
-        //     .then(res => {
-        //         if (res.meta === 200) {
-        //             setIsDelete(false);
-        //             FetchData();
+        DeleteService(value.id)
+            .then(res => {
+                if (res.meta === 200) {
+                    setIsDelete(false);
+                    FetchData();
 
-        //             return toast.success("Category deleted successfully");
-        //         }
-        //     })
-        //     .catch(err => {
-        //         setIsDelete(false);
-        //         console.log(err);
-        //         toast.error(err.message);
-        //     })
+                    return toast.success("Service deleted successfully");
+                }
+            })
+            .catch(err => {
+                setIsDelete(false);
+                console.log(err);
+                toast.error(err.message);
+            })
     }
 
     useEffect(
@@ -109,7 +112,7 @@ const ServiceIndex = () => {
                 setIsLoading(true);
             }
         },
-        [filter.page, filter.limit, filter.sortBy, filter.name]
+        [filter.page, filter.limit]
     );
 
     return (
@@ -127,7 +130,7 @@ const ServiceIndex = () => {
                                     <Search />
                                 </IconButton>
 
-                                <Button variant="contained" startIcon={<Add />} onClick={handleAddShop}> {t("addBtn")} </Button>
+                                <Button variant="contained" startIcon={<Add />} onClick={handleAddService}> {t("addBtn")} </Button>
                             </Stack>
                         </Grid>
                     </Grid>
@@ -143,6 +146,14 @@ const ServiceIndex = () => {
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                     />
                 </CardContent>
+
+                <DeleteDialog
+                    bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.name}`}
+                    isOpen={isDelete}
+                    onClose={() => setIsDelete(false)}
+                    onConfirm={handleDeleteConfirm}
+                    object={deleteObject}
+                />
             </Card>
         </>
     )

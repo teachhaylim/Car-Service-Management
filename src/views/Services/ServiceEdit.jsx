@@ -29,7 +29,7 @@ const ServiceEdit = () => {
             id: service.id || "",
             name: service.name || "",
             sellCompany: service.sellCompany?.id || "",
-            price: service.price || 0,
+            price: service.price || "",
             remark: service.remark || "",
             isActive: service.isActive || true,
         },
