@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, CardActions, CardContent, Chip, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import basicConfig from 'utils/basicConfig';
 import { checkFile } from 'utils/generalFunc';
 import * as Yup from "yup";
@@ -28,6 +28,7 @@ const AppointmentEdit = () => {
     const shopInfo = useSelector(store => store.shop, shallowEqual);
     const appointment = useLocation().state.object;
     const isEdit = useLocation().state.isEdit;
+    const navigate = useNavigate();
 
     return (
         <>
@@ -124,7 +125,7 @@ const AppointmentEdit = () => {
                     <Grid item container justifyContent="end" alignItems="center">
                         <Button variant="contained" color="primary" sx={{ mr: 2 }}>Submit</Button>
 
-                        <Button variant="outlined" color="error">Cancel</Button>
+                        <Button variant="outlined" color="error" onClick={() => navigate("/app/appointments")}>Cancel</Button>
                     </Grid>
                 </CardActions>
             </Card>
