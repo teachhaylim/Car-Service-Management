@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 // eslint-disable-next-line
 import { Add, Search, Delete, Edit } from '@mui/icons-material';
-import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
+import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
 import { ShopTable } from 'components/Shop';
 import { QueryShop } from 'api/shop.api';
@@ -31,7 +31,7 @@ const ShopIndex = () => {
     const FetchData = () => {
         QueryShop()
             .then(res => {
-                if(res.meta === 200){
+                if (res.meta === 200) {
                     setData(res.results);
                     setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
                     setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
@@ -89,10 +89,10 @@ const ShopIndex = () => {
     const handleDeleteConfirm = (value) => {
         console.log(value)
     };
-    
+
     useEffect(() => {
         FetchData();
-        
+
     }, []);
 
     return (
@@ -130,7 +130,7 @@ const ShopIndex = () => {
                 </CardContent>
             </Card>
 
-            <DeleteDialog
+            <ConfirmDialog
                 bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.headerName}`}
                 isOpen={isDelete}
                 onClose={() => setIsDelete(false)}

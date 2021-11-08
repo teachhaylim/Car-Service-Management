@@ -2,7 +2,7 @@ import { Add, Search } from '@mui/icons-material';
 import { IconButton, Card, CardContent, Grid, Button, Stack, Typography } from '@mui/material';
 import { DeleteCategory, QueryCategory } from 'api/category.api';
 import { CategoryTable, FilterCategory } from 'components/Category';
-import { DeleteDialog } from 'components/CustomComponents/DeleteDialog';
+import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -149,7 +149,7 @@ const CategoriesIndex = () => {
                 </CardContent>
             </Card>
 
-            <DeleteDialog
+            <ConfirmDialog
                 bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.name}`}
                 isOpen={isDelete}
                 onClose={() => setIsDelete(false)}

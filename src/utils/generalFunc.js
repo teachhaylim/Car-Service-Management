@@ -20,11 +20,24 @@ export const getDiceBearAvatar = (key) => {
 };
 
 export const checkFile = (file) => {
-    if(typeof file == "string" && !file) return ""; 
+    if (typeof file == "string" && !file) return "";
 
     if (typeof file == "string") return basicConfig.fileUrl + file;
 
     if (file instanceof File) return URL.createObjectURL(file);
 
     return "";
-}
+};
+
+export const displayStatus = (status) => {
+    switch (status) {
+        case 1:
+            return { value: "Pending", color: "warning" };
+        case 2:
+            return { value: "Completed", color: "primary" };
+        case 0:
+            return { value: "Canceled", color: "error" };
+        default:
+            return "";
+    }
+};

@@ -2,7 +2,7 @@ import { Add, Search } from '@mui/icons-material'
 import { Button, Card, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material'
 import { DeleteService } from 'api/service.api'
 import { QueryService } from 'api/service.api'
-import { DeleteDialog } from 'components/CustomComponents/DeleteDialog'
+import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog'
 import { SearchInput } from 'components/CustomComponents/SearchInput'
 import { ServiceTable } from 'components/Services'
 import React, { useState, useEffect } from 'react'
@@ -147,7 +147,7 @@ const ServiceIndex = () => {
                     />
                 </CardContent>
 
-                <DeleteDialog
+                <ConfirmDialog
                     bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.name}`}
                     isOpen={isDelete}
                     onClose={() => setIsDelete(false)}

@@ -2,6 +2,7 @@ import { Edit, Save } from '@mui/icons-material';
 // eslint-disable-next-line
 import { Autocomplete, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
+import { Box } from '@mui/system';
 import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
 import { UpdateShop } from 'api/shop.api';
@@ -140,44 +141,45 @@ const ShopPersonal = () => {
     }, []);
 
     return (
-        <Card>
-            <CardContent>
-                <Divider textAlign="left">
-                    <Typography variant="h6">
-                        Shop Info
-                    </Typography>
-                </Divider>
+        <>
+            <Grid sx={{ mt: 0 }} item container spacing={2}>
+                <Grid height={"100%"} item xs={12} sm={6} md={5} lg={4} xl={3}>
+                    <StyledPaper elevation={0}>
+                        <SingleFileUpload file={imageFile} onChange={(value) => setImageFile(value)} isEdit={!isEdit} />
+                    </StyledPaper>
+                </Grid>
 
-                <Grid sx={{ mt: 0 }} item container spacing={2}>
-                    <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
-                        <StyledPaper elevation={0}>
-                            <SingleFileUpload file={imageFile} onChange={(value) => setImageFile(value)} isEdit={!isEdit} />
-                        </StyledPaper>
-                    </Grid>
+                <Grid item xs={12} sm={6} md={7} lg={8} xl={9}>
+                    <StyledPaper elevation={0}>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12}>
+                                <Divider sx={{ my: 0 }} textAlign="left">
+                                    <Typography variant="h6">
+                                        Shop Info
+                                    </Typography>
+                                </Divider>
+                            </Grid>
 
-                    <Grid item xs={12} sm={6} md={7} lg={8} xl={9}>
-                        <StyledPaper elevation={0}>
-                            <Grid item container spacing={2}>
-                                <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop name</FormLabel>
-                                    <TextField
-                                        fullWidth
-                                        margin="dense"
-                                        size="small"
-                                        variant="outlined"
-                                        name="name"
-                                        disabled={!isEdit}
-                                        value={formik.values.name}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.name && Boolean(formik.errors.name)}
-                                        helperText={formik.touched.name && t(formik.errors.name)}
-                                    />
-                                </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <FormLabel>Shop name</FormLabel>
+                                <TextField
+                                    fullWidth
+                                    margin="dense"
+                                    size="small"
+                                    variant="outlined"
+                                    name="name"
+                                    disabled={!isEdit}
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                    helperText={formik.touched.name && t(formik.errors.name)}
+                                />
+                            </Grid>
 
-                                {/* FIXME category doesnt update value */}
-                                <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop category</FormLabel>
-                                    {/* <Autocomplete
+                            {/* FIXME category doesnt update value */}
+                            <Grid item xs={12} lg={6}>
+                                <FormLabel>Shop category</FormLabel>
+                                {/* <Autocomplete
                                         name="categories"
                                         multiple
                                         size="small"
@@ -194,136 +196,135 @@ const ShopPersonal = () => {
                                         // helperText={formik.touched.categories && t(formik.errors.categories)}
                                         renderInput={(params) => <TextField {...params} label="" />}
                                     /> */}
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <FormLabel>Description</FormLabel>
+                                <TextField
+                                    multiline={true}
+                                    rows={6}
+                                    fullWidth
+                                    size="small"
+                                    name="description"
+                                    disabled={!isEdit}
+                                    value={formik.values.description}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.description && Boolean(formik.errors.description)}
+                                    helperText={formik.touched.description && t(formik.errors.description)}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Divider sx={{ my: 0 }} textAlign="left">
+                                    <Typography variant="h6">
+                                        Shop Address
+                                    </Typography>
+                                </Divider>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Grid item container spacing={2}>
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>House</FormLabel>
+                                        <TextField
+                                            rows={8}
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.house"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.house}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.house') && Boolean(getIn(formik.errors, 'address.house'))}
+                                            helperText={getIn(formik.touched, 'address.house') && getIn(formik.errors, 'address.house')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>Street</FormLabel>
+                                        <TextField
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.street"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.street}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.street') && Boolean(getIn(formik.errors, 'address.street'))}
+                                            helperText={getIn(formik.touched, 'address.street') && getIn(formik.errors, 'address.street')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>State</FormLabel>
+                                        <TextField
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.state"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.state}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.state') && Boolean(getIn(formik.errors, 'address.state'))}
+                                            helperText={getIn(formik.touched, 'address.state') && getIn(formik.errors, 'address.state')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>City</FormLabel>
+                                        <TextField
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.city"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.city}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.city') && Boolean(getIn(formik.errors, 'address.city'))}
+                                            helperText={getIn(formik.touched, 'address.city') && getIn(formik.errors, 'address.city')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>Country</FormLabel>
+                                        <TextField
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.country"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.country}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.country') && Boolean(getIn(formik.errors, 'address.country'))}
+                                            helperText={getIn(formik.touched, 'address.country') && getIn(formik.errors, 'address.country')}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6} lg={4}>
+                                        <FormLabel>Zipcode</FormLabel>
+                                        <TextField
+                                            fullWidth
+                                            margin="dense"
+                                            size="small"
+                                            name="address.zipCode"
+                                            disabled={!isEdit}
+                                            value={formik.values.address.zipCode}
+                                            onChange={formik.handleChange}
+                                            error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}
+                                            helperText={getIn(formik.touched, 'address.zipCode') && getIn(formik.errors, 'address.zipCode')}
+                                        />
+                                    </Grid>
                                 </Grid>
-
-                                <Grid item xs={12}>
-                                    <FormLabel>Description</FormLabel>
-                                    <TextField
-                                        multiline={true}
-                                        rows={8}
-                                        fullWidth
-                                        size="small"
-                                        name="description"
-                                        disabled={!isEdit}
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.description && Boolean(formik.errors.description)}
-                                        helperText={formik.touched.description && t(formik.errors.description)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </StyledPaper>
-                    </Grid>
-                </Grid>
-
-                <Divider sx={{ my: 2 }} textAlign="left">
-                    <Typography variant="h6">
-                        Shop Address
-                    </Typography>
-                </Divider>
-
-                <Grid item xs={12}>
-                    <StyledPaper elevation={0}>
-                        <Grid item container spacing={2}>
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>House</FormLabel>
-                                <TextField
-                                    rows={8}
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.house"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.house}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.house') && Boolean(getIn(formik.errors, 'address.house'))}
-                                    helperText={getIn(formik.touched, 'address.house') && getIn(formik.errors, 'address.house')}
-                                />
                             </Grid>
 
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Street</FormLabel>
-                                <TextField
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.street"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.street}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.street') && Boolean(getIn(formik.errors, 'address.street'))}
-                                    helperText={getIn(formik.touched, 'address.street') && getIn(formik.errors, 'address.street')}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>State</FormLabel>
-                                <TextField
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.state"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.state}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.state') && Boolean(getIn(formik.errors, 'address.state'))}
-                                    helperText={getIn(formik.touched, 'address.state') && getIn(formik.errors, 'address.state')}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>City</FormLabel>
-                                <TextField
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.city"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.city}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.city') && Boolean(getIn(formik.errors, 'address.city'))}
-                                    helperText={getIn(formik.touched, 'address.city') && getIn(formik.errors, 'address.city')}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Country</FormLabel>
-                                <TextField
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.country"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.country}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.country') && Boolean(getIn(formik.errors, 'address.country'))}
-                                    helperText={getIn(formik.touched, 'address.country') && getIn(formik.errors, 'address.country')}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Zipcode</FormLabel>
-                                <TextField
-                                    fullWidth
-                                    margin="dense"
-                                    size="small"
-                                    name="address.zipCode"
-                                    disabled={!isEdit}
-                                    value={formik.values.address.zipCode}
-                                    onChange={formik.handleChange}
-                                    error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}
-                                    helperText={getIn(formik.touched, 'address.zipCode') && getIn(formik.errors, 'address.zipCode')}
-                                />
+                            <Grid item container xs={12} alignItems="end" justifyContent="end">
+                                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="outlined" onClick={handleClick}>{isEdit ? t("saveBtn") : "Edit"}</Button>
                             </Grid>
                         </Grid>
                     </StyledPaper>
                 </Grid>
-            </CardContent>
-
-            <CardActions>
-                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="contained" onClick={handleClick}>{isEdit ? t("saveBtn") : "Edit"}</Button>
-            </CardActions>
-        </Card >
+            </Grid>
+        </>
     )
 }
 

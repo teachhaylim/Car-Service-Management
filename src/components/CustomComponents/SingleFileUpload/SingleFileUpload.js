@@ -13,13 +13,15 @@ const StyledAvatar = styled(Avatar)(({ theme }) => {
         "&:hover": {
             transition: "0.2s all",
             border: `1px solid ${theme.palette.secondary.main}`,
-        }
+        },
+        width: "100%",
+        height: "100%",
     };
 });
 
-const SingleFileUpload = ({file, onChange, isEdit}) => {
+const SingleFileUpload = ({ file, onChange, isEdit }) => {
     const { t } = useTranslation();
-    const inputRef= useRef(null);
+    const inputRef = useRef(null);
 
     const handleUpload = (e) => {
         onChange(e.target.files[0] || {});
@@ -29,10 +31,10 @@ const SingleFileUpload = ({file, onChange, isEdit}) => {
         <>
             <Grid container direction="column" sx={{ height: "100%" }} alignItems="center" justifyContent="space-around">
                 <Grid item sx={{ width: "80%", height: "80%" }}>
-                    <StyledAvatar src={checkFile(file)} variant="rounded" sx={{ width: "100%", height: "100%", }} />
+                    <StyledAvatar src={checkFile(file)} variant="rounded" />
                 </Grid>
 
-                <Grid item sx={{ height: "10%" }}>
+                <Grid item mt={2} sx={{ height: "10%" }}>
                     <Button disabled={isEdit} onClick={() => inputRef.current.click()} color="primary" variant="outlined" startIcon={<Upload />}>
                         <Input inputRef={inputRef} onChange={handleUpload} style={{ display: "none" }} accept="image/*" type="file" />
                         {t("upload")}

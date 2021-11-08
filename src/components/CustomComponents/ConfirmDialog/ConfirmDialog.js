@@ -35,7 +35,7 @@ CustomDialogTitle.propTypes = {
     onClose: PropTypes.func,
 };
 
-const DeleteDialog = (props) => {
+const ConfirmDialog = (props) => {
     const { isOpen, onClose, onConfirm, bodyText, headerText, object } = props;
     const { t } = useTranslation();
 
@@ -66,7 +66,7 @@ const DeleteDialog = (props) => {
     )
 };
 
-DeleteDialog.propTypes = {
+ConfirmDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
@@ -75,4 +75,4 @@ DeleteDialog.propTypes = {
     object: PropTypes.object.isRequired
 }
 
-export default DeleteDialog;
+export default ConfirmDialog;

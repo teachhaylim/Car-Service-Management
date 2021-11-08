@@ -1,33 +1,27 @@
 import { Avatar, Button, Card, CardActions, CardContent, Chip, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import moment from 'moment';
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
-import basicConfig from 'utils/basicConfig';
+import { displayStatus } from 'utils/generalFunc';
+// import basicConfig from 'utils/basicConfig';
 import { checkFile } from 'utils/generalFunc';
-import * as Yup from "yup";
+// import * as Yup from "yup";
 
-const validateSchema = Yup.object({
-    userId: Yup.string(),
-    sellCompany: Yup.string(),
-    service: Yup.array(),
-    status: Yup.array(),
-    remark: Yup.string(),
-    totalAmount: Yup.number(),
-    isActive: Yup.bool(),
-})
-
-const data = [
-    { id: 1, name: "Service 1", qty: 1, unitPrice: 1.2 },
-    { id: 1, name: "Service 2", qty: 2, unitPrice: 2 },
-    { id: 1, name: "Service 3", qty: 4, unitPrice: 1.5 },
-    { id: 1, name: "Service 4", qty: 6, unitPrice: 5.8 },
-    { id: 1, name: "Service 5", qty: 2, unitPrice: 5 },
-]
+// const validateSchema = Yup.object({
+//     userId: Yup.string(),
+//     sellCompany: Yup.string(),
+//     service: Yup.array(),
+//     status: Yup.array(),
+//     remark: Yup.string(),
+//     totalAmount: Yup.number(),
+//     isActive: Yup.bool(),
+// })
 
 const AppointmentEdit = () => {
     const shopInfo = useSelector(store => store.shop, shallowEqual);
     const appointment = useLocation().state.object;
-    const isEdit = useLocation().state.isEdit;
+    // const isEdit = useLocation().state.isEdit;
     const navigate = useNavigate();
 
     return (
@@ -45,7 +39,7 @@ const AppointmentEdit = () => {
 
                         <Grid item>
                             <Grid item container justifyContent="end" alignItems="center">
-                                <Chip color="primary" label={appointment.status[0].type} />
+                                <Chip color={displayStatus(appointment.status[0].type).color} label={displayStatus(appointment.status[0].type).value} />
                             </Grid>
 
                             <Grid item sx={{ mt: 1 }}>
@@ -62,7 +56,7 @@ const AppointmentEdit = () => {
 
                             <Grid item mt={2}>
                                 <Typography>{shopInfo.name}</Typography>
-                                <Typography>address</Typography>
+                                <Typography>{`${appointment.sellCompany.address.house}, ${appointment.sellCompany.address.street}, ${appointment.sellCompany.address.state}, ${appointment.sellCompany.address.city}, ${appointment.sellCompany.address.country}, ${appointment.sellCompany.address.zipCode}`}</Typography>
                             </Grid>
                         </Grid>
 
@@ -73,7 +67,7 @@ const AppointmentEdit = () => {
 
                             <Grid item mt={2}>
                                 <Typography>{`${appointment.userId.firstName} ${appointment.userId.lastName}`}</Typography>
-                                <Typography>address</Typography>
+                                <Typography>{`${appointment.userId.address.house}, ${appointment.userId.address.street}, ${appointment.userId.address.state}, ${appointment.userId.address.city}, ${appointment.userId.address.country}, ${appointment.userId.address.zipCode}`}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -85,7 +79,7 @@ const AppointmentEdit = () => {
                                     <TableRow>
                                         <TableCell width="80">#</TableCell>
                                         <TableCell>Service name</TableCell>
-                                        <TableCell align="right" width="150">Qty</TableCell>
+                                        <TableCell align="right" width="150">Date</TableCell>
                                         <TableCell align="right" width="180">Unit Price</TableCell>
                                         <TableCell align="right" width="180">Total Amount</TableCell>
                                     </TableRow>
@@ -96,10 +90,10 @@ const AppointmentEdit = () => {
                                         appointment.services.map((item, key) => (
                                             <TableRow>
                                                 <TableCell width="80">{item.id}</TableCell>
-                                                <TableCell>{item.item.name}</TableCell>
-                                                <TableCell align="right" width="150">{item.qty}</TableCell>
-                                                <TableCell align="right" width="180">$ {item.item.price}</TableCell>
-                                                <TableCell align="right" width="180">$ {item.item.price * item.qty}</TableCell>
+                                                <TableCell>{item.service.name}</TableCell>
+                                                <TableCell align="right" width="250">{moment(item.date).format("DD / MMMM / YYYY - hh:mm A")}</TableCell>
+                                                <TableCell align="right" width="180">$ {item.service.price}</TableCell>
+                                                <TableCell align="right" width="180">$ {item.service.price}</TableCell>
                                             </TableRow>
                                         ))
                                     }
@@ -110,7 +104,7 @@ const AppointmentEdit = () => {
                                         <TableCell align="right">
                                             $ {
                                                 appointment.services.reduce((pre, cur) => (
-                                                    pre + (cur.qty * cur.item.price)
+                                                    pre + cur.service.price
                                                 ), 0)
                                             }
                                         </TableCell>
@@ -123,9 +117,9 @@ const AppointmentEdit = () => {
 
                 <CardActions>
                     <Grid item container justifyContent="end" alignItems="center">
-                        <Button variant="contained" color="primary" sx={{ mr: 2 }}>Submit</Button>
+                        {/* <Button variant="contained" color="primary" sx={{ mr: 2 }}>Submit</Button> */}
 
-                        <Button variant="outlined" color="error" onClick={() => navigate("/app/appointments")}>Cancel</Button>
+                        <Button variant="outlined" color="error" onClick={() => navigate("/app/appointments")}>Go back</Button>
                     </Grid>
                 </CardActions>
             </Card>

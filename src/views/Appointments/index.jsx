@@ -1,7 +1,9 @@
 import { Add, Search } from '@mui/icons-material'
 import { Button, Card, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { UpdateAppointment } from 'api/appointment.api'
 import { QueryAppointment } from 'api/appointment.api'
 import { AppointmentTable } from 'components/Appointment'
+import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog'
 import { SearchInput } from 'components/CustomComponents/SearchInput'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,16 +22,19 @@ const AppointmentIndex = () => {
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [isDelete, setIsDelete] = useState(false);
-    const [deleteObject, setDeleteObject] = useState({});
+    const [isCancel, setIsCancel] = useState(false);
+    const [isComplete, setIsComplete] = useState(false);
+    const [confirmObject, setConfirmObject] = useState({});
 
-    const handleAddAppointment = () => {
-        const object = {
-            object: {},
-            isEdit: false,
-        };
+    //unused
+    // const handleAddAppointment = () => {
+    //     const state = {
+    //         object: {},
+    //         isEdit: false,
+    //     };
 
-        navigate("edit", { state: object });
-    };
+    //     navigate("edit", { state });
+    // };
 
     const handleEdit = (value) => {
         const state = {
@@ -40,22 +45,15 @@ const AppointmentIndex = () => {
         navigate("edit", { state });
     };
 
-    const handleDelete = (value) => {
-        setIsDelete(true);
-        setDeleteObject(value);
-    };
-
     const handleShowSearch = () => {
         setShowSearch(!showSearch);
     }
 
     const FetchData = () => {
-        // if (role === 1) filter.sellCompany = shopInfo.id;
+        if (role === 1) filter.sellCompany = shopInfo.id;
 
         QueryAppointment(filter)
             .then(res => {
-                console.log(res)
-
                 if (res.meta === 200) {
                     setData(res.results);
                     setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy });
@@ -84,7 +82,15 @@ const AppointmentIndex = () => {
         console.log(value);
     };
 
+    const handleDelete = (value) => {
+        setIsDelete(true);
+        setConfirmObject(value);
+    };
+
     const handleDeleteConfirm = (value) => {
+        setIsDelete(false);
+        console.log(value);
+
         // DeleteService(value.id)
         //     .then(res => {
         //         if (res.meta === 200) {
@@ -100,6 +106,54 @@ const AppointmentIndex = () => {
         //         toast.error(err.message);
         //     })
     }
+
+    const handleComplete = (value) => {
+        setIsComplete(true);
+        setConfirmObject(value);
+    };
+
+    const handleCompleteConfirm = (value) => {
+        setIsComplete(false);
+        updateStauts(value, 2);
+    };
+
+    const handleCancel = (value) => {
+        setIsCancel(true);
+        setConfirmObject(value);
+    };
+
+    const handleCancelConfirm = (value) => {
+        setIsCancel(false);
+        updateStauts(value, 0);
+    };
+
+    const updateStauts = (value, type) => {
+        const temp = JSON.parse(JSON.stringify(value));
+        temp.status.unshift({ type: type, date: new Date() });
+        temp.userId = temp.userId.id;
+        temp.sellCompany = temp.sellCompany.id;
+        temp.services = temp.services.map(item => {
+            return {
+                id: item.id,
+                date: item.date,
+                service: item.service.id,
+            };
+        });
+
+        UpdateAppointment(temp.id, temp)
+            .then(res => {
+                if (res.meta === 200) {
+                    data[data.indexOf(value)] = res.data;
+                    setData([...data]);
+                    toast.success("Appointment completed successfully");
+                    return;
+                };
+            })
+            .catch(err => {
+                toast.error(err.message);
+                console.log(err);
+            });
+    };
 
     useEffect(
         () => {
@@ -130,7 +184,7 @@ const AppointmentIndex = () => {
                                     <Search />
                                 </IconButton>
 
-                                <Button variant="contained" startIcon={<Add />} onClick={handleAddAppointment}>{t("addBtn")}</Button>
+                                {/* <Button variant="contained" startIcon={<Add />} onClick={handleAddAppointment}>{t("addBtn")}</Button> */}
                             </Stack>
                         </Grid>
                     </Grid>
@@ -142,11 +196,39 @@ const AppointmentIndex = () => {
                         data={data}
                         handleEdit={handleEdit}
                         handleDelete={handleDelete}
+                        handleComplete={handleComplete}
+                        handleCancel={handleCancel}
                         handleChangePage={handleChangePage}
                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                     />
                 </CardContent>
             </Card>
+
+            <ConfirmDialog
+                bodyText={`${t("confirmDeletePlaceholder")} this appointment`}
+                isOpen={isDelete}
+                onClose={() => setIsDelete(false)}
+                onConfirm={handleDeleteConfirm}
+                object={confirmObject}
+            />
+
+            <ConfirmDialog
+                headerText="Confirm Complete"
+                bodyText={`${t("confirmCompletePlaceholder")}  this appointment`}
+                isOpen={isComplete}
+                onClose={() => setIsComplete(false)}
+                onConfirm={handleCompleteConfirm}
+                object={confirmObject}
+            />
+
+            <ConfirmDialog
+                headerText="Confirm Cancel"
+                bodyText={`${t("confirmCancelPlaceholder")}  this appointment`}
+                isOpen={isCancel}
+                onClose={() => setIsCancel(false)}
+                onConfirm={handleCancelConfirm}
+                object={confirmObject}
+            />
         </>
     )
 }
