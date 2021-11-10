@@ -19,7 +19,7 @@ export const GetCategory = (id) => ApiRequest({
 
 export const UpdateCategory = (id, data) => ApiRequest({
     url: `category/${id}`,
-    method: "patch",
+    method: "put",
     data: data,
 });
 

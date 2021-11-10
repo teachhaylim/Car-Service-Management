@@ -1,5 +1,5 @@
-import { Add, Search } from '@mui/icons-material'
-import { Button, Card, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material'
+import { Search } from '@mui/icons-material'
+import { Card, CardContent, Grid, IconButton, Stack, Typography } from '@mui/material'
 import { UpdateAppointment } from 'api/appointment.api'
 import { QueryAppointment } from 'api/appointment.api'
 import { AppointmentTable } from 'components/Appointment'
@@ -79,7 +79,31 @@ const AppointmentIndex = () => {
     };
 
     const handleSearch = (value) => {
-        console.log(value);
+        if (["Pending", "pending", "Completed", "completed", "Canceled", "canceled"].includes(value)) {
+            switch (value) {
+                case "Pending":
+                case "pending":
+                    filter.statusType = 1;
+                    break;
+                case "Completed":
+                case "completed":
+                    filter.statusType = 2;
+                    break;
+                case "Canceled":
+                case "canceled":
+                    filter.statusType = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            delete filter.statusType;
+        }
+
+        setFilter({ ...filter, page: 0, user: value });
+
+        console.log(`filter`, filter)
     };
 
     const handleDelete = (value) => {
@@ -90,21 +114,6 @@ const AppointmentIndex = () => {
     const handleDeleteConfirm = (value) => {
         setIsDelete(false);
         console.log(value);
-
-        // DeleteService(value.id)
-        //     .then(res => {
-        //         if (res.meta === 200) {
-        //             setIsDelete(false);
-        //             FetchData();
-
-        //             return toast.success("Service deleted successfully");
-        //         }
-        //     })
-        //     .catch(err => {
-        //         setIsDelete(false);
-        //         console.log(err);
-        //         toast.error(err.message);
-        //     })
     }
 
     const handleComplete = (value) => {

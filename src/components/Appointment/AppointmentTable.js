@@ -1,16 +1,18 @@
-import { Cancel, Check, Delete, Edit, Visibility } from '@mui/icons-material';
+import { Cancel, Check, Visibility } from '@mui/icons-material';
 import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Chip, Tooltip } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { LinearTableLoading } from 'components/CustomComponents/LinearTableLoading';
 import { displayStatus } from 'utils/generalFunc';
+import moment from 'moment';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
     { field: 'billTo', headerName: 'billTo', width: 150 },
     { field: 'totalPrice', headerName: 'Total Price', width: 150 },
-    { field: 'status', headerName: 'Status', width: 150 },
+    { field: 'createdAt', headerName: 'createdAt', width: 150 },
+    { field: 'status', headerName: 'status', width: 150 },
     { field: 'actions', headerName: 'actions', width: 80 },
 ];
 
@@ -54,6 +56,7 @@ const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, ha
                                             }, 0)
                                         }
                                     </TableCell>
+                                    <TableCell>{moment(item.createdAt).format("DD / MMMM / YYYY - hh:mm A")}</TableCell>
                                     <TableCell>
                                         <Chip color={displayStatus(item.status[0].type).color} label={displayStatus(item.status[0].type).value} />
                                     </TableCell>
@@ -63,22 +66,22 @@ const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, ha
                                         </Tooltip>
 
                                         {
-                                            item.status[0].type === 1 ?
-                                                <Tooltip Tooltip title={t("complete")} placement="top" arrow>
-                                                    <IconButton onClick={() => handleComplete(item)} color="success"><Check /></IconButton>
-                                                </Tooltip> : null
+                                            item.status[0].type === 1 &&
+                                            <Tooltip Tooltip title={t("complete")} placement="top" arrow>
+                                                <IconButton onClick={() => handleComplete(item)} color="success"><Check /></IconButton>
+                                            </Tooltip>
                                         }
 
                                         {
-                                            item.status[0].type === 1 ?
-                                                <Tooltip title={t("cancel")} placement="top" arrow>
-                                                    <IconButton onClick={() => handleCancel(item)} color="error"><Cancel /></IconButton>
-                                                </Tooltip> : null
+                                            item.status[0].type === 1 &&
+                                            <Tooltip title={t("cancel")} placement="top" arrow>
+                                                <IconButton onClick={() => handleCancel(item)} color="error"><Cancel /></IconButton>
+                                            </Tooltip>
                                         }
 
-                                        <Tooltip title={t("delete")} placement="top" arrow>
+                                        {/* <Tooltip title={t("delete")} placement="top" arrow>
                                             <IconButton onClick={() => handleDelete(item)} color="error"><Delete /></IconButton>
-                                        </Tooltip>
+                                        </Tooltip> */}
                                     </TableCell>
                                 </TableRow>
                             ))

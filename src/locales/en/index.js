@@ -1,3 +1,4 @@
+import en_appointment from "./en.appointment";
 import en_category from "./en.category";
 import en_service from "./en.services";
 import en_user from "./en.user";
@@ -7,6 +8,7 @@ const en_lang = {
         ...en_user,
         ...en_category,
         ...en_service,
+        ...en_appointment,
 
         //Sidebar
         dashboard: "Dashboard",
@@ -83,6 +85,13 @@ const en_lang = {
         missingId: "Missing Id",
         submitBtn: "Submit",
         price: "Price",
+        logo: "Logo",
+        description: "Description",
+        name: "Name",
+        createdAt: "Created at",
+        actions: "Actions",
+        updatedAt: "Updated at",
+        image: "Image",
     }
 };
 

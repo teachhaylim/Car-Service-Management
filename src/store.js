@@ -16,7 +16,7 @@ const initialState = {
     shop: {},
     token: new Cookies().get("XTOK") || "",
     isLogin: false,
-    role: 0, // 0 = user role (not allow access at all), 1 = admin (allow access related info), 2 = superadmin (God level access xd)
+    role: 0, // 0 = user role (no allow access at all), 1 = admin (allow access related info), 2 = superadmin (god level access xd)
 };
 
 //Action Section aka Action Creator

@@ -1,4 +1,4 @@
-import { AccountBox, AddToQueue, Dashboard, People, Star, Store, TableChart, VerticalSplit } from "@mui/icons-material";
+import { AccountBox, AddToQueue, Dashboard, People, Store, TableChart, VerticalSplit } from "@mui/icons-material";
 
 export const roles = ["user", "admin", "super admin"];
 
@@ -14,9 +14,10 @@ export const adminList = [
 ];
 
 export const superAdminList = [
-    { alternateTitle: "alt_users", title: "users", href: "users", icon: <People />, parent: "management", hidden: false },
     { alternateTitle: "alt_categories", title: "categories", href: "category", icon: <TableChart />, parent: "management", hidden: false },
-    { alternateTitle: "alt_rating", title: "rating", href: "rating", icon: <Star />, parent: "management", hidden: false },
+    { alternateTitle: "alt_users", title: "users", href: "users", icon: <People />, parent: "management", hidden: false },
+    { alternateTitle: "alt_shops", title: "shops", href: "shops", icon: <Store />, parent: "management", hidden: false },
+    // { alternateTitle: "alt_rating", title: "rating", href: "rating", icon: <Star />, parent: "management", hidden: false },
 ];
 
 export const langItems = [

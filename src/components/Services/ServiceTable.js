@@ -14,7 +14,6 @@ const header = [
     { field: 'actions', headerName: 'actions', width: 80 },
 ];
 
-//TODO adjust column width
 const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
 

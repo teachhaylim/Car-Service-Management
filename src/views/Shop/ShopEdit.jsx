@@ -174,7 +174,7 @@ const ShopEdit = () => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} lg={6}>
+                                {/* <Grid item xs={12} lg={6}>
                                     <FormLabel>Shop category</FormLabel>
                                     <Select
                                         name="categories"
@@ -193,7 +193,7 @@ const ShopEdit = () => {
                                         }
                                     </Select>
                                     <FormHelperText sx={{ color: "red" }}>{formik.touched.categories && t(formik.errors.categories)}</FormHelperText>
-                                </Grid>
+                                </Grid> */}
 
                                 <Grid item xs={12}>
                                     <FormLabel>Description</FormLabel>

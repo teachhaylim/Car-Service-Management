@@ -80,7 +80,6 @@ const ServiceIndex = () => {
         if (value) filter.name = value;
         filter.page = 0;
         setFilter(filter);
-        console.log(filter);
 
         FetchData();
     };

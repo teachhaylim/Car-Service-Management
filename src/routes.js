@@ -11,7 +11,8 @@ import AppointmentIndex from "views/Appointments";
 import ServiceIndex from "views/Services";
 import ShopAdmin from "views/Shop";
 import CategoryIndex from "views/Category";
-import RatingIndex from "views/Rating";
+// eslint-disable-next-line
+import RatingIndex from "views/Rating"; // backlog feature
 import LoginView from "views/Login";
 import RegisterView from "views/Register";
 import CategoryEdit from "views/Category/CategoryEdit";
@@ -22,7 +23,14 @@ import ServiceEdit from "views/Services/ServiceEdit";
 import AppointmentEdit from "views/Appointments/AppointmentEdit";
 
 const adminRoutes = [
-    { path: "users", element: <UserIndex /> },
+    {
+        path: "users",
+        name: "UserIndex",
+        children: [
+            { path: "/", name: "User", element: <UserIndex /> },
+            { path: "edit", name: "Edit", element: <UserIndex /> },
+        ]
+    },
     {
         path: "category",
         name: "CategoryIndex",
@@ -31,10 +39,18 @@ const adminRoutes = [
             { path: "edit", name: "Edit", element: <CategoryEdit /> },
         ]
     },
-    { path: "rating", element: <RatingIndex /> },
+    {
+        path: "shops",
+        name: "Shop",
+        children: [
+            { path: "/", name: "Shop", element: <ShopAdmin /> },
+            { path: "edit", name: "Edit", element: <ShopEdit /> },
+        ]
+    },
+    // { path: "rating", element: <RatingIndex /> }, //backlog feature
 ];
 
-const generalRoutes = (role) => [
+const generalRoutes = [
     {
         path: "appointments",
         name: "Appointment",
@@ -55,45 +71,35 @@ const generalRoutes = (role) => [
         path: "shops",
         name: "Shop",
         children: [
-            { path: "/", name: "Shop", element: role === 2 ? <ShopAdmin /> : < ShopPersonal /> },
+            { path: "/", name: "Shop", element: < ShopPersonal /> },
             { path: "edit", name: "Edit", element: <ShopEdit /> },
         ]
     },
-    //TODO dynamic shop page
 ];
 
-const routes = (isLogin = false, role = 0) => {
-    const tempRoutes = [
-        {
-            path: "app",
-            element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
-            children: [
-                { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
-                { path: "profile", element: <ProfileIndex /> },
-                { path: "*", element: <Navigate to="/notfound" /> },
-                ...generalRoutes(1),
-            ]
-        },
-        {
-            path: "/",
-            element: <MainLayout />,
-            children: [
-                { path: "/login", element: <LoginView /> },
-                { path: "/register", element: <RegisterView /> },
-                { path: "/", element: <Navigate to="/app/dashboard" /> },
-                { path: "*", element: <Navigate to="/notfound" /> }
-            ]
-        },
-        { path: "/notfound", element: <NotFound /> },
-        { path: "/unauthorized", element: <Unauthorized /> },
-    ];
-
-    // if (role === 1)
-    //     tempRoutes[0].children.push(...generalRoutes(role));
-    // else if (role === 2)
-    //     tempRoutes[0].children.push(...adminRoutes, ...generalRoutes);
-
-    return tempRoutes;
-}
+const routes = (isLogin = false, role = 0) => [
+    {
+        path: "app",
+        element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
+        children: [
+            { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
+            { path: "profile", element: <ProfileIndex /> },
+            { path: "*", element: <Navigate to="/notfound" /> },
+            ...(role === 2 ? adminRoutes : generalRoutes),
+        ]
+    },
+    {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+            { path: "/login", element: <LoginView /> },
+            { path: "/register", element: <RegisterView /> },
+            { path: "/", element: <Navigate to="/app/dashboard" /> },
+            { path: "*", element: <Navigate to="/notfound" /> }
+        ]
+    },
+    { path: "/notfound", element: <NotFound /> },
+    { path: "/unauthorized", element: <Unauthorized /> },
+];
 
 export default routes;

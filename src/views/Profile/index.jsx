@@ -1,6 +1,6 @@
-import { Edit, Save } from '@mui/icons-material';
+import { Cancel, Edit, Save } from '@mui/icons-material';
 import { DesktopDatePicker } from '@mui/lab';
-import { Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Button, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { uploadFile } from 'api/file.api';
 import { UpdateUser } from 'api/user.api';
@@ -292,7 +292,11 @@ const ProfileIndex = () => {
                             </Grid>
 
                             <Grid item container justifyContent="end" alignItems="end" mt={2} xs={12}>
-                                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="outlined" onClick={handleClick}>{isEdit ? t("saveBtn") : "Edit"}</Button>
+                                {
+                                    isEdit && <Button startIcon={<Cancel />} sx={{ mr: 2 }} variant="outlined" color="error" onClick={() => setIsEdit(false)}>{t("cancel")}</Button>
+                                }
+
+                                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="outlined" onClick={handleClick}>{isEdit ? t("saveBtn") : t("edit")}</Button>
                             </Grid>
                         </Grid>
                     </StyledPaper>

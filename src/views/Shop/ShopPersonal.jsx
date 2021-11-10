@@ -1,8 +1,6 @@
 import { Edit, Save } from '@mui/icons-material';
-// eslint-disable-next-line
-import { Autocomplete, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Button, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
-import { Box } from '@mui/system';
 import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
 import { UpdateShop } from 'api/shop.api';

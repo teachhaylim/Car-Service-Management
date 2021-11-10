@@ -2,33 +2,49 @@ import { Close, Save } from '@mui/icons-material';
 import { Button, Card, CardActions, CardContent, CardHeader, Divider, FormLabel, Grid, TextField, Typography } from '@mui/material';
 import { CreateCategory } from 'api/category.api';
 import { UpdateCategory } from 'api/category.api';
+import { SingleFileUpload } from 'components/CustomComponents/SingleFileUpload';
 import { useFormik } from 'formik';
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
+import { uploadFile } from 'api/file.api';
 
 const validationSchema = Yup.object({
     name: Yup.string()
         .required("categoryIsRequired"),
     remark: Yup.string()
         .nullable(),
-})
+});
 
 const CategoryEdit = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const category = useLocation().state.object;
     const isEdit = useLocation().state.isEdit;
+    const [imageFile, setImageFile] = useState(category.image || "");
     const formik = useFormik({
         initialValues: {
             name: category.name || "",
             remark: category.remark || "",
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            formik.resetForm();
+        onSubmit: async (values) => {
+            if (imageFile instanceof File) {
+                const file = new FormData();
+                file.append('file', imageFile);
+
+                await uploadFile(file)
+                    .then(res => {
+                        if (res && res.meta === 201) {
+                            values.image = res.file.filename;
+                        }
+                    })
+                    .catch(err => {
+                        toast.error(err.message)
+                    });
+            }
 
             if (isEdit) {
                 if (!category.id) {
@@ -39,6 +55,7 @@ const CategoryEdit = () => {
                 UpdateCategory(category.id, values)
                     .then((res) => {
                         if (res.meta === 200) {
+                            formik.resetForm();
                             toast.success("Category updated successfully");
                             return navigate("/app/category");
                         }
@@ -53,6 +70,7 @@ const CategoryEdit = () => {
             CreateCategory(values)
                 .then((res) => {
                     if (res.meta === 201) {
+                        formik.resetForm();
                         toast.success("Category added successfully");
                         return navigate("/app/category");
                     }
@@ -74,7 +92,7 @@ const CategoryEdit = () => {
 
             <CardContent>
                 <Grid item container spacing={2}>
-                    <Grid item xs={12} sm={6} md={5}>
+                    <Grid item xs={12} sm={6} md={8} lg={9}>
                         <Grid item>
                             <FormLabel> {t("categoryName")} </FormLabel>
                             <TextField
@@ -106,6 +124,10 @@ const CategoryEdit = () => {
                                 helperText={formik.touched.remark && formik.errors.remark}
                             />
                         </Grid>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <SingleFileUpload file={imageFile} onChange={(value) => setImageFile(value)} />
                     </Grid>
                 </Grid>
             </CardContent>
