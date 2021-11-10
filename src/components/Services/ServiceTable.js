@@ -1,9 +1,10 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Chip } from '@mui/material';
+import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Chip, Tooltip } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { LinearTableLoading } from 'components/CustomComponents/LinearTableLoading';
+import { displaySeeMore } from 'utils/generalFunc';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
@@ -48,12 +49,16 @@ const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handle
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>
-                                        <Chip color="primary" label={`$ ${item.price}`} />
+                                        <Chip color="primary" sx={{ fontWeight: "bold", fontSize: 14 }} label={`$ ${item.price}`} />
                                     </TableCell>
-                                    <TableCell>{item.remark}</TableCell>
+                                    <TableCell>{displaySeeMore(item.remark)}</TableCell>
                                     <TableCell>
-                                        <IconButton onClick={() => handleEdit(item)} color="success"><Edit /></IconButton>
-                                        <IconButton onClick={() => handleDelete(item)} color="error"><Delete /></IconButton>
+                                        <Tooltip title={t("edit")} placement="top">
+                                            <IconButton onClick={() => handleEdit(item)} color="success"><Edit /></IconButton>
+                                        </Tooltip>
+                                        <Tooltip title={t("delete")} placement="top">
+                                            <IconButton onClick={() => handleDelete(item)} color="error"><Delete /></IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                 </TableRow>
                             ))

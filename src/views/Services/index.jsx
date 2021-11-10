@@ -76,8 +76,13 @@ const ServiceIndex = () => {
         setDeleteObject(value);
     };
 
-    const handleSearch = () => {
+    const handleSearch = (value) => {
+        if (value) filter.name = value;
+        filter.page = 0;
+        setFilter(filter);
+        console.log(filter);
 
+        FetchData();
     };
 
     const handleShowSearch = () => {

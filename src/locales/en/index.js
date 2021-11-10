@@ -67,6 +67,7 @@ const en_lang = {
         cancel: "Cancel",
         delete: "Delete",
         view: "View",
+        edit: "Edit",
         addBtn: "Add",
         search: "Search",
         asc: "Ascending",
