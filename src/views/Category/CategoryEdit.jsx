@@ -135,7 +135,7 @@ const CategoryEdit = () => {
             <CardActions>
                 <Button startIcon={<Save />} variant="contained" onClick={formik.handleSubmit}>{t("submitBtn")}</Button>
 
-                <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/category")}>{t("cancelBtn")}</Button>
+                <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/category")}>{t("cancel")}</Button>
             </CardActions>
         </Card>
     )

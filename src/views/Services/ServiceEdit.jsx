@@ -148,7 +148,7 @@ const ServiceEdit = () => {
             <CardActions>
                 <Button startIcon={<Save />} variant="contained" onClick={formik.handleSubmit}>{t("submitBtn")}</Button>
 
-                <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/services")}>{t("cancelBtn")}</Button>
+                <Button startIcon={<Close />} color="error" variant="outlined" onClick={() => navigate("/app/services")}>{t("cancel")}</Button>
             </CardActions>
         </Card>
     )

@@ -7,7 +7,10 @@ import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
 import { ShopTable } from 'components/Shop';
 import { QueryShop } from 'api/shop.api';
+import { UpdateShop } from 'api/shop.api';
+import { toast } from 'react-toastify';
 
+//TODO search
 const ShopIndex = () => {
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
@@ -15,7 +18,8 @@ const ShopIndex = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showSearch, setShowSearch] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
-    const [deleteObject, setDeleteObject] = useState({});
+    const [isStatusChange, setIsStatusChange] = useState(false);
+    const [tempObject, setTempObject] = useState({});
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -31,6 +35,15 @@ const ShopIndex = () => {
             })
     };
 
+    const handleAddShop = () => {
+        const state = {
+            object: {},
+            isEdit: false,
+        }
+
+        navigate("edit", { state });
+    };
+
     const handleEdit = (value) => {
         const state = {
             object: value,
@@ -38,11 +51,6 @@ const ShopIndex = () => {
         }
 
         navigate("edit", { state });
-    };
-
-    const handleDelete = (value) => {
-        setIsDelete(true);
-        setDeleteObject(value);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -64,21 +72,41 @@ const ShopIndex = () => {
         setShowSearch(!showSearch);
     };
 
-    const handleAddShop = () => {
-        const state = {
-            object: {},
-            isEdit: false,
-        }
-
-        navigate("edit", { state });
-    };
-
     const handleSearch = (value) => {
         setFilter({ ...filter, name: value });
     };
 
+    const handleDelete = (value) => {
+        setIsDelete(true);
+        setTempObject(value);
+    };
+
     const handleDeleteConfirm = (value) => {
         console.log(value)
+    };
+
+    const handleStatusChange = (value) => {
+        setIsStatusChange(true);
+        setTempObject(value);
+    };
+
+    const handleStatusChangeConfirm = (value) => {
+        setIsStatusChange(false);
+
+        value.isActive = !value.isActive;
+
+        UpdateShop(value.id, value)
+            .then(res => {
+                if (res.meta === 200) {
+                    data[data.indexOf(value)].isActive = value.isActive;
+                    setData([...data]);
+                    toast.success(t("updateSuccess"))
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error(t(`updateFailed - ${err.message}`));
+            });
     };
 
     useEffect(() => {
@@ -115,6 +143,7 @@ const ShopIndex = () => {
                         data={data}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        onStatusChange={handleStatusChange}
                         onPageChange={handleChangePage}
                         onRowPerPageChange={handleChangeRowsPerPage}
                     />
@@ -122,11 +151,20 @@ const ShopIndex = () => {
             </Card>
 
             <ConfirmDialog
-                bodyText={`${t("confirmDeletePlaceholder")} ${deleteObject.headerName}`}
+                bodyText={`${t("confirmDeletePlaceholder")} ${tempObject.headerName}`}
                 isOpen={isDelete}
                 onClose={() => setIsDelete(false)}
                 onConfirm={handleDeleteConfirm}
-                object={deleteObject}
+                object={tempObject}
+            />
+
+            <ConfirmDialog
+                headerText={t("confirmStatusChange")}
+                bodyText={`${t("confirmStatusChangePlaceholder")}`}
+                isOpen={isStatusChange}
+                onClose={() => setIsStatusChange(false)}
+                onConfirm={handleStatusChangeConfirm}
+                object={tempObject}
             />
         </>
     )

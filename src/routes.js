@@ -21,6 +21,7 @@ import ShopPersonal from "views/Shop/ShopPersonal";
 import ProfileIndex from "views/Profile";
 import ServiceEdit from "views/Services/ServiceEdit";
 import AppointmentEdit from "views/Appointments/AppointmentEdit";
+import UserEdit from "views/User/UserEdit";
 
 const adminRoutes = [
     {
@@ -28,7 +29,7 @@ const adminRoutes = [
         name: "UserIndex",
         children: [
             { path: "/", name: "User", element: <UserIndex /> },
-            { path: "edit", name: "Edit", element: <UserIndex /> },
+            { path: "edit", name: "Edit", element: <UserEdit /> },
         ]
     },
     {
@@ -77,7 +78,7 @@ const generalRoutes = [
     },
 ];
 
-const routes = (isLogin = false, role = 0) => [
+const routes = (isLogin = false, role = -1) => [
     {
         path: "app",
         element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
@@ -85,7 +86,7 @@ const routes = (isLogin = false, role = 0) => [
             { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
             { path: "profile", element: <ProfileIndex /> },
             { path: "*", element: <Navigate to="/notfound" /> },
-            ...(role === 2 ? adminRoutes : generalRoutes),
+            ...(role === -1 ? [] : role === 2 ? adminRoutes : generalRoutes),
         ]
     },
     {

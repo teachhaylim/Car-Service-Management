@@ -37,7 +37,7 @@ const LoginView = () => {
             Login({ email: values.email, password: values.password })
                 .then(res => {
                     if (res.meta === 200) {
-                        if (res.user.type === 0) {
+                        if (res.user.type === -1) {
                             formik.resetForm();
                             return toast.error("Unauthorized account, You don't have permission to access");
                         }

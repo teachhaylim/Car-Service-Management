@@ -49,18 +49,18 @@ const ConfirmDialog = (props) => {
             fullWidth={true}
         >
             <CustomDialogTitle onClose={onClose}>
-                {headerText || t("confirmDelete")}
+                {headerText || t("confirmDialog")}
             </CustomDialogTitle>
 
             <DialogContent dividers>
                 <Typography sx={{ fontSize: 18, fontWeight: 400 }} >
-                    {bodyText || t("confirmDeleteText")}?
+                    {bodyText || t("confirmDialogPlaceholder")}?
                 </Typography>
             </DialogContent>
 
             <DialogActions>
-                <Button startIcon={<CheckCircle />} variant="contained" onClick={handleConfirm}>{t("confirmBtn")}</Button>
-                <Button startIcon={<Cancel />} variant="outlined" color="error" onClick={onClose}>{t("cancelBtn")}</Button>
+                <Button startIcon={<CheckCircle />} variant="contained" onClick={handleConfirm}>{t("confirm")}</Button>
+                <Button startIcon={<Cancel />} variant="outlined" color="error" onClick={onClose}>{t("cancel")}</Button>
             </DialogActions>
         </Dialog>
     )

@@ -35,7 +35,7 @@ ApiRequest.interceptors.response.use(response => {
 },
     error => {
         console.log(error)
-        return error
+        throw error
     }
 );
 

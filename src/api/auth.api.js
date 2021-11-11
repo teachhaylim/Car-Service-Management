@@ -17,8 +17,13 @@ export const Register = (data) => AuthRequest({
     data: data,
 });
 
-export const ForgotPassword = (data) => AuthRequest({
-    url: "forgotpassword",
+/**
+ * 
+ * @param {Object} data -> @required userId, @required newPassword 
+ * @returns 
+ */
+export const ChangePassword = (data) => AuthRequest({
+    url: "changepassword",
     method: "post",
     data: data,
 });
