@@ -1,12 +1,8 @@
 import { Close, Save } from '@mui/icons-material';
-import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, FormHelperText } from '@mui/material';
+import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, Autocomplete, CircularProgress } from '@mui/material';
 import { styled } from '@mui/styles';
 import { DesktopDatePicker } from '@mui/lab';
-import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
-// eslint-disable-next-line
-import { UpdateShop } from 'api/user.api';
-import { CreateShop } from 'api/user.api';
 import { SingleFileUpload } from 'components/CustomComponents/SingleFileUpload';
 import { getIn, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
@@ -14,6 +10,10 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
+import { CreateUser } from 'api/user.api';
+import moment from 'moment';
+import { UpdateUser } from 'api/user.api';
+import { QueryShop } from 'api/shop.api';
 
 const StyledPaper = styled(Paper)(({ theme }) => {
     return {
@@ -38,10 +38,11 @@ const validateSchema = Yup.object({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
     phoneNumber: Yup.string().required("Phone number is required"),
-    dob: Yup.string().required("Date of birth is required"),
+    dob: Yup.date().required("Date of birth is required"),
     email: Yup.string().required("Email is required"),
-    profilePic: Yup.string().required("Profile Image is required"),
+    profilePic: Yup.string(),
     type: Yup.number().required("Type is required"),
+    // sellCompany: Yup.string().required("Shop is required").nullable(),
 });
 
 const UserEdit = () => {
@@ -50,13 +51,17 @@ const UserEdit = () => {
     const [imageFile, setImageFile] = useState(user.profilePic || {});
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState([]);
+    const loading = open && options.length === 0;
+    const [value, setValue] = useState(options[0]);
     const formik = useFormik({
         initialValues: {
             id: user.id || "",
             firstName: user.firstName || "",
             lastName: user.lastName || "",
             phoneNumber: user.phoneNumber || "",
-            dob: user.dob || "",
+            dob: user.dob || moment().toDate(),
             email: user.email || "",
             profilePic: user.profilePic || "",
             type: user.type || "", // 0 = user role (not allow access at all), 1 = admin (allow access to related info), 2 = superadmin (God level access xd)
@@ -69,9 +74,17 @@ const UserEdit = () => {
                 country: user.address?.country || "",
                 zipCode: user.address?.zipCode || "",
             },
+            sellCompany: user?.sellCompany || null,
         },
         validationSchema: validateSchema,
         onSubmit: async (values) => {
+            if (values.type === 1) {
+                if (value == null) {
+                    return toast.warning("Shop is required");
+                }
+                values.sellCompany = value.id;
+            }
+
             if (imageFile instanceof File) {
                 const file = new FormData();
                 file.append('file', imageFile);
@@ -88,35 +101,33 @@ const UserEdit = () => {
             }
 
             if (isEdit) {
-                values.address.id = user.address.id;
-                values.sellCompany = user?.sellCompany?.id;
+                UpdateUser(values.id, values)
+                    .then(res => {
+                        if (res && res.meta === 200) {
+                            navigate("/app/users");
 
-                // UpdateShop(values.id, values)
-                //     .then(res => {
-                //         if (res && res.meta === 200) {
-                //             navigate("/app/shops");
-
-                //             return toast.success("Shop updated");
-                //         }
-                //     })
-                //     .catch(err => {
-                //         return toast.error(err.message);
-                //     })
+                            return toast.success("User updated");
+                        }
+                    })
+                    .catch(err => {
+                        return toast.error(err.message);
+                    })
 
                 return;
             }
 
-            // CreateShop(values)
-            //     .then(res => {
-            //         if (res && res.meta === 201) {
-            //             navigate("/app/shops");
+            CreateUser(values)
+                .then(res => {
+                    if (res && res.meta === 201) {
+                        navigate("/app/users");
 
-            //             return toast.success("Shop created");
-            //         }
-            //     })
-            //     .catch(err => {
-            //         return toast.error(err.message);
-            //     })
+                        return toast.success("User created");
+                    }
+                }).catch(err => {
+                    navigate("/app/users");
+                    formik.resetForm();
+                    toast.error(err.message);
+                });
         },
     });
 
@@ -125,8 +136,30 @@ const UserEdit = () => {
     };
 
     useEffect(() => {
+        let active = true;
 
-    }, []);
+        if (!loading) return undefined;
+
+        if (active) {
+            QueryShop()
+                .then(res => {
+                    if (res && res.meta === 200) {
+                        setOptions([...res.results]);
+                    }
+                })
+                .catch(err => {
+                    toast.error(err.message);
+                })
+        }
+
+        return () => active = false;
+    }, [loading]);
+
+    useEffect(() => {
+        if (!open) {
+            setOptions([]);
+        }
+    }, [open]);
 
     return (
         <Card>
@@ -226,6 +259,42 @@ const UserEdit = () => {
                                         <MenuItem value={-1}>{t("user")}</MenuItem>
                                     </Select>
                                 </Grid>
+
+                                {
+                                    formik.values.type === 1 &&
+                                    <Grid item xs={12} lg={6}>
+                                        <FormLabel>{t("shop")}</FormLabel>
+                                        <Autocomplete
+                                            id="asynchronous-demo"
+                                            sx={{ width: "100%" }}
+                                            open={open}
+                                            onOpen={() => setOpen(true)}
+                                            onClose={() => setOpen(false)}
+                                            isOptionEqualToValue={(option, value) => option.name === value.name}
+                                            getOptionLabel={(option) => `${option.name}`}
+                                            options={options}
+                                            loading={loading}
+                                            value={value}
+                                            onChange={(event, newValue) => {
+                                                setValue(newValue);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        endAdornment: (
+                                                            <>
+                                                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </>
+                                                        ),
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                }
                             </Grid>
                         </StyledPaper>
                     </Grid>
@@ -311,7 +380,7 @@ const UserEdit = () => {
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    name="address.zipcode"
+                                    name="address.zipCode"
                                     value={formik.values.address.zipCode}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}

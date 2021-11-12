@@ -8,30 +8,32 @@ const FileRequest = axios.create({
     timeout: 15000
 });
 
-FileRequest.interceptors.request.use(config => {
-    config.headers['Authorization'] = store.getState().token;
-    config.headers["Accept"] = "multipart/form-data";
+FileRequest.interceptors.request.use(
+    config => {
+        config.headers['Authorization'] = store.getState().token;
+        config.headers["Accept"] = "multipart/form-data";
 
-    return config
-},
+        return config
+    },
     error => {
         Promise.reject(error)
     }
 );
 
-FileRequest.interceptors.response.use(response => {
-    const res = response.data;
+FileRequest.interceptors.response.use(
+    response => {
+        const res = response.data;
 
-    if (res.meta === meta.TOKENEXPIRE) {
-        alert("Token Expire, Please Login Again");
-    }
-    else {
-        return res;
-    }
-},
+        if (res.meta === meta.TOKENEXPIRE) {
+            alert("Token Expire, Please Login Again");
+        }
+        else {
+            return res;
+        }
+    },
     error => {
-        return Promise.reject(error.response.data)
-    }
+        return Promise.reject(error.response.data);
+    },
 );
 
 export default FileRequest;

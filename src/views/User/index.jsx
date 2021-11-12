@@ -8,6 +8,8 @@ import { ConfirmDialog } from 'components/CustomComponents/ConfirmDialog';
 import { ResetPwdDialog } from 'components/User';
 import { SearchInput } from 'components/CustomComponents/SearchInput';
 import { Add, Search } from '@mui/icons-material';
+import { UpdateUser } from 'api/user.api';
+import { toast } from 'react-toastify';
 
 //TODO search
 const UserIndex = () => {
@@ -62,8 +64,22 @@ const UserIndex = () => {
         setTempObject(value);
     };
 
-    const handleConfirmStatusChange = () => {
+    const handleConfirmStatusChange = (value) => {
         setIsStatusChange(false);
+        value.isActive = !value.isActive;
+
+        UpdateUser(value.id, value)
+            .then(res => {
+                if (res.meta === 200) {
+                    data[data.indexOf(value)].isActive = value.isActive;
+                    setData([...data]);
+                    toast.success(t("updateSuccess"))
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                toast.error(t(`updateFailed - ${err.message}`));
+            });
     };
 
     const handleChangePage = (event, newPage) => {

@@ -1,5 +1,5 @@
 import { Cancel, CheckCircle, Close } from '@mui/icons-material';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormLabel, Grid, IconButton, TextField } from '@mui/material';
 import React from 'react';
 import PropTypes from "prop-types";
 import { useTranslation } from 'react-i18next';
@@ -58,7 +58,7 @@ const ResetPwdDialog = (props) => {
 
             ChangePassword({ userId: object.id, newPassword: values.newPassword })
                 .then(res => {
-                    if (res.meta == 200) {
+                    if (res.meta === 200) {
                         toast.success(res.message);
                         onClose();
 

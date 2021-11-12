@@ -8,35 +8,36 @@ const ApiRequest = axios.create({
     timeout: 15000
 });
 
-ApiRequest.interceptors.request.use(config => {
-    config.headers['Authorization'] = store.getState().token;
-    config.headers['Content-Type'] = 'application/json';
-    config.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, PUT, OPTIONS, PATCH";
+ApiRequest.interceptors.request.use(
+    config => {
+        config.headers['Authorization'] = store.getState().token;
+        config.headers['Content-Type'] = 'application/json';
+        config.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, PUT, OPTIONS, PATCH";
 
-    if (config.method === 'post') {
-        config.data = JSON.stringify(config.data);
-    }
+        if (config.method === 'post') {
+            config.data = JSON.stringify(config.data);
+        }
 
-    return config
-},
+        return config
+    },
     error => {
         Promise.reject(error)
     }
 );
 
-ApiRequest.interceptors.response.use(response => {
-    const res = response.data;
+ApiRequest.interceptors.response.use(
+    response => {
+        const res = response.data;
 
-    if (res.meta === meta.TOKENEXPIRE) {
-        return alert("Token Expire, Please Login Again");
-    }
+        if (res.meta === meta.TOKENEXPIRE) {
+            return alert("Token Expire, Please Login Again");
+        }
 
-    return res;
-},
+        return res;
+    },
     error => {
-        console.log(error)
-        throw error
-    }
+        return Promise.reject(error.response.data);
+    },
 );
 
 export default ApiRequest;

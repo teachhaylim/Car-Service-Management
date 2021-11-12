@@ -1,10 +1,9 @@
 import { IconButton, TableContainer, TablePagination, TableFooter, Table, TableCell, TableBody, TableHead, TableRow, Grid, Avatar, Tooltip, Chip } from '@mui/material';
 import React from 'react';
-import { CenterFocusStrong, Delete, Edit, Password } from '@mui/icons-material';
+import { CenterFocusStrong, Edit, Password } from '@mui/icons-material';
 import { checkFile } from 'utils/generalFunc';
 import { useTranslation } from 'react-i18next';
 import LinearLoading from 'components/CustomComponents/LinearTableLoading/LinearTableLoading';
-import { displaySeeMore } from 'utils/generalFunc';
 import moment from 'moment';
 
 const header = [

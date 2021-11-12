@@ -1,6 +1,6 @@
 import { IconButton, TableContainer, TablePagination, TableFooter, Table, TableCell, TableBody, TableHead, TableRow, Grid, Avatar, Tooltip, Chip } from '@mui/material';
 import React from 'react';
-import { CenterFocusStrong, Delete, Edit } from '@mui/icons-material';
+import { CenterFocusStrong, Edit } from '@mui/icons-material';
 import { checkFile } from 'utils/generalFunc';
 import { useTranslation } from 'react-i18next';
 import LinearLoading from 'components/CustomComponents/LinearTableLoading/LinearTableLoading';
