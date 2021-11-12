@@ -1,5 +1,5 @@
 import { Close, Save } from '@mui/icons-material';
-import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, Autocomplete, CircularProgress } from '@mui/material';
+import { Select, Button, Card, CardActions, CardContent, Divider, FormLabel, Grid, Paper, TextField, Typography, MenuItem, FormHelperText } from '@mui/material';
 import { styled } from '@mui/styles';
 import { DesktopDatePicker } from '@mui/lab';
 import { uploadFile } from 'api/file.api';
@@ -42,7 +42,13 @@ const validateSchema = Yup.object({
     email: Yup.string().required("Email is required"),
     profilePic: Yup.string(),
     type: Yup.number().required("Type is required"),
-    // sellCompany: Yup.string().required("Shop is required").nullable(),
+    sellCompany: Yup.string().when('type', {
+        is: (type) => {
+            if (type === 1) return true;
+        },
+        then: Yup.string().required('Shop is required').nullable(),
+        otherwise: Yup.string().nullable(),
+    }),
 });
 
 const UserEdit = () => {
@@ -51,10 +57,7 @@ const UserEdit = () => {
     const [imageFile, setImageFile] = useState(user.profilePic || {});
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-    const [options, setOptions] = useState([]);
-    const loading = open && options.length === 0;
-    const [value, setValue] = useState(options[0]);
+    const [shops, setShops] = useState([]);
     const formik = useFormik({
         initialValues: {
             id: user.id || "",
@@ -74,15 +77,26 @@ const UserEdit = () => {
                 country: user.address?.country || "",
                 zipCode: user.address?.zipCode || "",
             },
-            sellCompany: user?.sellCompany || null,
+            sellCompany: user?.sellCompany?.id || null,
         },
         validationSchema: validateSchema,
         onSubmit: async (values) => {
-            if (values.type === 1) {
-                if (value == null) {
-                    return toast.warning("Shop is required");
-                }
-                values.sellCompany = value.id;
+            switch (values.type) {
+                // case 1:
+                //     if (value == null) {
+                //         return;
+                //         // return toast.warning("Shop is required");
+                //     }
+                //     values.sellCompany = value;
+                //     break;
+                case -1:
+                    values.sellCompany = null;
+                    break;
+                case 2:
+                    values.sellCompany = null;
+                    break;
+                default:
+                    values.sellCompany = null;
             }
 
             if (imageFile instanceof File) {
@@ -104,13 +118,17 @@ const UserEdit = () => {
                 UpdateUser(values.id, values)
                     .then(res => {
                         if (res && res.meta === 200) {
-                            navigate("/app/users");
-
-                            return toast.success("User updated");
+                            return toast.success(t("updateSuccess"));
                         }
+
+                        toast.success(t("updateFailed"));
                     })
                     .catch(err => {
                         return toast.error(err.message);
+                    })
+                    .finally(() => {
+                        navigate("/app/users");
+                        formik.resetForm();
                     })
 
                 return;
@@ -119,15 +137,17 @@ const UserEdit = () => {
             CreateUser(values)
                 .then(res => {
                     if (res && res.meta === 201) {
-                        navigate("/app/users");
-
-                        return toast.success("User created");
+                        return toast.success(t("createSuccess"));
                     }
+
+                    toast.success(t("createFailed"));
                 }).catch(err => {
+                    toast.error(err.message);
+                })
+                .finally(() => {
                     navigate("/app/users");
                     formik.resetForm();
-                    toast.error(err.message);
-                });
+                })
         },
     });
 
@@ -136,30 +156,16 @@ const UserEdit = () => {
     };
 
     useEffect(() => {
-        let active = true;
-
-        if (!loading) return undefined;
-
-        if (active) {
-            QueryShop()
-                .then(res => {
-                    if (res && res.meta === 200) {
-                        setOptions([...res.results]);
-                    }
-                })
-                .catch(err => {
-                    toast.error(err.message);
-                })
-        }
-
-        return () => active = false;
-    }, [loading]);
-
-    useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
+        QueryShop()
+            .then(res => {
+                if (res && res.meta === 200) {
+                    setShops([...res.results]);
+                }
+            })
+            .catch(err => {
+                toast.error(err.message);
+            })
+    }, []);
 
     return (
         <Card>
@@ -186,6 +192,7 @@ const UserEdit = () => {
                                         fullWidth
                                         variant="outlined"
                                         name="firstName"
+                                        placeholder={t("firstName")}
                                         value={formik.values.firstName}
                                         onChange={formik.handleChange}
                                         error={formik.touched.firstName && Boolean(formik.errors.firstName)}
@@ -199,6 +206,7 @@ const UserEdit = () => {
                                         fullWidth
                                         variant="outlined"
                                         name="lastName"
+                                        placeholder={t("lastName")}
                                         value={formik.values.lastName}
                                         onChange={formik.handleChange}
                                         error={formik.touched.lastName && Boolean(formik.errors.lastName)}
@@ -212,6 +220,7 @@ const UserEdit = () => {
                                         fullWidth
                                         variant="outlined"
                                         name="phoneNumber"
+                                        placeholder={t("phoneNumber")}
                                         value={formik.values.phoneNumber}
                                         onChange={formik.handleChange}
                                         error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
@@ -225,6 +234,7 @@ const UserEdit = () => {
                                         fullWidth
                                         variant="outlined"
                                         name="email"
+                                        placeholder={t("email")}
                                         value={formik.values.email}
                                         onChange={formik.handleChange}
                                         error={formik.touched.email && Boolean(formik.errors.email)}
@@ -249,6 +259,7 @@ const UserEdit = () => {
                                     <FormLabel>{t("type")}</FormLabel>
                                     <Select
                                         name="type"
+                                        placeholder={t("type")}
                                         sx={{ width: "100%" }}
                                         value={formik.values.type}
                                         onChange={formik.handleChange}
@@ -258,41 +269,27 @@ const UserEdit = () => {
                                         <MenuItem value={2}>{t("superAdmin")}</MenuItem>
                                         <MenuItem value={-1}>{t("user")}</MenuItem>
                                     </Select>
+                                    <FormHelperText sx={{ color: "red" }}>{formik.touched.type && t(formik.errors.type)}</FormHelperText>
                                 </Grid>
 
                                 {
                                     formik.values.type === 1 &&
                                     <Grid item xs={12} lg={6}>
-                                        <FormLabel>{t("shop")}</FormLabel>
-                                        <Autocomplete
-                                            id="asynchronous-demo"
+                                        <FormLabel>Shop category</FormLabel>
+                                        <Select
+                                            name="sellCompany"
                                             sx={{ width: "100%" }}
-                                            open={open}
-                                            onOpen={() => setOpen(true)}
-                                            onClose={() => setOpen(false)}
-                                            isOptionEqualToValue={(option, value) => option.name === value.name}
-                                            getOptionLabel={(option) => `${option.name}`}
-                                            options={options}
-                                            loading={loading}
-                                            value={value}
-                                            onChange={(event, newValue) => {
-                                                setValue(newValue);
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        endAdornment: (
-                                                            <>
-                                                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                                {params.InputProps.endAdornment}
-                                                            </>
-                                                        ),
-                                                    }}
-                                                />
-                                            )}
-                                        />
+                                            value={formik.values.sellCompany}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.sellCompany && Boolean(formik.errors.sellCompany)}
+                                        >
+                                            {
+                                                shops.map((item, key) => (
+                                                    <MenuItem key={key} value={item.id}>{item.name}</MenuItem>
+                                                ))
+                                            }
+                                        </Select>
+                                        <FormHelperText sx={{ color: "red" }}>{formik.touched.sellCompany && t(formik.errors.sellCompany)}</FormHelperText>
                                     </Grid>
                                 }
                             </Grid>
@@ -316,6 +313,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.house"
+                                    placeholder={t("house")}
                                     value={formik.values.address.house}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.house') && Boolean(getIn(formik.errors, 'address.house'))}
@@ -329,6 +327,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.street"
+                                    placeholder={t("street")}
                                     value={formik.values.address.street}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.street') && Boolean(getIn(formik.errors, 'address.street'))}
@@ -342,6 +341,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.state"
+                                    placeholder={t("state")}
                                     value={formik.values.address.state}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.state') && Boolean(getIn(formik.errors, 'address.state'))}
@@ -355,6 +355,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.city"
+                                    placeholder={t("city")}
                                     value={formik.values.address.city}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.city') && Boolean(getIn(formik.errors, 'address.city'))}
@@ -368,6 +369,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.country"
+                                    placeholder={t("country")}
                                     value={formik.values.address.country}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.country') && Boolean(getIn(formik.errors, 'address.country'))}
@@ -381,6 +383,7 @@ const UserEdit = () => {
                                     fullWidth
                                     margin="dense"
                                     name="address.zipCode"
+                                    placeholder={t("zipCode")}
                                     value={formik.values.address.zipCode}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}

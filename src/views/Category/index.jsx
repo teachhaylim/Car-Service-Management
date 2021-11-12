@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
+//FIXME delete problem
 const CategoriesIndex = () => {
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
@@ -100,19 +101,14 @@ const CategoriesIndex = () => {
             })
     }
 
-    useEffect(
-        () => {
-            setTimeout(() => {
-                FetchData();
-            }, 1000);
+    useEffect(() => {
+        FetchData();
 
-            return () => {
-                setData([]);
-                setIsLoading(true);
-            }
-        },
-        [filter.page, filter.limit, filter.sortBy, filter.name]
-    );
+        return () => {
+            setData([]);
+            setIsLoading(true);
+        }
+    }, [filter.page, filter.limit, filter.sortBy, filter.name]);
 
     return (
         <>
@@ -120,7 +116,7 @@ const CategoriesIndex = () => {
                 <CardContent>
                     <Grid item container justifyContent="space-between" alignItems="center">
                         <Stack spacing={2}>
-                            {showSearch ? <SearchInput title={"Search category name"} func={handleSearch} /> : <Typography variant="h6"> {t("categoryList")} </Typography>}
+                            {showSearch ? <SearchInput title={t("searchCategory")} func={handleSearch} /> : <Typography variant="h6"> {t("categoryList")} </Typography>}
                         </Stack>
 
                         <Grid item>

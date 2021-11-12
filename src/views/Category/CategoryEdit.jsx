@@ -55,13 +55,17 @@ const CategoryEdit = () => {
                 UpdateCategory(category.id, values)
                     .then((res) => {
                         if (res.meta === 200) {
-                            formik.resetForm();
-                            toast.success("Category updated successfully");
-                            return navigate("/app/category");
+                            return toast.success(t("updateSuccess"));
                         }
+
+                        toast.success(t("updateFailed"));
                     })
                     .catch(err => {
                         toast.error(err.message);
+                    })
+                    .finally(() => {
+                        navigate("/app/category");
+                        formik.resetForm();
                     })
 
                 return;
@@ -70,14 +74,17 @@ const CategoryEdit = () => {
             CreateCategory(values)
                 .then((res) => {
                     if (res.meta === 201) {
-                        formik.resetForm();
-                        toast.success("Category added successfully");
-                        return navigate("/app/category");
+                        return toast.success(t("createSuccess"));
                     }
+
+                    toast.success(t("createFailed"));
                 })
                 .catch(err => {
                     toast.error(err.message);
-                    return navigate("/app/category");
+                })
+                .finally(() => {
+                    navigate("/app/category");
+                    formik.resetForm();
                 })
         }
     });

@@ -110,7 +110,7 @@ const UserIndex = () => {
             <CardContent>
                 <Grid item container justifyContent="space-between" alignItems="center">
                     <Stack spacing={2}>
-                        {showSearch ? <SearchInput title={"Search shop name"} func={handleSearch} /> : <Typography variant="h6"> {t("shopList")} </Typography>}
+                        {showSearch ? <SearchInput title={t("searchUser")} func={handleSearch} /> : <Typography variant="h6"> {t("userList")} </Typography>}
                     </Stack>
 
                     <Grid item>
@@ -119,6 +119,7 @@ const UserIndex = () => {
                                 <Search />
                             </IconButton>
 
+                            {/* //TODO filter? */}
                             {/* <FilterCategory handleFilter={handleFilterConfirm} /> */}
 
                             <Button variant="contained" startIcon={<Add />} onClick={handleAddShop}> {t("addBtn")} </Button>

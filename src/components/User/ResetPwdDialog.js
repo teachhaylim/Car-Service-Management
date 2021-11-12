@@ -54,19 +54,19 @@ const ResetPwdDialog = (props) => {
         },
         validationSchema: validateSchema,
         onSubmit: async (values) => {
-            formik.resetForm();
-
             ChangePassword({ userId: object.id, newPassword: values.newPassword })
                 .then(res => {
                     if (res.meta === 200) {
                         toast.success(res.message);
                         onClose();
+                        formik.resetForm();
 
                         return;
                     }
                 })
                 .catch(err => {
                     toast.success(err.message);
+                    formik.resetForm();
                 })
         },
     });
@@ -87,13 +87,14 @@ const ResetPwdDialog = (props) => {
 
             <DialogContent dividers>
                 <Grid item xs={12}>
-                    <FormLabel>New password</FormLabel>
+                    <FormLabel>{t("newPassword")}</FormLabel>
                     <TextField
                         fullWidth
                         margin="dense"
                         size="small"
                         variant="outlined"
                         name="newPassword"
+                        placeholder={t("newPassword")}
                         value={formik.values.newPassword}
                         onChange={formik.handleChange}
                         error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
@@ -102,13 +103,14 @@ const ResetPwdDialog = (props) => {
                 </Grid>
 
                 <Grid item xs={12} mt={1}>
-                    <FormLabel>Confirm password</FormLabel>
+                    <FormLabel>{t("confirmPassword")}</FormLabel>
                     <TextField
                         fullWidth
                         margin="dense"
                         size="small"
                         variant="outlined"
                         name="confirmPassword"
+                        placeholder={t("confirmPassword")}
                         value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import LinearLoading from 'components/CustomComponents/LinearTableLoading/LinearTableLoading';
 import { displaySeeMore } from 'utils/generalFunc';
 import moment from 'moment';
+import { EmptyData } from 'components/CustomComponents/EmptyData';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
@@ -36,25 +37,31 @@ const ShopTable = ({ isLoading, data, onStatusChange, onEdit, onDelete, onPageCh
 
                     <TableBody>
                         {
-                            isLoading ? <LinearLoading colSize={header.length} /> : data.map((item, key) => (
+                            isLoading ? <LinearLoading colSize={header.length} /> : !data.length ? <EmptyData colSize={header.length} /> : data.map((item, key) => (
                                 <TableRow key={key}>
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
+
                                     <TableCell>
                                         <Avatar src={item.logo ? checkFile(item.logo) : ""} sx={{ width: 64, height: 64 }} variant="rounded" />
                                     </TableCell>
+
                                     <TableCell>{item.name}</TableCell>
+
                                     <TableCell>{displaySeeMore(item.description)}</TableCell>
+
                                     <TableCell>{moment(item.createdAt).format("DD / MMMM / YYYY")}</TableCell>
+
                                     <TableCell>
-                                        <Chip label={item.isActive ? "Active" : "Inactive"} color={item.isActive ? "primary" : "error"} />
+                                        <Chip label={item.isActive ? t("active") : t("inactive")} color={item.isActive ? "primary" : "error"} />
                                     </TableCell>
+
                                     <TableCell>
                                         <Tooltip title={t("changeStatus")} placement="top">
                                             <IconButton onClick={() => onStatusChange(item)} color="success"><CenterFocusStrong /></IconButton>
                                         </Tooltip>
 
                                         <Tooltip title={t("edit")} placement="top">
-                                            <IconButton onClick={() => onEdit(item)} color="success"><Edit /></IconButton>
+                                            <IconButton onClick={() => onEdit(item)} color="info"><Edit /></IconButton>
                                         </Tooltip>
 
                                         {/* <Tooltip title={t("delete")} placement="top">

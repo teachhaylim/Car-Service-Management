@@ -184,7 +184,7 @@ const AppointmentIndex = () => {
                 <CardContent>
                     <Grid item container justifyContent="space-between" alignItems="center">
                         <Stack spacing={2}>
-                            {showSearch ? <SearchInput title={"Search appointment"} func={handleSearch} /> : <Typography variant="h6"> {t("appointmentList")} </Typography>}
+                            {showSearch ? <SearchInput title={t("searchAppointment")} func={handleSearch} /> : <Typography variant="h6"> {t("appointmentList")} </Typography>}
                         </Stack>
 
                         <Grid item>
@@ -213,6 +213,7 @@ const AppointmentIndex = () => {
                 </CardContent>
             </Card>
 
+            {/* //Backlog delete feature */}
             <ConfirmDialog
                 bodyText={`${t("confirmDeletePlaceholder")} this appointment`}
                 isOpen={isDelete}

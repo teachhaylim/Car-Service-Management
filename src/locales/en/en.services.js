@@ -1,6 +1,6 @@
 const en_service = {
-    serviceName: "Service Name",
     serviceList: "Service List",
+    serviceInfo: "Service Info",
 };
 
 export default en_service;

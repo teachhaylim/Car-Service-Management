@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { meta } from 'utils/enum';
 import store from 'store';
 import basicConfig from './basicConfig';
 
@@ -29,8 +28,9 @@ ApiRequest.interceptors.response.use(
     response => {
         const res = response.data;
 
-        if (res.meta === meta.TOKENEXPIRE) {
+        if (res.meta === 4001) {
             return alert("Token Expire, Please Login Again");
+            //FIXME redirect to login page
         }
 
         return res;

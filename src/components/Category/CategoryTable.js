@@ -1,10 +1,11 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Avatar, Tooltip } from '@mui/material';
+import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Avatar, Tooltip } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { checkFile } from 'utils/generalFunc';
 import LinearLoading from 'components/CustomComponents/LinearTableLoading/LinearTableLoading';
+import { EmptyData } from 'components/CustomComponents/EmptyData';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
@@ -16,16 +17,6 @@ const header = [
 
 const CategoryTable = ({ isLoading, filter, tableFilter, datas, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
-
-    const EmptyData = () => (
-        <TableRow sx={{ height: 50 }}>
-            <TableCell align="center" colSpan={4}>
-                <Typography variant="subtitile1">
-                    No data
-                </Typography>
-            </TableCell>
-        </TableRow>
-    );
 
     return (
         <Grid item mt={2}>
@@ -43,17 +34,21 @@ const CategoryTable = ({ isLoading, filter, tableFilter, datas, handleEdit, hand
 
                     <TableBody>
                         {
-                            isLoading ? <LinearLoading colSize={header.length} /> : !datas.length ? <EmptyData /> : datas.map((item, key) => (
+                            isLoading ? <LinearLoading colSize={header.length} /> : !datas.length ? <EmptyData colSize={header.length} /> : datas.map((item, key) => (
                                 <TableRow key={key} hover={true} >
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
+
                                     <TableCell>
                                         <Avatar src={checkFile(item.image)} sx={{ width: 64, height: 64 }} variant="rounded" />
                                     </TableCell>
+
                                     <TableCell>{item.name}</TableCell>
+
                                     <TableCell>{item.remark}</TableCell>
+
                                     <TableCell>
                                         <Tooltip title={t('edit')} placement="top">
-                                            <IconButton onClick={() => handleEdit(item)} color="success"><Edit /></IconButton>
+                                            <IconButton onClick={() => handleEdit(item)} color="info"><Edit /></IconButton>
                                         </Tooltip>
 
                                         <Tooltip title={t('delete')} placement="top">

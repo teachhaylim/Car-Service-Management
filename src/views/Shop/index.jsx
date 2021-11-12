@@ -120,7 +120,7 @@ const ShopIndex = () => {
                 <CardContent>
                     <Grid item container justifyContent="space-between" alignItems="center">
                         <Stack spacing={2}>
-                            {showSearch ? <SearchInput title={"Search shop name"} func={handleSearch} /> : <Typography variant="h6"> {t("shopList")} </Typography>}
+                            {showSearch ? <SearchInput title={t("searchShop")} func={handleSearch} /> : <Typography variant="h6"> {t("shopList")} </Typography>}
                         </Stack>
 
                         <Grid item>
@@ -150,6 +150,7 @@ const ShopIndex = () => {
                 </CardContent>
             </Card>
 
+            {/* //Backlog delete feature */}
             <ConfirmDialog
                 bodyText={`${t("confirmDeletePlaceholder")} ${tempObject.headerName}`}
                 isOpen={isDelete}

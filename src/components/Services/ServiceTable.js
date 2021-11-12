@@ -1,10 +1,11 @@
 import { Delete, Edit } from '@mui/icons-material';
-import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Chip, Tooltip } from '@mui/material';
+import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Chip, Tooltip } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { LinearTableLoading } from 'components/CustomComponents/LinearTableLoading';
 import { displaySeeMore } from 'utils/generalFunc';
+import { EmptyData } from 'components/CustomComponents/EmptyData';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
@@ -16,16 +17,6 @@ const header = [
 
 const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
-
-    const EmptyData = () => (
-        <TableRow sx={{ height: 50 }}>
-            <TableCell align="center" colSpan={4}>
-                <Typography variant="subtitile1">
-                    No data
-                </Typography>
-            </TableCell>
-        </TableRow>
-    );
 
     return (
         <Grid item mt={2}>
@@ -43,18 +34,23 @@ const ServiceTable = ({ isLoading, filter, tableFilter, data, handleEdit, handle
 
                     <TableBody>
                         {
-                            isLoading ? <LinearTableLoading colSize={header.length} /> : !data.length ? <EmptyData /> : data.map((item, key) => (
+                            isLoading ? <LinearTableLoading colSize={header.length} /> : !data.length ? <EmptyData colSize={header.length} /> : data.map((item, key) => (
                                 <TableRow key={key} hover={true} >
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
+
                                     <TableCell>{item.name}</TableCell>
+
                                     <TableCell>
                                         <Chip color="primary" sx={{ fontWeight: "bold", fontSize: 14 }} label={`$ ${item.price}`} />
                                     </TableCell>
+
                                     <TableCell>{displaySeeMore(item.remark)}</TableCell>
+
                                     <TableCell>
                                         <Tooltip title={t("edit")} placement="top">
-                                            <IconButton onClick={() => handleEdit(item)} color="success"><Edit /></IconButton>
+                                            <IconButton onClick={() => handleEdit(item)} color="info"><Edit /></IconButton>
                                         </Tooltip>
+
                                         <Tooltip title={t("delete")} placement="top">
                                             <IconButton onClick={() => handleDelete(item)} color="error"><Delete /></IconButton>
                                         </Tooltip>

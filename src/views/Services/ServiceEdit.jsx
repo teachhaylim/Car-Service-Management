@@ -1,5 +1,5 @@
-import { Close, Save } from '@mui/icons-material';
-import { Grid, Card, CardContent, Divider, Typography, FormLabel, TextField, CardActions, Button } from '@mui/material';
+import { AttachMoney, Close, Save } from '@mui/icons-material';
+import { Grid, Card, CardContent, Divider, Typography, FormLabel, TextField, CardActions, Button, InputAdornment } from '@mui/material';
 import { CreateService, UpdateService } from 'api/service.api';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -10,11 +10,14 @@ import { toast } from 'react-toastify';
 import * as Yup from "yup";
 
 const validateSchema = Yup.object({
-    name: Yup.string()
+    name: Yup
+        .string()
         .required("Service name is required"),
-    price: Yup.number()
+    price: Yup
+        .number()
         .required("Price is required"),
-    remark: Yup.string(),
+    remark: Yup
+        .string(),
 });
 
 const ServiceEdit = () => {
@@ -35,22 +38,25 @@ const ServiceEdit = () => {
         },
         validationSchema: validateSchema,
         onSubmit: (values) => {
-            if (role === 1) {
-                values.sellCompany = shopInfo.id;
-            }
+            if (role === 1) values.sellCompany = shopInfo.id;
 
             if (isEdit) {
                 UpdateService(values.id, values)
                     .then(res => {
                         if (res.meta === 200) {
-                            navigate("/app/services");
-                            return toast.success("Service updated");
+                            return toast.success(t("updateSuccess"));
                         }
+
+                        toast.success(t("updateFailed"));
                     })
                     .catch(err => {
                         console.log(err)
                         return toast.success(err.message);
                     })
+                    .finally(() => {
+                        navigate("/app/services");
+                        formik.resetForm();
+                    });
 
                 return;
             }
@@ -58,13 +64,18 @@ const ServiceEdit = () => {
             CreateService(values)
                 .then(res => {
                     if (res.meta === 201) {
-                        navigate("/app/services");
-                        return toast.success("Service created");
+                        return toast.success(t("createSuccess"));
                     }
+
+                    toast.success(t("createFailed"));
                 })
                 .catch(err => {
                     toast.success(err.message);
                 })
+                .finally(() => {
+                    navigate("/app/services");
+                    formik.resetForm();
+                });
         },
     });
 
@@ -72,18 +83,19 @@ const ServiceEdit = () => {
         <Card>
             <CardContent>
                 <Divider textAlign="left">
-                    <Typography variant="h6">Service info</Typography>
+                    <Typography variant="h6">{t("serviceInfo")}</Typography>
                 </Divider>
 
                 <Grid item container spacing={2}>
                     <Grid item xs={12} lg={4}>
-                        <FormLabel>Service name</FormLabel>
+                        <FormLabel>{t("serviceName")}</FormLabel>
                         <TextField
                             fullWidth
                             margin="dense"
                             size="small"
                             variant="outlined"
                             name="name"
+                            placeholder={t("serviceName")}
                             value={formik.values.name}
                             onChange={formik.handleChange}
                             error={formik.touched.name && Boolean(formik.errors.name)}
@@ -92,14 +104,22 @@ const ServiceEdit = () => {
                     </Grid>
 
                     <Grid item xs={12} lg={4}>
-                        <FormLabel>Price</FormLabel>
+                        <FormLabel>{t("price")}</FormLabel>
                         <TextField
                             fullWidth
                             margin="dense"
                             size="small"
                             variant="outlined"
                             name="price"
+                            placeholder={0}
                             type="number"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <AttachMoney />
+                                    </InputAdornment>
+                                ),
+                            }}
                             value={formik.values.price}
                             onChange={formik.handleChange}
                             error={formik.touched.price && Boolean(formik.errors.price)}
@@ -107,7 +127,7 @@ const ServiceEdit = () => {
                         />
                     </Grid>
 
-                    {
+                    {/* {
                         role === 2 ?? (
                             <Grid item xs={12} lg={4}>
                                 <FormLabel>Sell Company</FormLabel>
@@ -124,10 +144,10 @@ const ServiceEdit = () => {
                                 />
                             </Grid>
                         )
-                    }
+                    } */}
 
                     <Grid item xs={12}>
-                        <FormLabel>Remark</FormLabel>
+                        <FormLabel>{t("remark")}</FormLabel>
                         <TextField
                             fullWidth
                             multiline
@@ -136,6 +156,7 @@ const ServiceEdit = () => {
                             size="small"
                             variant="outlined"
                             name="remark"
+                            placeholder={t("remark")}
                             value={formik.values.remark}
                             onChange={formik.handleChange}
                             error={formik.touched.remark && Boolean(formik.errors.remark)}

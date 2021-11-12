@@ -1,11 +1,12 @@
 import { Cancel, Check, Visibility } from '@mui/icons-material';
-import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Typography, Chip, Tooltip } from '@mui/material';
+import { TableContainer, TableHead, TableRow, Table, TableCell, TableBody, IconButton, TableFooter, TablePagination, Grid, Chip, Tooltip } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { LinearTableLoading } from 'components/CustomComponents/LinearTableLoading';
 import { displayStatus } from 'utils/generalFunc';
 import moment from 'moment';
+import { EmptyData } from 'components/CustomComponents/EmptyData';
 
 const header = [
     { field: 'id', headerName: 'id', width: 50 },
@@ -18,16 +19,6 @@ const header = [
 
 const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, handleComplete, handleCancel, handleDelete, handleChangePage, handleChangeRowsPerPage }) => {
     const { t } = useTranslation();
-
-    const EmptyData = () => (
-        <TableRow sx={{ height: 50 }}>
-            <TableCell align="center" colSpan={4}>
-                <Typography variant="subtitile1">
-                    No data
-                </Typography>
-            </TableCell>
-        </TableRow>
-    );
 
     return (
         <Grid item mt={2}>
@@ -45,10 +36,12 @@ const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, ha
 
                     <TableBody>
                         {
-                            isLoading ? <LinearTableLoading colSize={header.length} /> : !data.length ? <EmptyData /> : data.map((item, key) => (
+                            isLoading ? <LinearTableLoading colSize={header.length} /> : !data.length ? <EmptyData colSize={header.length} /> : data.map((item, key) => (
                                 <TableRow key={key} hover={true} >
                                     <TableCell>{filter.page * filter.limit + key + 1}</TableCell>
+
                                     <TableCell>{`${item.userId.firstName} ${item.userId.lastName}`}</TableCell>
+
                                     <TableCell>
                                         $ {
                                             item.services.reduce((total, item) => {
@@ -56,27 +49,29 @@ const AppointmentTable = ({ isLoading, filter, tableFilter, data, handleEdit, ha
                                             }, 0)
                                         }
                                     </TableCell>
+
                                     <TableCell>{moment(item.createdAt).format("DD / MMMM / YYYY - hh:mm A")}</TableCell>
+
                                     <TableCell>
-                                        <Chip color={displayStatus(item.status[0].type).color} label={displayStatus(item.status[0].type).value} />
+                                        <Chip color={displayStatus(item.status[0].type).color} label={t(displayStatus(item.status[0].type).value)} />
                                     </TableCell>
+
                                     <TableCell>
-                                        <Tooltip Tooltip title={t("view")} placement="top" arrow>
-                                            <IconButton onClick={() => handleEdit(item)} color="success"><Visibility /></IconButton>
+                                        <Tooltip title={t("view")} placement="top" arrow>
+                                            <IconButton onClick={() => handleEdit(item)} color="info"><Visibility /></IconButton>
                                         </Tooltip>
 
                                         {
                                             item.status[0].type === 1 &&
-                                            <Tooltip Tooltip title={t("complete")} placement="top" arrow>
-                                                <IconButton onClick={() => handleComplete(item)} color="success"><Check /></IconButton>
-                                            </Tooltip>
-                                        }
+                                            <>
+                                                <Tooltip title={t("complete")} placement="top" arrow>
+                                                    <IconButton onClick={() => handleComplete(item)} color="success"><Check /></IconButton>
+                                                </Tooltip>
 
-                                        {
-                                            item.status[0].type === 1 &&
-                                            <Tooltip title={t("cancel")} placement="top" arrow>
-                                                <IconButton onClick={() => handleCancel(item)} color="error"><Cancel /></IconButton>
-                                            </Tooltip>
+                                                <Tooltip title={t("cancel")} placement="top" arrow>
+                                                    <IconButton onClick={() => handleCancel(item)} color="error"><Cancel /></IconButton>
+                                                </Tooltip>
+                                            </>
                                         }
 
                                         {/* <Tooltip title={t("delete")} placement="top" arrow>

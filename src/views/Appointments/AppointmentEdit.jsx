@@ -1,11 +1,12 @@
 import { Avatar, Button, Card, CardActions, CardContent, Chip, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { displayStatus } from 'utils/generalFunc';
-// import basicConfig from 'utils/basicConfig';
 import { checkFile } from 'utils/generalFunc';
+// import basicConfig from 'utils/basicConfig';
 // import * as Yup from "yup";
 
 // const validateSchema = Yup.object({
@@ -23,6 +24,7 @@ const AppointmentEdit = () => {
     const appointment = useLocation().state.object;
     // const isEdit = useLocation().state.isEdit;
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <>
@@ -39,7 +41,7 @@ const AppointmentEdit = () => {
 
                         <Grid item>
                             <Grid item container justifyContent="end" alignItems="center">
-                                <Chip color={displayStatus(appointment.status[0].type).color} label={displayStatus(appointment.status[0].type).value} />
+                                <Chip color={displayStatus(appointment.status[0].type).color} label={t(displayStatus(appointment.status[0].type).value)} />
                             </Grid>
 
                             <Grid item sx={{ mt: 1 }}>
@@ -51,7 +53,7 @@ const AppointmentEdit = () => {
                     <Grid item container xs={12} py={2}>
                         <Grid item xs={12} sm={6}>
                             <Grid item>
-                                <Typography>Invoice from</Typography>
+                                <Typography>{t("invoiceFrom")}</Typography>
                             </Grid>
 
                             <Grid item mt={2}>
@@ -62,7 +64,7 @@ const AppointmentEdit = () => {
 
                         <Grid item xs={12} sm={6} textAlign="end">
                             <Grid item>
-                                <Typography>Invoice to</Typography>
+                                <Typography>{t("invoiceTo")}</Typography>
                             </Grid>
 
                             <Grid item mt={2}>
@@ -78,21 +80,25 @@ const AppointmentEdit = () => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell width="80">#</TableCell>
-                                        <TableCell>Service name</TableCell>
-                                        <TableCell align="right" width="150">Date</TableCell>
-                                        <TableCell align="right" width="180">Unit Price</TableCell>
-                                        <TableCell align="right" width="180">Total Amount</TableCell>
+                                        <TableCell>{t("serviceName")}</TableCell>
+                                        <TableCell align="right" width="150">{t("date")}</TableCell>
+                                        <TableCell align="right" width="180">{t("unitPrice")}</TableCell>
+                                        <TableCell align="right" width="180">{t("totalPrice")}</TableCell>
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody>
                                     {
                                         appointment.services.map((item, key) => (
-                                            <TableRow>
+                                            <TableRow key={key}>
                                                 <TableCell width="80">{item.id}</TableCell>
+
                                                 <TableCell>{item.service.name}</TableCell>
+
                                                 <TableCell align="right" width="250">{moment(item.date).format("DD / MMMM / YYYY - hh:mm A")}</TableCell>
+
                                                 <TableCell align="right" width="180">$ {item.service.price}</TableCell>
+
                                                 <TableCell align="right" width="180">$ {item.service.price}</TableCell>
                                             </TableRow>
                                         ))
@@ -119,7 +125,7 @@ const AppointmentEdit = () => {
                     <Grid item container justifyContent="end" alignItems="center">
                         {/* <Button variant="contained" color="primary" sx={{ mr: 2 }}>Submit</Button> */}
 
-                        <Button variant="outlined" color="error" onClick={() => navigate("/app/appointments")}>Go back</Button>
+                        <Button variant="outlined" color="error" onClick={() => navigate("/app/appointments")}>{t("goBack")}</Button>
                     </Grid>
                 </CardActions>
             </Card>

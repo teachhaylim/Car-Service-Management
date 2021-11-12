@@ -50,6 +50,23 @@ const en_lang = {
         getStarted: "Let's get started",
         createNewAccount: "Create a new account",
         missingId: "Missing Id",
+        shopList: "Shop List",
+        userList: "User List",
+        appointmentList: "Appointment List",
+        serviceList: "Service List",
+        serviceList: "Service List",
+        active: "Active",
+        inactive: "Inactive",
+        emptyData: "Empty Data",
+        goBack: "Go Back",
+
+        //Search Text
+        searchCategory: "Search category name",
+        searchUser: "Search user name",
+        searchShop: "Search shop name",
+        searchAppointment: "Search appointment name",
+        searchService: "Search service name",
+        //End Search Text
 
         //Form Text
         firstName: "First name",
@@ -67,6 +84,8 @@ const en_lang = {
         state: "State",
         zipCode: "Zip code",
         country: "Country",
+        shopCategory: "Shop category",
+        shopDescription: "Shop description",
         //End Form Text
 
         //Message Text
@@ -77,6 +96,12 @@ const en_lang = {
         deleteSuccess: "Delete Success",
         deleteFailed: "Delete Failed",
         //End Message Text
+
+        //Status Text
+        pending: "Pending",
+        completed: "Completed",
+        canceled: "Canceled",
+        //End Status Text
 
         //Dialog Text
         confirmDialog: "Are you sure?",
@@ -135,6 +160,9 @@ const en_lang = {
         image: "Image",
         isActive: "Is Active",
         accountType: "Account Type",
+        serviceName: "Service Name",
+        unitPrice: "Unit Price",
+        totalPrice: "Total Price",
         //End Table Text
 
         //Account Type Text

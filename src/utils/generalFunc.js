@@ -40,11 +40,11 @@ export const displaySeeMore = (text) => {
 export const displayStatus = (status) => {
     switch (status) {
         case 1:
-            return { value: "Pending", color: "warning" };
+            return { value: "pending", color: "warning" };
         case 2:
-            return { value: "Completed", color: "primary" };
+            return { value: "completed", color: "primary" };
         case 0:
-            return { value: "Canceled", color: "error" };
+            return { value: "canceled", color: "error" };
         default:
             return "";
     }

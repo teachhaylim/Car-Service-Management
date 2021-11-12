@@ -66,6 +66,7 @@ const ShopEdit = () => {
         validationSchema: validateSchema,
         onSubmit: async (values) => {
             if (imageFile instanceof File) {
+                //REWORK move to auto manage inside uploadFile function
                 const file = new FormData();
                 file.append('file', imageFile);
 
@@ -81,18 +82,23 @@ const ShopEdit = () => {
             }
 
             if (isEdit) {
+                //FIXME need rework when modify address
                 values.address.id = shop.address.id;
 
                 UpdateShop(values.id, values)
                     .then(res => {
                         if (res && res.meta === 200) {
-                            navigate("/app/shops");
-
-                            return toast.success("Shop updated");
+                            return toast.success(t("updateSuccess"));
                         }
+
+                        toast.success(t("updateFailed"));
                     })
                     .catch(err => {
                         return toast.error(err.message);
+                    })
+                    .finally(() => {
+                        navigate("/app/shops");
+                        formik.resetForm();
                     })
 
                 return;
@@ -101,13 +107,17 @@ const ShopEdit = () => {
             CreateShop(values)
                 .then(res => {
                     if (res && res.meta === 201) {
-                        navigate("/app/shops");
-
-                        return toast.success("Shop created");
+                        return toast.success(t("createSuccess"));
                     }
+
+                    toast.success(t("createFailed"));
                 })
                 .catch(err => {
-                    return toast.error(err.message);
+                    toast.error(err.message);
+                })
+                .finally(() => {
+                    navigate("/app/shops");
+                    formik.resetForm();
                 })
         },
     });
@@ -161,13 +171,13 @@ const ShopEdit = () => {
                         <StyledPaper elevation={0}>
                             <Grid item container spacing={2}>
                                 <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop name</FormLabel>
+                                    <FormLabel>{t("shopName")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         margin="dense"
-                                        size="small"
                                         variant="outlined"
                                         name="name"
+                                        placeholder={t("shopName")}
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
                                         error={formik.touched.name && Boolean(formik.errors.name)}
@@ -176,11 +186,10 @@ const ShopEdit = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={6}>
-                                    <FormLabel>Shop category</FormLabel>
+                                    <FormLabel>{t("shopCategory")}</FormLabel>
                                     <Select
                                         name="categories"
                                         multiple
-                                        size="small"
                                         // defaultValue={formik.values.categories}
                                         sx={{ mt: 1, width: "100%" }}
                                         value={formik.values.categories}
@@ -197,13 +206,13 @@ const ShopEdit = () => {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <FormLabel>Description</FormLabel>
+                                    <FormLabel>{t("shopDescription")}</FormLabel>
                                     <TextField
                                         multiline={true}
                                         rows={8}
                                         fullWidth
-                                        size="small"
                                         name="description"
+                                        placeholder={t("shopDescription")}
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
                                         error={formik.touched.description && Boolean(formik.errors.description)}
@@ -225,13 +234,13 @@ const ShopEdit = () => {
                     <StyledPaper elevation={0}>
                         <Grid item container spacing={2}>
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>House</FormLabel>
+                                <FormLabel>{t("house")}</FormLabel>
                                 <TextField
                                     rows={8}
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.house"
+                                    placeholder={t("house")}
                                     value={formik.values.address.house}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.house') && Boolean(getIn(formik.errors, 'address.house'))}
@@ -240,12 +249,12 @@ const ShopEdit = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Street</FormLabel>
+                                <FormLabel>{t("street")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.street"
+                                    placeholder={t("street")}
                                     value={formik.values.address.street}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.street') && Boolean(getIn(formik.errors, 'address.street'))}
@@ -254,12 +263,12 @@ const ShopEdit = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>State</FormLabel>
+                                <FormLabel>{t("state")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.state"
+                                    placeholder={t("state")}
                                     value={formik.values.address.state}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.state') && Boolean(getIn(formik.errors, 'address.state'))}
@@ -268,12 +277,12 @@ const ShopEdit = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>City</FormLabel>
+                                <FormLabel>{t("city")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.city"
+                                    placeholder={t("city")}
                                     value={formik.values.address.city}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.city') && Boolean(getIn(formik.errors, 'address.city'))}
@@ -282,12 +291,12 @@ const ShopEdit = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Country</FormLabel>
+                                <FormLabel>{t("country")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.country"
+                                    placeholder={t("country")}
                                     value={formik.values.address.country}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.country') && Boolean(getIn(formik.errors, 'address.country'))}
@@ -296,12 +305,12 @@ const ShopEdit = () => {
                             </Grid>
 
                             <Grid item xs={12} sm={6} lg={4}>
-                                <FormLabel>Zipcode</FormLabel>
+                                <FormLabel>{t("zipCode")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     name="address.zipCode"
+                                    placeholder={t("zipCode")}
                                     value={formik.values.address.zipCode}
                                     onChange={formik.handleChange}
                                     error={getIn(formik.touched, 'address.zipCode') && Boolean(getIn(formik.errors, 'address.zipCode'))}
