@@ -35,7 +35,6 @@ const CategoriesIndex = () => {
             .catch(err => {
                 toast.error(err.message);
                 setIsLoading(false);
-                console.log(err);
             });
     };
 
@@ -96,8 +95,7 @@ const CategoriesIndex = () => {
             })
             .catch(err => {
                 setIsDelete(false);
-                console.log(err);
-                toast.error(err.message);
+                toast.error(t(`deleteFailed - ${err.message}`));
             })
     }
 

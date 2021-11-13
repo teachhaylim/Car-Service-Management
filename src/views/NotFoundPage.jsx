@@ -3,6 +3,7 @@ import React from 'react';
 import { Link as RouterLink } from "react-router-dom";
 import img from "assets/404.png";
 import { shallowEqual, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 // const isDark = false;
 
@@ -84,21 +85,21 @@ const CheckRedirect = (token, isLogin) => {
 const NotFound = () => {
     const token = useSelector(store => store.token, shallowEqual);
     const isLogin = useSelector(store => store.isLogin, shallowEqual);
+    const { t } = useTranslation();
 
     return (
         <StyledContainer>
             <img src={img} alt="" />
 
             <StyledTitle>
-                oop! page not found
+                {t("notFoundMessage")}
             </StyledTitle>
 
             <StyleSubtitle>
-                You must have picked the wrong door because I haven't been able to lay my
-                eyes on the page you've been searching for
+                {t("notFoundSubMessage")}
             </StyleSubtitle>
 
-            <StyledButton to={CheckRedirect(token, isLogin) ? "/" : "/login"}>Pick a new door</StyledButton>
+            <StyledButton to={CheckRedirect(token, isLogin) ? "/" : "/login"}>{t("notFoundButton")}</StyledButton>
         </StyledContainer>
     )
 }

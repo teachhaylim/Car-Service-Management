@@ -1,6 +1,8 @@
 import en_appointment from "./en.appointment";
 import en_category from "./en.category";
+import en_profile from "./en.profile";
 import en_service from "./en.services";
+import en_shop from "./en.shop";
 import en_user from "./en.user";
 
 const en_lang = {
@@ -9,6 +11,8 @@ const en_lang = {
         ...en_category,
         ...en_service,
         ...en_appointment,
+        ...en_shop,
+        ...en_profile,
 
         //Sidebar
         dashboard: "Dashboard",
@@ -38,27 +42,33 @@ const en_lang = {
         alt_shops: "Shops",
         //End Alternate Title
 
+        //Other
         app: "App",
+        active: "Active",
+        inactive: "Inactive",
+        //End Other
+
+        //Authentication & Authorization
         login: "Login",
         register: "Register",
-        personalInfo: "Personal Info",
-        shopInfo: "Shop Info",
         dontHaveAccount: "Dont have an account?",
         alreadyHaveAccount: "Already have an account?",
         forgotPassword: "Forgot password?",
         welcomeBack: "Welcome back!",
         getStarted: "Let's get started",
         createNewAccount: "Create a new account",
-        missingId: "Missing Id",
-        shopList: "Shop List",
-        userList: "User List",
-        appointmentList: "Appointment List",
-        serviceList: "Service List",
-        serviceList: "Service List",
-        active: "Active",
-        inactive: "Inactive",
-        emptyData: "Empty Data",
-        goBack: "Go Back",
+        //End Authentication & Authorization
+
+        //401 Message
+        unauthorized: "Unauthorized",
+        unauthorizedMessage: "The page that you are trying to access is not publically available",
+        unauthorizedSubMessage: "To access it please login first",
+        //End 401 Message
+
+        //404 Message
+        notFoundMessage: "oop! page not found",
+        notFoundSubMessage: "You must have picked the wrong door because I haven't been able to lay my eyes on the page you've been searching for",
+        //End 404 Message
 
         //Search Text
         searchCategory: "Search category name",
@@ -95,6 +105,10 @@ const en_lang = {
         createFailed: "Create Failed",
         deleteSuccess: "Delete Success",
         deleteFailed: "Delete Failed",
+        uploadSuccess: "Upload Success",
+        uploadFailed: "Upload Failed",
+        missingId: "Missing Id",
+        emptyData: "Empty Data",
         //End Message Text
 
         //Status Text
@@ -133,6 +147,9 @@ const en_lang = {
         search: "Search",
         changeStatus: "Change Status",
         resetPwd: "Reset Password",
+        returnToLogin: "Return to Login",
+        notFoundButton: "Pick a new door",
+        goBack: "Go Back",
         //End Button Text
 
         //Filter Text

@@ -50,8 +50,7 @@ const ServiceEdit = () => {
                         toast.success(t("updateFailed"));
                     })
                     .catch(err => {
-                        console.log(err)
-                        return toast.success(err.message);
+                        toast.success(t(`updateFailed - ${err.message}`));
                     })
                     .finally(() => {
                         navigate("/app/services");
@@ -70,7 +69,7 @@ const ServiceEdit = () => {
                     toast.success(t("createFailed"));
                 })
                 .catch(err => {
-                    toast.success(err.message);
+                    toast.success(t(`createFailed - ${err.message}`));
                 })
                 .finally(() => {
                     navigate("/app/services");
@@ -111,7 +110,7 @@ const ServiceEdit = () => {
                             size="small"
                             variant="outlined"
                             name="price"
-                            placeholder={0}
+                            placeholder={t("price")}
                             type="number"
                             InputProps={{
                                 startAdornment: (

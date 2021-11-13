@@ -4,6 +4,7 @@ const en_appointment = {
     status: "Status",
     invoiceFrom: "Invoice From",
     invoiceTo: "Invoice To",
+    appointmentList: "Appointment List",
 };
 
 export default en_appointment;

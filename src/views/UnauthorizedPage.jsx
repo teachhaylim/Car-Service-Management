@@ -1,5 +1,6 @@
 import { styled } from '@mui/system'
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from "react-router-dom";
 
 const StyledContainer = styled("div")(({ theme }) => {
@@ -63,21 +64,23 @@ const StyledButton = styled(RouterLink)(({ theme }) => {
 });
 
 const UnauthorizedPage = () => {
+    const { t } = useTranslation();
+
     return (
         <StyledContainer>
             <StyledTitle>
-                401 Unauthorized
+                401 {t("unauthorized")}
             </StyledTitle>
 
             <StyleSubtitle>
-                The page that you are trying to access is not publically available
+                {t("unauthorizedMessage")}
             </StyleSubtitle>
 
             <StyleSubtitle>
-                To access it please login first.
+                {t("unauthorizedSubMessage")}
             </StyleSubtitle>
 
-            <StyledButton to="/login">Return to Login</StyledButton>
+            <StyledButton to="/login">{t("returnToLogin")}</StyledButton>
         </StyledContainer>
     )
 }

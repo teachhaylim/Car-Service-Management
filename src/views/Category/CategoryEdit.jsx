@@ -32,10 +32,7 @@ const CategoryEdit = () => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             if (imageFile instanceof File) {
-                const file = new FormData();
-                file.append('file', imageFile);
-
-                await uploadFile(file)
+                await uploadFile(imageFile)
                     .then(res => {
                         if (res && res.meta === 201) {
                             values.image = res.file.filename;
@@ -61,7 +58,7 @@ const CategoryEdit = () => {
                         toast.success(t("updateFailed"));
                     })
                     .catch(err => {
-                        toast.error(err.message);
+                        toast.error(t(`updateFailed - ${err.message}`));
                     })
                     .finally(() => {
                         navigate("/app/category");
@@ -80,7 +77,7 @@ const CategoryEdit = () => {
                     toast.success(t("createFailed"));
                 })
                 .catch(err => {
-                    toast.error(err.message);
+                    toast.error(t(`createFailed - ${err.message}`));
                 })
                 .finally(() => {
                     navigate("/app/category");

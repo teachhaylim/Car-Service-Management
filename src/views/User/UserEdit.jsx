@@ -100,10 +100,7 @@ const UserEdit = () => {
             }
 
             if (imageFile instanceof File) {
-                const file = new FormData();
-                file.append('file', imageFile);
-
-                await uploadFile(file)
+                await uploadFile(imageFile)
                     .then(res => {
                         if (res && res.meta === 201) {
                             values.profilePic = res.file.filename;
@@ -124,7 +121,7 @@ const UserEdit = () => {
                         toast.success(t("updateFailed"));
                     })
                     .catch(err => {
-                        return toast.error(err.message);
+                        toast.error(t(`updateFailed - ${err.message}`));
                     })
                     .finally(() => {
                         navigate("/app/users");
@@ -141,8 +138,9 @@ const UserEdit = () => {
                     }
 
                     toast.success(t("createFailed"));
-                }).catch(err => {
-                    toast.error(err.message);
+                })
+                .catch(err => {
+                    toast.error(t(`createFailed - ${err.message}`));
                 })
                 .finally(() => {
                     navigate("/app/users");

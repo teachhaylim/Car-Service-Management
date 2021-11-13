@@ -58,7 +58,7 @@ const AppointmentEdit = () => {
 
                             <Grid item mt={2}>
                                 <Typography>{shopInfo.name}</Typography>
-                                <Typography>{`${appointment.sellCompany.address.house}, ${appointment.sellCompany.address.street}, ${appointment.sellCompany.address.state}, ${appointment.sellCompany.address.city}, ${appointment.sellCompany.address.country}, ${appointment.sellCompany.address.zipCode}`}</Typography>
+                                <Typography>{`${appointment.sellCompany.address?.house}, ${appointment.sellCompany.address?.street}, ${appointment.sellCompany.address?.state}, ${appointment.sellCompany.address?.city}, ${appointment.sellCompany.address?.country}, ${appointment.sellCompany.address?.zipCode}`}</Typography>
                             </Grid>
                         </Grid>
 
@@ -69,7 +69,7 @@ const AppointmentEdit = () => {
 
                             <Grid item mt={2}>
                                 <Typography>{`${appointment.userId.firstName} ${appointment.userId.lastName}`}</Typography>
-                                <Typography>{`${appointment.userId.address.house}, ${appointment.userId.address.street}, ${appointment.userId.address.state}, ${appointment.userId.address.city}, ${appointment.userId.address.country}, ${appointment.userId.address.zipCode}`}</Typography>
+                                <Typography>{`${appointment.userId.address?.house}, ${appointment.userId.address?.street}, ${appointment.userId.address?.state}, ${appointment.userId.address?.city}, ${appointment.userId.address?.country}, ${appointment.userId.address?.zipCode}`}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>

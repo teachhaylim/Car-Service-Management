@@ -64,7 +64,6 @@ const AppointmentIndex = () => {
             .catch(err => {
                 toast.error(err.message);
                 setIsLoading(false);
-                console.log(err);
             });
     };
 
@@ -159,8 +158,7 @@ const AppointmentIndex = () => {
                 };
             })
             .catch(err => {
-                toast.error(err.message);
-                console.log(err);
+                toast.error(t(`updateFailed - ${err.message}`));
             });
     };
 

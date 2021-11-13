@@ -55,6 +55,7 @@ const ShopEdit = () => {
             logo: shop.logo || "",
             categories: shop.categories?.map(p => p.id) || [],
             address: {
+                id: shop.address?.id || "",
                 house: shop.address?.house || "",
                 street: shop.address?.street || "",
                 state: shop.address?.state || "",
@@ -66,11 +67,7 @@ const ShopEdit = () => {
         validationSchema: validateSchema,
         onSubmit: async (values) => {
             if (imageFile instanceof File) {
-                //REWORK move to auto manage inside uploadFile function
-                const file = new FormData();
-                file.append('file', imageFile);
-
-                await uploadFile(file)
+                await uploadFile(imageFile)
                     .then(res => {
                         if (res && res.meta === 201) {
                             values.logo = res.file.filename;
@@ -83,7 +80,7 @@ const ShopEdit = () => {
 
             if (isEdit) {
                 //FIXME need rework when modify address
-                values.address.id = shop.address.id;
+                // values.address.id = shop.address.id;
 
                 UpdateShop(values.id, values)
                     .then(res => {
@@ -94,7 +91,7 @@ const ShopEdit = () => {
                         toast.success(t("updateFailed"));
                     })
                     .catch(err => {
-                        return toast.error(err.message);
+                        toast.error(t(`updateFailed - ${err.message}`));
                     })
                     .finally(() => {
                         navigate("/app/shops");
@@ -113,7 +110,7 @@ const ShopEdit = () => {
                     toast.success(t("createFailed"));
                 })
                 .catch(err => {
-                    toast.error(err.message);
+                    toast.error(t(`createFailed - ${err.message}`));
                 })
                 .finally(() => {
                     navigate("/app/shops");
@@ -138,7 +135,6 @@ const ShopEdit = () => {
             })
             .catch(err => {
                 toast.error(err.message);
-                console.log("Query Category Error", err);
             })
     };
 

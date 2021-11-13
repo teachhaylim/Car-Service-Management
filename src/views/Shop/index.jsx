@@ -104,7 +104,6 @@ const ShopIndex = () => {
                 }
             })
             .catch(err => {
-                console.log(err);
                 toast.error(t(`updateFailed - ${err.message}`));
             });
     };

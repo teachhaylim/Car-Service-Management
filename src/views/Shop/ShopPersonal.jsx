@@ -1,5 +1,5 @@
-import { Edit, Save } from '@mui/icons-material';
-import { Button, Divider, FormLabel, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Cancel, Edit, Save } from '@mui/icons-material';
+import { Button, Divider, FormHelperText, FormLabel, Grid, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import { QueryCategory } from 'api/category.api';
 import { uploadFile } from 'api/file.api';
@@ -43,7 +43,6 @@ const validateSchema = Yup.object({
 const ShopPersonal = () => {
     const shopInfo = useSelector(store => store.shop, shallowEqual);
     const dispatch = useDispatch();
-    // eslint-disable-next-line
     const [category, setCategory] = useState([]);
     const [imageFile, setImageFile] = useState(shopInfo.logo || "");
     const [isEdit, setIsEdit] = useState(false);
@@ -53,8 +52,9 @@ const ShopPersonal = () => {
             name: shopInfo.name || "",
             description: shopInfo.description || "",
             logo: shopInfo.logo || "",
-            categories: shopInfo.categories || [],
+            categories: shopInfo.categories?.map((item) => item.id) || [],
             address: {
+                id: shopInfo.address?.id || "",
                 house: shopInfo.address?.house || "",
                 street: shopInfo.address?.street || "",
                 state: shopInfo.address?.state || "",
@@ -66,21 +66,19 @@ const ShopPersonal = () => {
         validationSchema: validateSchema,
         onSubmit: async (values) => {
             if (imageFile instanceof File) {
-                const file = new FormData();
-                file.append('file', imageFile);
-
-                await uploadFile(file)
+                await uploadFile(imageFile)
                     .then(res => {
                         if (res && res.meta === 201) {
                             values.logo = res.file.filename;
+                            return;
                         }
+
+                        toast.success(t("uploadFailed"));
                     })
                     .catch(err => {
                         toast.error(err.message)
                     });
             }
-
-            values.address.id = shopInfo.address.id;
 
             UpdateShop(shopInfo.id, values)
                 .then(res => {
@@ -88,12 +86,13 @@ const ShopPersonal = () => {
                         setIsEdit(false);
                         dispatch(SetShopInfo(res.data));
 
-                        return toast.success("Shop updated");
+                        return toast.success(t("updateSuccess"));
                     }
+
+                    toast.success(t("updateFailed"));
                 })
                 .catch(err => {
-                    console.log(`err`, err)
-                    return toast.error(err.message);
+                    toast.error(t(`updateFailed - ${err.message}`));
                 })
         },
     });
@@ -104,7 +103,7 @@ const ShopPersonal = () => {
                 if (res.meta === 200) {
                     const temp = res.results.map((item) => {
                         return {
-                            label: item.name,
+                            title: item.name,
                             value: item.id,
                         }
                     })
@@ -114,7 +113,6 @@ const ShopPersonal = () => {
             })
             .catch(err => {
                 toast.error(err.message);
-                console.log("Query Category Error", err);
             })
     };
 
@@ -126,11 +124,6 @@ const ShopPersonal = () => {
         }
 
         setIsEdit(true);
-    };
-
-    // eslint-disable-next-line
-    const handleCategoryChange = (e, value) => {
-        formik.setFieldValue("categories", e);
     };
 
     useEffect(() => {
@@ -153,19 +146,19 @@ const ShopPersonal = () => {
                             <Grid item xs={12}>
                                 <Divider sx={{ my: 0 }} textAlign="left">
                                     <Typography variant="h6">
-                                        Shop Info
+                                        {t("shopInfo")}
                                     </Typography>
                                 </Divider>
                             </Grid>
 
                             <Grid item xs={12} lg={6}>
-                                <FormLabel>Shop name</FormLabel>
+                                <FormLabel>{t("shopName")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     margin="dense"
-                                    size="small"
                                     variant="outlined"
                                     name="name"
+                                    placeholder={t("shopName")}
                                     disabled={!isEdit}
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
@@ -174,36 +167,34 @@ const ShopPersonal = () => {
                                 />
                             </Grid>
 
-                            {/* FIXME category doesnt update value */}
                             <Grid item xs={12} lg={6}>
-                                <FormLabel>Shop category</FormLabel>
-                                {/* <Autocomplete
-                                        name="categories"
-                                        multiple
-                                        size="small"
-                                        sx={{ mt: 1, width: "100%" }}
-                                        disabled={!isEdit}
-                                        options={category}
-                                        disableCloseOnSelect
-                                        limitTags={3}
-                                        getOptionLabel={(option) => option.label}
-                                        // isOptionEqualToValue={(option, value) => option}
-                                        value={formik.values.categories}
-                                        onChange={handleCategoryChange}
-                                        // error={formik.touched.categories && Boolean(formik.errors.categories)}
-                                        // helperText={formik.touched.categories && t(formik.errors.categories)}
-                                        renderInput={(params) => <TextField {...params} label="" />}
-                                    /> */}
+                                <FormLabel>{t("shopCategory")}</FormLabel>
+                                <Select
+                                    name="categories"
+                                    multiple
+                                    disabled={!isEdit}
+                                    sx={{ mt: 1, width: "100%" }}
+                                    value={formik.values.categories}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.categories && Boolean(formik.errors.categories)}
+                                >
+                                    {
+                                        category.map((item, key) => (
+                                            <MenuItem key={key} value={item.value}>{item.title}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                                <FormHelperText sx={{ color: "red" }}>{formik.touched.categories && t(formik.errors.categories)}</FormHelperText>
                             </Grid>
 
                             <Grid item xs={12}>
-                                <FormLabel>Description</FormLabel>
+                                <FormLabel>{t("description")}</FormLabel>
                                 <TextField
                                     multiline={true}
                                     rows={6}
                                     fullWidth
-                                    size="small"
                                     name="description"
+                                    placeholder={t("description")}
                                     disabled={!isEdit}
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
@@ -215,7 +206,7 @@ const ShopPersonal = () => {
                             <Grid item xs={12}>
                                 <Divider sx={{ my: 0 }} textAlign="left">
                                     <Typography variant="h6">
-                                        Shop Address
+                                        {t("shopAddress")}
                                     </Typography>
                                 </Divider>
                             </Grid>
@@ -223,13 +214,13 @@ const ShopPersonal = () => {
                             <Grid item xs={12}>
                                 <Grid item container spacing={2}>
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>House</FormLabel>
+                                        <FormLabel>{t("house")}</FormLabel>
                                         <TextField
                                             rows={8}
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.house"
+                                            placeholder={t("house")}
                                             disabled={!isEdit}
                                             value={formik.values.address.house}
                                             onChange={formik.handleChange}
@@ -239,12 +230,12 @@ const ShopPersonal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>Street</FormLabel>
+                                        <FormLabel>{t("street")}</FormLabel>
                                         <TextField
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.street"
+                                            placeholder={t("street")}
                                             disabled={!isEdit}
                                             value={formik.values.address.street}
                                             onChange={formik.handleChange}
@@ -254,12 +245,12 @@ const ShopPersonal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>State</FormLabel>
+                                        <FormLabel>{t("state")}</FormLabel>
                                         <TextField
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.state"
+                                            placeholder={t("state")}
                                             disabled={!isEdit}
                                             value={formik.values.address.state}
                                             onChange={formik.handleChange}
@@ -269,12 +260,12 @@ const ShopPersonal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>City</FormLabel>
+                                        <FormLabel>{t("city")}</FormLabel>
                                         <TextField
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.city"
+                                            placeholder={t("city")}
                                             disabled={!isEdit}
                                             value={formik.values.address.city}
                                             onChange={formik.handleChange}
@@ -284,12 +275,12 @@ const ShopPersonal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>Country</FormLabel>
+                                        <FormLabel>{t("country")}</FormLabel>
                                         <TextField
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.country"
+                                            placeholder={t("country")}
                                             disabled={!isEdit}
                                             value={formik.values.address.country}
                                             onChange={formik.handleChange}
@@ -299,12 +290,12 @@ const ShopPersonal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} sm={6} lg={4}>
-                                        <FormLabel>Zipcode</FormLabel>
+                                        <FormLabel>{t("zipCode")}</FormLabel>
                                         <TextField
                                             fullWidth
                                             margin="dense"
-                                            size="small"
                                             name="address.zipCode"
+                                            placeholder={t("zipCode")}
                                             disabled={!isEdit}
                                             value={formik.values.address.zipCode}
                                             onChange={formik.handleChange}
@@ -316,7 +307,11 @@ const ShopPersonal = () => {
                             </Grid>
 
                             <Grid item container xs={12} alignItems="end" justifyContent="end">
-                                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="outlined" onClick={handleClick}>{isEdit ? t("saveBtn") : "Edit"}</Button>
+                                {
+                                    isEdit && <Button startIcon={<Cancel />} sx={{ mr: 2 }} variant="outlined" color="error" onClick={() => setIsEdit(false)}>{t("cancel")}</Button>
+                                }
+
+                                <Button startIcon={isEdit ? <Save /> : <Edit />} variant="outlined" onClick={handleClick}>{isEdit ? t("saveBtn") : t("edit")}</Button>
                             </Grid>
                         </Grid>
                     </StyledPaper>

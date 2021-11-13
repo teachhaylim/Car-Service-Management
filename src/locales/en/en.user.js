@@ -3,6 +3,7 @@ const en_user = {
     userAddress: "User Address",
     newPassword: "New Password",
     confirmPassword: "Confirm Password",
+    userList: "User List",
 };
 
 export default en_user;

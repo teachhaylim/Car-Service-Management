@@ -74,10 +74,7 @@ const ProfileIndex = () => {
         validationSchema: validateSchema,
         onSubmit: async (values) => {
             if (imageFile instanceof File) {
-                const file = new FormData();
-                file.append('file', imageFile);
-
-                await uploadFile(file)
+                await uploadFile(imageFile)
                     .then(res => {
                         if (res && res.meta === 201) {
                             values.profilePic = res.file.filename;
@@ -97,8 +94,7 @@ const ProfileIndex = () => {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
-                    toast.error(err.message);
+                    toast.error(t(`updateFailed - ${err.message}`));
                 })
         },
     });
@@ -127,17 +123,18 @@ const ProfileIndex = () => {
                     <StyledPaper elevation={0}>
                         <Divider textAlign="left">
                             <Typography variant="h6">
-                                Personal Profile
+                                {t("personalProfile")}
                             </Typography>
                         </Divider>
 
                         <Grid item container spacing={2}>
                             <Grid item xs={12} lg={6}>
-                                <FormLabel>First name</FormLabel>
+                                <FormLabel>{t("firstName")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     variant="outlined"
                                     name="firstName"
+                                    placeholder={t("firstName")}
                                     disabled={!isEdit}
                                     value={formik.values.firstName}
                                     onChange={formik.handleChange}
@@ -147,11 +144,12 @@ const ProfileIndex = () => {
                             </Grid>
 
                             <Grid item xs={12} lg={6}>
-                                <FormLabel>Last name</FormLabel>
+                                <FormLabel>{t("lastName")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     variant="outlined"
                                     name="lastName"
+                                    placeholder={t("lastName")}
                                     disabled={!isEdit}
                                     value={formik.values.lastName}
                                     onChange={formik.handleChange}
@@ -161,11 +159,12 @@ const ProfileIndex = () => {
                             </Grid>
 
                             <Grid item xs={12} lg={4}>
-                                <FormLabel>Phone number</FormLabel>
+                                <FormLabel>{t("phoneNumber")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     variant="outlined"
                                     name="phoneNumber"
+                                    placeholder={t("phoneNumber")}
                                     disabled={!isEdit}
                                     value={formik.values.phoneNumber}
                                     onChange={formik.handleChange}
@@ -175,11 +174,12 @@ const ProfileIndex = () => {
                             </Grid>
 
                             <Grid item xs={12} lg={4}>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>{t("email")}</FormLabel>
                                 <TextField
                                     fullWidth
                                     variant="outlined"
                                     name="email"
+                                    placeholder={t("email")}
                                     disabled={!isEdit}
                                     value={formik.values.email}
                                     onChange={formik.handleChange}
@@ -189,7 +189,7 @@ const ProfileIndex = () => {
                             </Grid>
 
                             <Grid item xs={12} lg={4}>
-                                <FormLabel>Date of Birth</FormLabel>
+                                <FormLabel>{t("dob")}</FormLabel>
                                 <DesktopDatePicker
                                     name="dob"
                                     disableCloseOnSelect
@@ -205,18 +205,19 @@ const ProfileIndex = () => {
 
                         <Divider sx={{ mt: 2, mb: 1 }} textAlign="left">
                             <Typography variant="h6">
-                                Personal Address
+                                {t("personalAddress")}
                             </Typography>
                         </Divider>
 
                         <Grid item xs={12}>
                             <Grid item container spacing={2}>
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>House</FormLabel>
+                                    <FormLabel>{t("house")}</FormLabel>
                                     <TextField
                                         rows={8}
                                         fullWidth
                                         name="address.house"
+                                        placeholder={t("house")}
                                         disabled={!isEdit}
                                         value={formik.values.address.house}
                                         onChange={formik.handleChange}
@@ -226,10 +227,11 @@ const ProfileIndex = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>Street</FormLabel>
+                                    <FormLabel>{t("street")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         name="address.street"
+                                        placeholder={t("street")}
                                         disabled={!isEdit}
                                         value={formik.values.address.street}
                                         onChange={formik.handleChange}
@@ -239,10 +241,11 @@ const ProfileIndex = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>State</FormLabel>
+                                    <FormLabel>{t("state")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         name="address.state"
+                                        placeholder={t("state")}
                                         disabled={!isEdit}
                                         value={formik.values.address.state}
                                         onChange={formik.handleChange}
@@ -252,10 +255,11 @@ const ProfileIndex = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>City</FormLabel>
+                                    <FormLabel>{t("city")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         name="address.city"
+                                        placeholder={t("city")}
                                         disabled={!isEdit}
                                         value={formik.values.address.city}
                                         onChange={formik.handleChange}
@@ -265,10 +269,11 @@ const ProfileIndex = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>Country</FormLabel>
+                                    <FormLabel>{t("country")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         name="address.country"
+                                        placeholder={t("country")}
                                         disabled={!isEdit}
                                         value={formik.values.address.country}
                                         onChange={formik.handleChange}
@@ -278,10 +283,11 @@ const ProfileIndex = () => {
                                 </Grid>
 
                                 <Grid item xs={12} lg={4}>
-                                    <FormLabel>Zipcode</FormLabel>
+                                    <FormLabel>{t("zipCode")}</FormLabel>
                                     <TextField
                                         fullWidth
                                         name="address.zipCode"
+                                        placeholder={t("zipCode")}
                                         disabled={!isEdit}
                                         value={formik.values.address.zipCode}
                                         onChange={formik.handleChange}
