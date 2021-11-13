@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 
-const Dashboard = () => {
+const DashboardAdmin = () => {
     return (
         <div>
-            Dashboard
+            DashboardAdmin
         </div>
     )
 }
 
-export default Dashboard;
+export default DashboardAdmin;

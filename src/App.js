@@ -51,23 +51,23 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={DateAdapter}>
-        <GlobalStyles />
-        <CssBaseline />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-        <PerfectScrollbar>
-          {routing}
-        </PerfectScrollbar>
+          <GlobalStyles />
+          <CssBaseline />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+          <PerfectScrollbar>
+            {routing}
+          </PerfectScrollbar>
         </LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>

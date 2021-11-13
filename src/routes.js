@@ -3,7 +3,6 @@ import { Navigate } from "react-router-dom";
 // Pages
 import AdminLayout from "layouts/AdminLayout";
 import MainLayout from "layouts/MainLayout";
-import Dashboard from "views/Overview";
 import NotFound from "views/NotFoundPage";
 import Unauthorized from "views/UnauthorizedPage";
 import UserIndex from "views/User";
@@ -22,6 +21,8 @@ import ProfileIndex from "views/Profile";
 import ServiceEdit from "views/Services/ServiceEdit";
 import AppointmentEdit from "views/Appointments/AppointmentEdit";
 import UserEdit from "views/User/UserEdit";
+import DashboardPersonal from "views/Overview/indexPersonal";
+import DashboardAdmin from "views/Overview";
 
 const adminRoutes = [
     {
@@ -83,7 +84,7 @@ const routes = (isLogin = false, role = -1) => [
         path: "app",
         element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
         children: [
-            { path: "dashboard", element: <Dashboard /> }, //TODO dynamic dashboard (maybe)
+            { path: "dashboard", element: role === 2 ? <DashboardAdmin /> : <DashboardPersonal /> }, //TODO dynamic dashboard (maybe)
             { path: "profile", element: <ProfileIndex /> },
             { path: "*", element: <Navigate to="/notfound" /> },
             ...(role === -1 ? [] : role === 2 ? adminRoutes : generalRoutes),
