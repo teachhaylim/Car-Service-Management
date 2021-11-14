@@ -30,15 +30,15 @@ const basicConfig = {
     drawerSize: 250,
 
     //home server endpoint
-    // apiUrl: "http://192.168.0.10:5000/api/v1/",
-    // authUrl: "http://192.168.0.10:5000/auth/",
-    // fileUrl: "http://192.168.0.10:5000/file/",
+    apiUrl: "http://192.168.0.10:5000/api/v1/",
+    authUrl: "http://192.168.0.10:5000/auth/",
+    fileUrl: "http://192.168.0.10:5000/file/",
 
     //local endpoint
-    apiUrl: "http://localhost:5000/api/v1/",
-    authUrl: "http://localhost:5000/auth/",
-    fileUrl: "http://localhost:5000/file/",
-    diceBearAvatar: "https://avatars.dicebear.com/api/identicon/",
+    // apiUrl: "http://localhost:5000/api/v1/",
+    // authUrl: "http://localhost:5000/auth/",
+    // fileUrl: "http://localhost:5000/file/",
+    // diceBearAvatar: "https://avatars.dicebear.com/api/identicon/",
 };
 
 export default basicConfig;
