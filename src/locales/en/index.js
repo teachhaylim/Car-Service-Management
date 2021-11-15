@@ -111,6 +111,7 @@ const en_lang = {
         country: "Country",
         shopCategory: "Shop category",
         shopDescription: "Shop description",
+        shopOwned: "Belong to shop",
         //End Form Text
 
         //Message Text

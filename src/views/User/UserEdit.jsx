@@ -95,8 +95,8 @@ const UserEdit = () => {
                 case 2:
                     values.sellCompany = null;
                     break;
-                default:
-                    values.sellCompany = null;
+                // default:
+                //     return;
             }
 
             if (imageFile instanceof File) {
@@ -273,7 +273,7 @@ const UserEdit = () => {
                                 {
                                     formik.values.type === 1 &&
                                     <Grid item xs={12} lg={6}>
-                                        <FormLabel>Shop category</FormLabel>
+                                        <FormLabel>{t("shopOwned")}</FormLabel>
                                         <Select
                                             name="sellCompany"
                                             sx={{ width: "100%" }}

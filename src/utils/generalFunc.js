@@ -43,7 +43,7 @@ export const displayStatus = (status) => {
             return { value: "pending", color: "warning" };
         case 2:
             return { value: "completed", color: "primary" };
-        case 0:
+        case -1:
             return { value: "canceled", color: "error" };
         default:
             return "";

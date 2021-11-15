@@ -89,7 +89,7 @@ const AppointmentIndex = () => {
                     break;
                 case "Canceled":
                 case "canceled":
-                    filter.statusType = 0;
+                    filter.statusType = -1;
                     break;
                 default:
                     break;
@@ -100,8 +100,6 @@ const AppointmentIndex = () => {
         }
 
         setFilter({ ...filter, page: 0, user: value });
-
-        console.log(`filter`, filter)
     };
 
     const handleDelete = (value) => {
@@ -131,7 +129,7 @@ const AppointmentIndex = () => {
 
     const handleCancelConfirm = (value) => {
         setIsCancel(false);
-        updateStauts(value, 0);
+        updateStauts(value, -1);
     };
 
     const updateStauts = (value, type) => {
