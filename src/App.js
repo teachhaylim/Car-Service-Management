@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 
 document.title = basicConfig.appName + " - Management";
 
+//Unused, been reworked
 const CheckPermission = (token, isLogin) => {
   if (!token) {
     return false;
@@ -41,14 +42,12 @@ const CheckPermission = (token, isLogin) => {
   return true;
 };
 
-//REWORK route problem on reload
 const App = () => {
   const token = useSelector(state => state.token, shallowEqual);
   const isLogin = useSelector(state => state.isLogin, shallowEqual);
   const role = useSelector(state => state.role, shallowEqual);
   const [isLoading, setIsLoading] = useState(true);
   const routing = useRoutes(routes(isLoading, role));
-  // const routing = useRoutes(routes(CheckPermission(token, isLogin), role));
 
   useEffect(() => {
     if (!token) {

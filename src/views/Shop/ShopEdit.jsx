@@ -79,9 +79,6 @@ const ShopEdit = () => {
             }
 
             if (isEdit) {
-                //FIXME need rework when modify address
-                // values.address.id = shop.address.id;
-
                 UpdateShop(values.id, values)
                     .then(res => {
                         if (res && res.meta === 200) {

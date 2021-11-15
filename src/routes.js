@@ -84,7 +84,7 @@ const routes = (isLogin = false, role = -1) => [
         path: "app",
         element: isLogin ? <AdminLayout /> : < Navigate to="/unauthorized" />,
         children: [
-            { path: "dashboard", element: role === 2 ? <DashboardAdmin /> : <DashboardPersonal /> }, //TODO dynamic dashboard (maybe)
+            { path: "dashboard", element: role === 2 ? <DashboardAdmin /> : <DashboardPersonal /> },
             { path: "profile", element: <ProfileIndex /> },
             { path: "*", element: <Navigate to="/notfound" /> },
             ...(role === -1 ? [] : role === 2 ? adminRoutes : generalRoutes),
