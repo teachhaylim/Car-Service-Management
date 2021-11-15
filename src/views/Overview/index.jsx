@@ -3,11 +3,8 @@ import { toast } from 'react-toastify';
 import { Divider, Grid, Typography } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import DashboardItem from 'components/Overviews/DashboardItem';
-import { FetchDashboardPersonal } from 'api/stats.api';
-import { AccountBalanceWallet, Assessment, Assignment, AssignmentLate, LocalAtm, SettingsApplications } from '@mui/icons-material';
-import { Bar, Line } from 'react-chartjs-2';
-import moment from 'moment';
-import { shallowEqual, useSelector } from 'react-redux';
+import { Balcony, PeopleAlt, Storefront } from '@mui/icons-material';
+import { Line } from 'react-chartjs-2';
 import { FetchDashboardAdmin } from 'api/stats.api';
 import { useTranslation } from 'react-i18next';
 
@@ -141,11 +138,11 @@ const DashboardAdmin = () => {
                     </Box>
                 </Grid>
 
-                <DashboardItem title={t("totalCategories")} value={totalCategories.total} icon={<LocalAtm sx={{ color: "#c62828" }} />} valueColor="#c62828" />
+                <DashboardItem title={t("totalCategories")} value={totalCategories.total} icon={<Balcony sx={{ color: "#c62828" }} />} valueColor="#c62828" />
 
-                <DashboardItem title={t("totalShops")} value={totalShops.total} icon={<AccountBalanceWallet sx={{ color: "#6a1b9a" }} />} valueColor="#6a1b9a" />
+                <DashboardItem title={t("totalShops")} value={totalShops.total} icon={<Storefront sx={{ color: "#6a1b9a" }} />} valueColor="#6a1b9a" />
 
-                <DashboardItem title={t("totalUsers")} value={totalUsers.total} icon={<SettingsApplications sx={{ color: "#1565c0" }} />} valueColor="#1565c0" />
+                <DashboardItem title={t("totalUsers")} value={totalUsers.total} icon={<PeopleAlt sx={{ color: "#1565c0" }} />} valueColor="#1565c0" />
 
                 <Grid item xs={12}>
                     <Box my={2}>

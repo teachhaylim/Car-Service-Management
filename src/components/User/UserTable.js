@@ -14,7 +14,7 @@ const header = [
     { field: 'dob', headerName: 'dob', width: 150 },
     { field: 'email', headerName: 'email', width: 150 },
     { field: 'phoneNumber', headerName: 'phoneNumber', width: 150 },
-    { field: 'accountType', headerName: 'accountType', width: 50 },
+    { field: 'accountType', headerName: 'accountType', width: 80 },
     { field: 'isActive', headerName: 'isActive', width: 50 },
     { field: 'createdAt', headerName: 'createdAt', width: 150 },
     { field: 'actions', headerName: 'actions', width: 150 },

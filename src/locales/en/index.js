@@ -166,6 +166,8 @@ const en_lang = {
         returnToLogin: "Return to Login",
         notFoundButton: "Pick a new door",
         goBack: "Go Back",
+        upload: "Upload",
+        logOut: "Log Out",
         //End Button Text
 
         //Filter Text

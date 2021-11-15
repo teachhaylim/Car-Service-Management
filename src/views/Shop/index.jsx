@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 //TODO search
 const ShopIndex = () => {
     const [data, setData] = useState([]);
-    const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
+    const [filter, setFilter] = useState({ limit: 10, page: 0 });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [showSearch, setShowSearch] = useState(false);
@@ -24,7 +24,7 @@ const ShopIndex = () => {
     const { t } = useTranslation();
 
     const FetchData = () => {
-        QueryShop()
+        QueryShop(filter)
             .then(res => {
                 if (res.meta === 200) {
                     setData(res.results);

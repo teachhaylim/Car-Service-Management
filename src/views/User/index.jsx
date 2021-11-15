@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 //TODO search
 const UserIndex = () => {
     const [data, setData] = useState([]);
-    const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });
+    const [filter, setFilter] = useState({ limit: 10, page: 0 });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
     const [isLoading, setIsLoading] = useState(true);
     const [showSearch, setShowSearch] = useState(false);
@@ -25,15 +25,20 @@ const UserIndex = () => {
     const { t } = useTranslation();
 
     const FetchData = () => {
-        QueryUsers()
+        QueryUsers(filter)
             .then(res => {
                 if (res.meta === 200) {
+                    console.log(res);
                     setData(res.results);
-                    setFilter({ limit: res.limit, page: res.page, sortBy: filter.sortBy, name: filter.name });
+                    setFilter({ limit: res.limit, page: res.page });
                     setTableFilter({ totalPages: res.totalPages, totalResults: res.totalResults });
                     setIsLoading(false);
                 }
             })
+            .catch(err => {
+                toast.error(err.message);
+                setIsLoading(false);
+            });
     };
 
     const handleAddShop = () => {
@@ -102,7 +107,11 @@ const UserIndex = () => {
     useEffect(() => {
         FetchData();
 
-    }, []);
+        return () => {
+            setData([]);
+            setIsLoading(true);
+        }
+    }, [filter.page, filter.limit]);
 
     return (
         <Card>

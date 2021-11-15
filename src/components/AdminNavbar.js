@@ -13,6 +13,7 @@ import { styled } from '@mui/system';
 import { SetLogout } from 'store';
 import { langItems } from 'utils/basicConfig';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +59,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
     const cookies = new Cookies();
     const dispatch = useDispatch();
     const user = useSelector(store => store.user, shallowEqual);
+    const { t } = useTranslation();
 
     const handleLogout = () => {
         dispatch(SetLogout());
@@ -169,7 +171,7 @@ const AdminNavbar = ({ handleMobileOpen }) => {
                                 </Grid>
 
                                 <Grid item>
-                                    Logout
+                                    {t("logOut")}
                                 </Grid>
                             </Grid>
                         </MenuItem>

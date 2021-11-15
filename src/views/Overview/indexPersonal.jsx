@@ -84,14 +84,14 @@ const DashboardPersonal = () => {
             bd: "",
             ed: "",
             isActive: true,
-            ...(shopInfo.id ? { sellCompany: shopInfo.id } : {}),
+            ...(shopInfo?.id ? { sellCompany: shopInfo?.id } : {}),
         };
 
         const fetchData = (query) => {
             FetchDashboardPersonal(query)
                 .then(res => {
                     if (res && res.meta === 200) {
-                        const { canceledAppointments, completedAppointments, countOfAppointedServices, numberOfServicesByUser, numberOfServicesOffered, pendingAppointments, totalAppointments, totalIncome } = res.data;
+                        const { canceledAppointments, completedAppointments, countOfAppointedServices, countOfDailyAppointments, numberOfServicesByUser, numberOfServicesOffered, pendingAppointments, totalAppointments, totalIncome } = res.data;
 
                         setCanceledAppointments(canceledAppointments);
                         setCompletedAppointments(completedAppointments);
@@ -102,15 +102,15 @@ const DashboardPersonal = () => {
                         setTotalAppointments(totalAppointments);
                         setTotalIncome(totalIncome);
 
-                        const tempData = [];
+                        // const tempData = [];
 
-                        totalAppointments.appointments.forEach(item => {
-                            const data = tempData.find(x => x.date === item.createdAt);
+                        // totalAppointments.appointments.forEach(item => {
+                        //     const data = tempData.find(x => x.date === item.createdAt);
 
-                            if (data) return data.count += 1;
+                        //     if (data) return data.count += 1;
 
-                            tempData.push({ date: item.createdAt, user: item.userId.firstName, count: 1 });
-                        });
+                        //     tempData.push({ date: item.createdAt, user: item.userId.firstName, count: 1 });
+                        // });
 
                         setBarChartData({
                             labels: countOfAppointedServices.map(item => item.service) || [],
@@ -130,11 +130,11 @@ const DashboardPersonal = () => {
                         });
 
                         setLineChartData({
-                            labels: tempData.map(item => moment(item.date).format("DD/MM/YYYY")) || [],
+                            labels: countOfDailyAppointments.map(item => moment(item.date).format("DD/MM/YYYY")) || [],
                             datasets: [
                                 {
                                     label: t("numberOfAppointments"),
-                                    data: tempData.map(item => item.count) || [],
+                                    data: countOfDailyAppointments.map(item => item.count) || [],
                                     backgroundColor: [
                                         'rgba(21, 101, 192, 0.6)',
                                     ],
@@ -156,7 +156,7 @@ const DashboardPersonal = () => {
                 });
         }
 
-        if (Object.keys(shopInfo).length > 0) {
+        if (shopInfo && Object.keys(shopInfo).length > 0) {
             fetchData(filters);
             return;
         }

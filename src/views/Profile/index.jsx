@@ -58,7 +58,7 @@ const ProfileIndex = () => {
             email: userInfo.email || "",
             password: userInfo.password || "",
             profilePic: userInfo.profilePic || "",
-            sellCompany: userInfo.sellCompany || {},
+            sellCompany: userInfo.sellCompany || null,
             type: userInfo.type || "", // 0 = user role (not allow access at all), 1 = admin (allow access to related info), 2 = superadmin (God level access xd)
             isActive: userInfo.isActive || true,
             address: {
