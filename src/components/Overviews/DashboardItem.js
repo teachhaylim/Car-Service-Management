@@ -11,9 +11,9 @@ const StyledGrid = styled(Grid)(() => {
         borderRadius: 6,
         boxShadow: "0 4px 8px #ccc",
         backgroundColor: "#fff",
-        "&:hover": {
-            backgroundColor: "#f5f5f5",
-        },
+        // "&:hover": {
+        //     backgroundColor: "#f5f5f5",
+        // },
     }
 });
 
@@ -22,11 +22,11 @@ const DashboardItem = ({ title, icon, value, valueColor, titleColor, iconColor }
         <>
             <Grid item container xs={12} sm={6} lg={4} sx={{ padding: 1 }}>
                 <StyledGrid container>
-                    <Grid item container justifyContent="center" alignItems="center" xs={1}>
-                        {icon || <AttachMoney sx={{ color: iconColor || "gray" }} />}
+                    <Grid item container justifyContent="center" alignItems="center" xs>
+                        {icon || <AttachMoney sx={{ color: iconColor || "red" }} />}
                     </Grid>
 
-                    <Grid item container justifyContent="start" alignItems="center" xs>
+                    <Grid item container justifyContent="start" alignItems="center" xs={6}>
                         <Typography sx={{ color: titleColor || "black", fontSize: 18, fontWeight: "bold" }}>
                             {title || "Placeholder title"}
                         </Typography>

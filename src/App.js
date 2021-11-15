@@ -13,6 +13,7 @@ import { LoggedInfo } from 'api/auth.api';
 import { SetShopInfo } from 'store';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import { LocalizationProvider } from '@mui/lab';
+import { useEffect, useState } from 'react';
 
 document.title = basicConfig.appName + " - Management";
 
@@ -45,7 +46,37 @@ const App = () => {
   const token = useSelector(state => state.token, shallowEqual);
   const isLogin = useSelector(state => state.isLogin, shallowEqual);
   const role = useSelector(state => state.role, shallowEqual);
-  const routing = useRoutes(routes(CheckPermission(token, isLogin), role));
+  const [isLoading, setIsLoading] = useState(true);
+  const routing = useRoutes(routes(isLoading, role));
+  // const routing = useRoutes(routes(CheckPermission(token, isLogin), role));
+
+  useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      return
+    }
+
+    if (token && !isLogin) {
+      LoggedInfo()
+        .then(res => {
+          if (res.meta === 200) {
+            store.dispatch(SetUserInfo(res.user));
+            store.dispatch(SetShopInfo(res.shop));
+            store.dispatch(SetIsLogin(true));
+            store.dispatch(SetRole(res.user.type));
+            setIsLoading(true);
+            return
+          }
+        })
+        .catch(err => {
+          toast.error(err.message);
+          setIsLoading(false);
+          return
+        });
+    }
+
+    setIsLoading(true);
+  });
 
   return (
     <StyledEngineProvider injectFirst>

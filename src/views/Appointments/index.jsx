@@ -16,7 +16,6 @@ const AppointmentIndex = () => {
     const [showSearch, setShowSearch] = useState(false);
     const navigate = useNavigate();
     const [data, setData] = useState([]);
-    const role = useSelector(store => store.role, shallowEqual);
     const shopInfo = useSelector(store => store.shop, shallowEqual);
     const [filter, setFilter] = useState({ limit: 10, page: 0, sortBy: {} });
     const [tableFilter, setTableFilter] = useState({ totalPages: 0, totalResults: 0 });
@@ -50,7 +49,7 @@ const AppointmentIndex = () => {
     }
 
     const FetchData = () => {
-        if (role === 1) filter.sellCompany = shopInfo.id;
+        filter.sellCompany = shopInfo.id;
 
         QueryAppointment(filter)
             .then(res => {
@@ -162,19 +161,14 @@ const AppointmentIndex = () => {
             });
     };
 
-    useEffect(
-        () => {
-            setTimeout(() => {
-                FetchData();
-            }, 1000);
+    useEffect(() => {
+        if (Object.keys(shopInfo).length > 0) FetchData();
 
-            return () => {
-                setData([]);
-                setIsLoading(true);
-            }
-        },
-        [filter.page, filter.limit]
-    );
+        return () => {
+            setData([]);
+            setIsLoading(true);
+        }
+    }, [filter.page, filter.limit, shopInfo]);
 
     return (
         <>

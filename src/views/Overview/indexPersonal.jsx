@@ -1,69 +1,218 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Grid } from '@mui/material';
-import { Box } from '@mui/system';
+import { Divider, Grid, Typography } from '@mui/material';
+import { Box, styled } from '@mui/system';
 import DashboardItem from 'components/Overviews/DashboardItem';
 import { FetchDashboardPersonal } from 'api/stats.api';
+import { AccountBalanceWallet, Assessment, Assignment, AssignmentLate, LocalAtm, SettingsApplications } from '@mui/icons-material';
+import { Bar, Line } from 'react-chartjs-2';
+import moment from 'moment';
+import { shallowEqual, useSelector } from 'react-redux';
+
+const lineBarOptions = {
+    scales: {
+        y: {
+            beginAtZero: true
+        }
+    }
+};
+
+const StyledBox = styled(Box)(() => {
+    return {
+        padding: 24,
+        cursor: "default",
+        borderRadius: 6,
+        border: '1px solid #e0e0e0',
+        boxShadow: "0 4px 8px #ccc",
+        backgroundColor: "#fff",
+    }
+});
 
 const DashboardPersonal = () => {
-    const [canceledAppointments, setCanceledAppointments] = React.useState([]);
-    const [pendingAppointments, setPendingAppointments] = React.useState([]);
-    const [completedAppointments, setCompletedAppointments] = React.useState([]);
-    const [numberOfServicesOffered, setNumberOfServicesOffered] = React.useState([]);
-    const [totalAppointments, setTotalAppointments] = React.useState({});
-    const [totalIncome, setTotalIncome] = React.useState({});
+    //General Info
+    const [canceledAppointments, setCanceledAppointments] = useState([]);
+    const [pendingAppointments, setPendingAppointments] = useState([]);
+    const [completedAppointments, setCompletedAppointments] = useState([]);
+    const [numberOfServicesOffered, setNumberOfServicesOffered] = useState([]);
+    const [totalAppointments, setTotalAppointments] = useState({});
+    const [totalIncome, setTotalIncome] = useState({});
+    const shopInfo = useSelector(state => state.shop, shallowEqual);
 
-    //Chart
-    const [numberOfAppointedService, setNumberOfAppointedServices] = React.useState([]); //chart
-    const [numberOfServicesByUser, setNumberofServicesByUser] = React.useState([]); //chart
+    //Chart - unused
+    // const [numberOfAppointedService, setNumberOfAppointedServices] = useState([]);
+    // const [numberOfServicesByUser, setNumberofServicesByUser] = useState([]);
+
+    //Chart data
+    const [barChartData, setBarChartData] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: 'Placeholder label',
+                data: [],
+                backgroundColor: [
+                    "rgba(46, 125, 50, 0.6)",
+                ],
+                borderColor: [
+                    "rgb(0, 80, 5)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    });
+    const [lineChartData, setLineChartData] = useState({
+        labels: [],
+        datasets: [
+            {
+                label: 'Placeholder label',
+                data: [],
+                backgroundColor: [
+                    'rgba(21, 101, 192, 0.6)',
+                ],
+                borderColor: [
+                    'rgb(0, 60, 143)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    });
 
     useEffect(() => {
-        FetchDashboardPersonal()
-            .then(res => {
-                if (res && res.meta == 200) {
-                    const { canceledAppointments, completedAppointments, countOfAppointedServices, numberOfServicesByUser, numberOfServicesOffered, pendingAppointments, totalAppointments, totalIncome } = res.data;
+        const filters = {
+            bd: "",
+            ed: "",
+            isActive: true,
+            ...(shopInfo.id ? { sellCompany: shopInfo.id } : {}),
+        };
 
-                    setCanceledAppointments(canceledAppointments);
-                    setCompletedAppointments(completedAppointments);
-                    setPendingAppointments(pendingAppointments);
-                    setNumberOfAppointedServices(countOfAppointedServices);
-                    setNumberofServicesByUser(numberOfServicesByUser);
-                    setNumberOfServicesOffered(numberOfServicesOffered);
-                    setTotalAppointments(totalAppointments);
-                    setTotalIncome(totalIncome);
+        const fetchData = (query) => {
+            FetchDashboardPersonal(query)
+                .then(res => {
+                    if (res && res.meta === 200) {
+                        const { canceledAppointments, completedAppointments, countOfAppointedServices, numberOfServicesByUser, numberOfServicesOffered, pendingAppointments, totalAppointments, totalIncome } = res.data;
 
-                    console.log(res.data);
+                        setCanceledAppointments(canceledAppointments);
+                        setCompletedAppointments(completedAppointments);
+                        setPendingAppointments(pendingAppointments);
+                        // setNumberOfAppointedServices(countOfAppointedServices);
+                        // setNumberofServicesByUser(numberOfServicesByUser);
+                        setNumberOfServicesOffered(numberOfServicesOffered);
+                        setTotalAppointments(totalAppointments);
+                        setTotalIncome(totalIncome);
 
-                    return;
-                }
+                        const tempData = [];
 
-                toast.error(res.message);
-            })
-            .catch(err => {
-                toast.error(err.message);
-            })
-    }, []);
+                        totalAppointments.appointments.forEach(item => {
+                            const data = tempData.find(x => x.date === item.createdAt);
+
+                            if (data) return data.count += 1;
+
+                            tempData.push({ date: item.createdAt, user: item.userId.firstName, count: 1 });
+                        });
+
+                        setBarChartData({
+                            labels: countOfAppointedServices.map(item => item.service) || [],
+                            datasets: [
+                                {
+                                    label: '# of Appointed Services',
+                                    data: countOfAppointedServices.map(item => item.count) || [],
+                                    backgroundColor: [
+                                        "rgba(46, 125, 50, 0.6)",
+                                    ],
+                                    borderColor: [
+                                        "rgb(0, 80, 5)",
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        });
+
+                        setLineChartData({
+                            labels: tempData.map(item => moment(item.date).format("DD/MM/YYYY")) || [],
+                            datasets: [
+                                {
+                                    label: "# of Appointment",
+                                    data: tempData.map(item => item.count) || [],
+                                    backgroundColor: [
+                                        'rgba(21, 101, 192, 0.6)',
+                                    ],
+                                    borderColor: [
+                                        'rgb(0, 60, 143)',
+                                    ],
+                                    borderWidth: 1,
+                                },
+                            ],
+                        });
+
+                        return;
+                    }
+
+                    toast.error(res.message);
+                })
+                .catch(err => {
+                    toast.error(err.message);
+                });
+        }
+
+        if (Object.keys(shopInfo).length > 0) {
+            fetchData(filters);
+            return;
+        }
+
+        return () => {
+            setCanceledAppointments([]);
+            setCompletedAppointments([]);
+            setPendingAppointments([]);
+            setNumberOfServicesOffered([]);
+            setTotalAppointments({});
+            setTotalIncome({});
+
+            // setNumberOfAppointedServices([]);
+            // setNumberofServicesByUser([]);
+        }
+    }, [shopInfo]);
 
     return (
         <>
             <Grid item container>
                 <Grid item xs={12}>
-                    <Box>
-                        Dashboard Personal
+                    <Box mb={2}>
+                        <Divider textAlign="center">
+                            <Typography variant="h6">General Info</Typography>
+                        </Divider>
                     </Box>
                 </Grid>
 
-                <DashboardItem title="Total Income" value={`$ ${totalIncome.total || 0}`} valueColor="#ff1744" iconColor="" icon="" />
+                <DashboardItem title="Total Income" value={`$ ${totalIncome.total || 0}`} icon={<LocalAtm sx={{ color: "#c62828" }} />} valueColor="#c62828" />
 
-                <DashboardItem title="Total Appointments" value={`${totalAppointments.total || 0}`} valueColor="#d500f9" iconColor="" icon="" />
+                <DashboardItem title="Total Appointments" value={`${totalAppointments.total || 0}`} icon={<AccountBalanceWallet sx={{ color: "#6a1b9a" }} />} valueColor="#6a1b9a" />
 
-                <DashboardItem title="Total Sevices" value={`${numberOfServicesOffered.length}`} valueColor="#2979ff" iconColor="" icon="" />
+                <DashboardItem title="Total Sevices" value={`${numberOfServicesOffered.length}`} icon={<SettingsApplications sx={{ color: "#1565c0" }} />} valueColor="#1565c0" />
 
-                <DashboardItem title="Pending Appointments" value={`${pendingAppointments.length}`} valueColor="#00e676" iconColor="" icon="" />
+                <DashboardItem title="Pending Appointments" value={`${pendingAppointments.length}`} icon={<Assessment sx={{ color: "#00695c" }} />} valueColor="#00695c" />
 
-                <DashboardItem title="Completed Appointments" value={`${completedAppointments.length}`} valueColor="#3e2723" iconColor="" icon="" />
+                <DashboardItem title="Completed Appointments" value={`${completedAppointments.length}`} icon={<Assignment sx={{ color: "#ef6c00" }} />} valueColor="#ef6c00" />
 
-                <DashboardItem title="Canceled Appointments" value={`${canceledAppointments.length}`} valueColor="#1de9b6" iconColor="" icon="" />
+                <DashboardItem title="Canceled Appointments" value={`${canceledAppointments.length}`} icon={<AssignmentLate sx={{ color: "#4e342e" }} />} valueColor="#4e342e" />
+
+                <Grid item xs={12}>
+                    <Box my={2}>
+                        <Divider textAlign="center">
+                            <Typography variant="h6">Statistics</Typography>
+                        </Divider>
+                    </Box>
+                </Grid>
+
+                <Grid item xs={12} lg={6}>
+                    <StyledBox mr={1}>
+                        <Bar data={barChartData} />
+                    </StyledBox>
+                </Grid>
+
+                <Grid item xs={12} lg={6}>
+                    <StyledBox ml={1}>
+                        <Line data={lineChartData} options={lineBarOptions} />
+                    </StyledBox>
+                </Grid>
             </Grid>
         </>
     )
