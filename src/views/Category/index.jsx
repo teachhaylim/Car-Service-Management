@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
-//FIXME delete problem
 const CategoriesIndex = () => {
     const [data, setData] = useState([]);
     const [filter, setFilter] = useState({ name: "", limit: 10, page: 0, sortBy: {} });

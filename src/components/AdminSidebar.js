@@ -91,7 +91,6 @@ const AdminSidebar = ({ window, handleMobileOpen, mobileOpen }) => {
     const DrawerContent = () => {
         return (
             <>
-                {/* //TODO change to use MUI */}
                 <div className={classes.toolbar}>
                     <div className={classes.header}>
                         <div className={classes.headerImgContainer}>
