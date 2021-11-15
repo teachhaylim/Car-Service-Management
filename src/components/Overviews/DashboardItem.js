@@ -28,13 +28,13 @@ const DashboardItem = ({ title, icon, value, valueColor, titleColor, iconColor }
 
                     <Grid item container justifyContent="start" alignItems="center" xs={6}>
                         <Typography sx={{ color: titleColor || "black", fontSize: 18, fontWeight: "bold" }}>
-                            {title || "Placeholder title"}
+                            {title || "Title"}
                         </Typography>
                     </Grid>
 
                     <Grid item container justifyContent="end" alignItems="center" xs>
                         <Typography sx={{ color: valueColor || "black", fontSize: 18, fontWeight: "bold" }} >
-                            {value || "Placeholder value"}
+                            {value || 0}
                         </Typography>
                     </Grid>
                 </StyledGrid>

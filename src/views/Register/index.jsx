@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const validationSchema = Yup.object({
     firstname: Yup
@@ -47,7 +48,9 @@ const RegisterView = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 1));
+            // alert(JSON.stringify(values, null, 1));
+
+            toast.info("Registraion hasn't been implemented yet")
 
             resetForm();
         },

@@ -46,6 +46,21 @@ const en_lang = {
         app: "App",
         active: "Active",
         inactive: "Inactive",
+        statistics: "Statistics",
+        generalInfo: "General Info",
+        totalIncome: "Total Income",
+        totalAppointments: "Total Appointments",
+        totalServices: "Total Services",
+        totalCategories: "Total Categories",
+        totalUsers: "Total Users",
+        totalShops: "Total Shops",
+        pendingAppointments: "Pending Appointments",
+        completedAppointments: "Completed Appointments",
+        canceledAppointments: "Canceled Appointments",
+        numberOfAppointments: "Number Of Appointments",
+        numberOfAppointedServices: "Number Of Appointed Services",
+        newlyRegisteredUsers: "Newly Registered Users",
+        newlyRegisteredShops: "Newly Registered Shops",
         //End Other
 
         //Authentication & Authorization

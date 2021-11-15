@@ -5,3 +5,9 @@ export const FetchDashboardPersonal = (filter) => ApiRequest({
     method: "get",
     params: filter,
 });
+
+export const FetchDashboardAdmin = (filter) => ApiRequest({
+    url: "stats/admin",
+    method: "get",
+    params: filter,
+});

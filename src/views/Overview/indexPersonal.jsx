@@ -8,6 +8,7 @@ import { AccountBalanceWallet, Assessment, Assignment, AssignmentLate, LocalAtm,
 import { Bar, Line } from 'react-chartjs-2';
 import moment from 'moment';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const lineBarOptions = {
     scales: {
@@ -29,6 +30,8 @@ const StyledBox = styled(Box)(() => {
 });
 
 const DashboardPersonal = () => {
+    const { t } = useTranslation();
+
     //General Info
     const [canceledAppointments, setCanceledAppointments] = useState([]);
     const [pendingAppointments, setPendingAppointments] = useState([]);
@@ -113,7 +116,7 @@ const DashboardPersonal = () => {
                             labels: countOfAppointedServices.map(item => item.service) || [],
                             datasets: [
                                 {
-                                    label: '# of Appointed Services',
+                                    label: t("numberOfAppointedServices"),
                                     data: countOfAppointedServices.map(item => item.count) || [],
                                     backgroundColor: [
                                         "rgba(46, 125, 50, 0.6)",
@@ -130,7 +133,7 @@ const DashboardPersonal = () => {
                             labels: tempData.map(item => moment(item.date).format("DD/MM/YYYY")) || [],
                             datasets: [
                                 {
-                                    label: "# of Appointment",
+                                    label: t("numberOfAppointments"),
                                     data: tempData.map(item => item.count) || [],
                                     backgroundColor: [
                                         'rgba(21, 101, 192, 0.6)',
@@ -177,39 +180,39 @@ const DashboardPersonal = () => {
                 <Grid item xs={12}>
                     <Box mb={2}>
                         <Divider textAlign="center">
-                            <Typography variant="h6">General Info</Typography>
+                            <Typography variant="h6">{t("generalInfo")}</Typography>
                         </Divider>
                     </Box>
                 </Grid>
 
-                <DashboardItem title="Total Income" value={`$ ${totalIncome.total || 0}`} icon={<LocalAtm sx={{ color: "#c62828" }} />} valueColor="#c62828" />
+                <DashboardItem title={t("totalIncome")} value={`$ ${totalIncome.total || 0}`} icon={<LocalAtm sx={{ color: "#c62828" }} />} valueColor="#c62828" />
 
-                <DashboardItem title="Total Appointments" value={`${totalAppointments.total || 0}`} icon={<AccountBalanceWallet sx={{ color: "#6a1b9a" }} />} valueColor="#6a1b9a" />
+                <DashboardItem title={t("totalAppointments")} value={`${totalAppointments.total || 0}`} icon={<AccountBalanceWallet sx={{ color: "#6a1b9a" }} />} valueColor="#6a1b9a" />
 
-                <DashboardItem title="Total Sevices" value={`${numberOfServicesOffered.length}`} icon={<SettingsApplications sx={{ color: "#1565c0" }} />} valueColor="#1565c0" />
+                <DashboardItem title={t("totalServices")} value={`${numberOfServicesOffered.length}`} icon={<SettingsApplications sx={{ color: "#1565c0" }} />} valueColor="#1565c0" />
 
-                <DashboardItem title="Pending Appointments" value={`${pendingAppointments.length}`} icon={<Assessment sx={{ color: "#00695c" }} />} valueColor="#00695c" />
+                <DashboardItem title={t("pendingAppointments")} value={`${pendingAppointments.length}`} icon={<Assessment sx={{ color: "#00695c" }} />} valueColor="#00695c" />
 
-                <DashboardItem title="Completed Appointments" value={`${completedAppointments.length}`} icon={<Assignment sx={{ color: "#ef6c00" }} />} valueColor="#ef6c00" />
+                <DashboardItem title={t("completedAppointments")} value={`${completedAppointments.length}`} icon={<Assignment sx={{ color: "#ef6c00" }} />} valueColor="#ef6c00" />
 
-                <DashboardItem title="Canceled Appointments" value={`${canceledAppointments.length}`} icon={<AssignmentLate sx={{ color: "#4e342e" }} />} valueColor="#4e342e" />
+                <DashboardItem title={t("canceledAppointments")} value={`${canceledAppointments.length}`} icon={<AssignmentLate sx={{ color: "#4e342e" }} />} valueColor="#4e342e" />
 
                 <Grid item xs={12}>
                     <Box my={2}>
                         <Divider textAlign="center">
-                            <Typography variant="h6">Statistics</Typography>
+                            <Typography variant="h6">{t("statistics")}</Typography>
                         </Divider>
                     </Box>
                 </Grid>
 
                 <Grid item xs={12} lg={6}>
-                    <StyledBox mr={1}>
+                    <StyledBox m={1}>
                         <Bar data={barChartData} />
                     </StyledBox>
                 </Grid>
 
                 <Grid item xs={12} lg={6}>
-                    <StyledBox ml={1}>
+                    <StyledBox m={1}>
                         <Line data={lineChartData} options={lineBarOptions} />
                     </StyledBox>
                 </Grid>
