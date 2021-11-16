@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoginForm } from 'components/Login';
-import { Paper, Button, Stack, Typography, Link } from '@mui/material';
+import { Paper, Button, Stack, Typography, Link, Alert, Grid } from '@mui/material';
 import { Link as RouterLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,6 +11,7 @@ import { SetToken } from 'store';
 import { toast } from 'react-toastify';
 import Cookies from 'universal-cookie/es6';
 import { useTranslation } from 'react-i18next';
+import { Box } from '@mui/system';
 
 const validationSchema = Yup.object({
     email: Yup
@@ -27,6 +28,7 @@ const LoginView = () => {
     const history = useNavigate();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const [switchAlert, setSwitchAlert] = React.useState(false);
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -76,7 +78,7 @@ const LoginView = () => {
                                 {t("dontHaveAccount")}
                             </Typography>
 
-                            <Link component={RouterLink} to="/register" underline="none" variant="subtitle2">
+                            <Link component={RouterLink} to="#" underline="none" variant="subtitle2">
                                 {t("register")}
                             </Link>
                         </Stack>
@@ -85,6 +87,33 @@ const LoginView = () => {
                             {t("forgotPassword")}
                         </Link>
                     </Stack>
+
+                    <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
+                        {
+                            switchAlert ?
+                                <Alert severity="info">
+                                    <Box>
+                                        Admin -
+                                        email: admin@gmail.com
+                                        password: admin123
+                                    </Box>
+                                </Alert>
+                                :
+                                <Alert severity="info">
+                                    <Box>
+                                        Super admin -
+                                        email: superadmin@gmail.com
+                                        password: admin123
+                                    </Box>
+                                </Alert>
+                        }
+
+                        <Grid item container xs={2} justifyContent="end" alignItems="center">
+                            <Button onClick={() => setSwitchAlert(!switchAlert)}>Switch me</Button>
+                        </Grid>
+                    </Stack>
+
+
 
                     <Button variant="outlined" fullWidth sx={{ mt: 2 }} type="submit">
                         {t("login")}

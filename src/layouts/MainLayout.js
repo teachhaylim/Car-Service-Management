@@ -7,7 +7,8 @@ import { Box, styled } from '@mui/system';
 
 const CustomBox = styled(Box)(() => {
     return {
-        height: "calc(100vh - 88px)",
+        height: "calc(100vh - 88px)", //with navbar
+        height: "calc(100vh - 30px)", //without navbar
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -17,8 +18,8 @@ const CustomBox = styled(Box)(() => {
 const MainLayout = () => {
     return (
         <>
-            <Container disableGutters maxWidth="" sx={{ height: "100vh", backgroundColor: "#e0e0e0" }}>
-                <MainNavbar />
+            <Container disableGutters maxWidth="" sx={{ height: "100vh", background: "linear-gradient(to right, #D1913C, #FFD194);", }}>
+                {/* <MainNavbar /> */}
 
                 <CustomBox>
                     <Outlet />
